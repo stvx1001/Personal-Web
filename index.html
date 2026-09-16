@@ -1,3 +1,4 @@
+<script>if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);</script>
 <title>Pixel Spell Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1332,14 +1333,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     document.querySelectorAll('.w').forEach(function(w){ w.style.animation = 'none'; });
   } else {
     computeStages();
-    // a reload part-way down the page shouldn't snap the reader back to the top
-    if (window.scrollY > 4){
-      locked = window.scrollY <= stages[LAST];
-      stage = LAST;
-      for (var i = 0; i <= LAST; i++) if (window.scrollY <= stages[i] + 2){ stage = i; break; }
-    }
+    // every reload starts at the top of the intro, regardless of where the
+    // reader was before refreshing — scrollRestoration is turned off above
+    // for exactly this reason, so window.scrollY is already 0 here.
     glideSync();
-    if (!locked) glide.on = true;   // reloaded past the intro — glide immediately
     updateScrollFX(true);
     requestAnimationFrame(fxLoop);
     window.addEventListener('wheel', onWheel, { passive: false });
