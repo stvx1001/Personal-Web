@@ -1,0 +1,181 @@
+# CLAUDE.md — Steven Charlino personal site
+
+Handoff from the Cowork session that built this prototype (Sept 14–16, 2026).
+Read this before changing anything in `index.html` — most of what's below was
+learned the hard way and is easy to break by accident.
+
+## What this is
+
+Steven Charlino is a Product Designer in Jakarta (CBI, previously TADA, AgriAku,
+Metrodata). This is the prototype of his personal site: portfolio, CV download,
+and a shop for his MINIMAL UI kit. `index.html` is one self-contained file —
+markup, CSS and JS together, no build step. Open it in a browser.
+
+Deliberate for a prototype. **Not** the production architecture — the plan is
+Next.js 15 + `motion` + Lenis + Tailwind v4 + MDX on Vercel. Treat this file as
+the reference for how the page looks and behaves, not as the target structure.
+
+Sections in order: navbar · banner/hero · Pixel Spell · MINIMAL · marquee ·
+works rail + client logos · Hire Me · Currently bento · footer.
+
+## The scroll interaction — read this before touching the JS
+
+This is the most fragile and most iterated part of the build. Steven rejected
+three earlier attempts; the current behaviour is what he signed off on.
+
+**It is STEPPED, not a continuous scroll-scrub.** The Figma storyboard frames
+are discrete states. One gesture advances one stage and then *holds*. Building
+it as a continuous scrub (expansion spread over screens of scrolling) reads as
+"nothing is happening" — that exact mistake was made and rejected twice.
+
+Stages:
+
+| Stage | State | How you get there |
+|---|---|---|
+| 0 | Banner as a rounded card, headline + 3 float cards visible | initial |
+| 1 | Pixel Spell filling the viewport | **one gesture**, chained (see below) |
+| 2 | MINIMAL filling the viewport | one gesture |
+| — | released to native scroll + inertial glide | one more gesture |
+
+**Stage 0 → 1 is one gesture but two beats:** the banner grows to full screen
+(720ms), holds 260ms so the full-bleed state actually reads, then carries itself
+into Pixel Spell (680ms). Steven asked for this explicitly — originally it was
+two separate gestures. Reversed on the way back up.
+
+### Implementation, and why each piece is the way it is
+
+- **A `requestAnimationFrame` loop drives everything — never scroll events.**
+  When the page is embedded (artifact iframe, preview pane, any `overflow:auto`
+  wrapper) the scrolling element isn't `window`, so a `window` scroll listener
+  never fires and every effect silently dies while the page still scrolls. It
+  looks exactly like "the animation is broken". The loop measures
+  `getBoundingClientRect()` on the elements themselves, so it doesn't care what
+  scrolls. Keep it that way.
+- **Gestures are detected by accumulated delta, not by pauses between events.**
+  A trackpad fires one unbroken stream of wheel events per swipe, so "wait for a
+  gap" never fires while the user keeps swiping — the page feels frozen and
+  blocks native scroll at the same time. Thresholds: 24 (wheel), 40px (touch).
+  `quietUntil` (220ms after each transition) absorbs the momentum tail so one
+  swipe can't run through several stages.
+- **Testing momentum: Playwright's `mouse.wheel` cannot reproduce it** — CDP
+  latency between calls exceeds any realistic gap threshold, so the bug hides.
+  Dispatch `WheelEvent`s in-page at ~10–14ms intervals with a decaying tail.
+- **Banner expansion** interpolates `width/height/top/left/borderRadius` with
+  smoothstep easing. Start values are derived from the viewport each frame, so
+  it's resolution-independent.
+- **The headline fades late — 45% → 80% of progress.** It must stay sharp
+  through the first half. Fading it early was a rejected version.
+- **The headline is counter-translated** by `drift = vh - (startTop + startH)`,
+  because it's anchored to the banner's bottom edge, which moves down as the
+  banner grows. Without this it visibly slides down during the expansion.
+- **The dot grid stays visible** on the full-bleed banner. Don't fade it out.
+- **The navbar pill turns on at `p > 0.32`**, i.e. when the growing banner
+  reaches up behind it — not at a fixed scroll offset.
+- **Pixel Spell → MINIMAL is a pure-CSS sticky stack.** Both panels are
+  `position:sticky; top:0` inside their own 130vh wrappers. MINIMAL is *later in
+  the DOM* — mirroring the Figma layer order — so it paints over Pixel Spell and
+  covers it as scroll reaches it. No JS involved. **That DOM order is the
+  mechanism; don't "fix" it.**
+- **Inertial smooth scrolling after release** (`LERP = 0.11`, lower is heavier).
+  Written inline rather than pulling in Lenis so the file works with no network.
+  Pointer-fine only — touch devices have native inertia and hijacking it there
+  makes things worse. Reference Steven liked: fudali.studio (a Framer site).
+- **`prefers-reduced-motion`** adds `body.no-pin`, which drops the whole thing
+  back to plain static scrolling. Preserve this.
+
+Stage offsets come from tall wrappers: hero pin 240vh, Pixel Spell 130vh,
+MINIMAL 130vh. A gesture tweens the scroll position to the next offset
+(easeInOutCubic) and the rAF engine turns that movement into the animation.
+
+## Assets
+
+17 images in `assets/`. They are referenced through CSS variables near the top
+of `index.html`:
+
+```css
+--img-work-skorku:url("assets/work-skorku.png");
+```
+
+Names: `work-{skorku,agriaku,sinarmas,alomos,designsystem}` ·
+`logo-{pointstar,metrodata,agriaku,tada,cbi}` ·
+`minimal-{home,dashboard,drafts}` · `pixelspell-logo` ·
+`banner-{designtokens,activity,palette}`
+
+**Never source assets from Figma via `get_screenshot`.** It bakes layer effects
+(blur) into the pixels. Steven caught this and was clear about it: download the
+raw asset and reapply the effect in CSS. The three banner float cards use raw
+unblurred exports with `blur(1.5px)` / `blur(2.5px)` and `rotate(13.3deg)` on
+Activity, sitting *behind* the dot grid.
+
+There is also a single-file build of this same site (~1.6 MB) where all 17
+images are inlined as base64 data URIs, plus a `swap-asset.py` helper for
+replacing one without hand-editing base64. Portable copy — the repo version is
+the one to build on.
+
+## Figma
+
+Current file: `zoJDbi6xzrKatioVqaC0xZ` ("01-Full-time-Design-Experience"),
+page `1234:2` ("Personal Web v4"). An older file `4yBT1At7HkP6UN31TyrwBR` is
+superseded — ignore it.
+
+Scroll storyboard: section `2376:1056`, frames `2377:1358` (Home) →
+`2377:1656` → `2377:1954` → `2377:2251` → `2377:2549`.
+**Frames `2377:2251` and `2377:2549` were never inspected** — the MCP quota ran
+out first. The interaction was reconstructed from the first three plus two
+screen recordings Steven made.
+
+**Access is tight:** the connected account (`steven.charlino@gmail.com`) is on a
+Starter plan — read-only, no `use_figma` writes, and a hard cap of roughly 20
+MCP tool calls per month. Three `get_design_context` calls exhausted it in one
+pass. Budget them.
+
+Steven's prototype recordings are `.mov`. Extract frames with ffmpeg rather than
+guessing — `ffmpeg -i in.mov -vf "fps=2,scale=620:-1,tile=4x4" -frames:v 1
+grid.png` gives a readable contact sheet in one image. Note his Figma prototype
+timing is Smart Animate transition timing, not scroll-linked: match the sequence
+of states, not the literal seconds.
+
+## GitHub and hosting
+
+Repo: `github.com/stvx1001/Personal-Web` — **private**, and empty as of this
+handoff. This folder's first commit is ready to push:
+
+```bash
+git remote add origin https://github.com/stvx1001/Personal-Web.git
+git push -u origin main
+```
+
+Don't create files through GitHub's web UI before that first push — it makes the
+histories diverge and the push gets rejected.
+
+Hosting: GitHub Pages does **not** serve private repos on a free account
+(needs Pro/Team/Enterprise). So either make the repo public, or use Vercel,
+which deploys private repos on its free tier and is where the Next.js plan is
+headed anyway.
+
+## Open items
+
+- Pixel Spell's gallery is still gradient placeholder tiles, not the real
+  photography in the Figma frame. Most obvious next asset job.
+- Shop/products section not built. Three cover images exist (pixel-spell,
+  stvx1001, minimal) but aren't wired in.
+- Instagram handle never provided.
+- The Sinarmas client logo exports from Figma as a ~16px sliver — currently
+  rendered as text. Needs re-export or a swap.
+- NDA status on the CBI (SkorKu / ASWA) work is unresolved and blocks the case
+  study template.
+- Domain undecided: `stevencharlino.com` vs `charlino.design`.
+- STVX1001 appeared in an old wireframe but not the current design — dropped or
+  still coming, unconfirmed.
+
+## Working with Steven
+
+He's a designer, not a developer — new to git, and said so. Explain in plain
+terms and don't assume CLI comfort. He asked for direct answers without long
+preamble, and that preference is worth keeping.
+
+He gives precise visual feedback and will tell you when something is wrong, but
+not always why — when he says an interaction "has no effect," verify the
+mechanism yourself rather than assuming it's a settings issue on his end. That
+mistake cost a round trip here: the real cause was a `window` scroll listener
+that never fired.
