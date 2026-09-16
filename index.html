@@ -254,6 +254,10 @@ body.no-pin .banner{
 .w{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.32em);
   animation:word-in .85s var(--ease) forwards;}
 @keyframes word-in{to{opacity:1;filter:blur(0);transform:none;}}
+/* Pixel Spell's headline reuses .w/word-in exactly, just slower — the
+   banner's timing (.85s, 0.075s/word) reads fine on page-load, but felt
+   rushed for a scroll-triggered reveal you're actually watching happen. */
+[data-lazy] .w{animation-duration:1.2s;}
 
 /* spoiler-blur intro over the whole banner */
 .banner::after{
@@ -324,29 +328,17 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   transition:opacity .8s cubic-bezier(.22,1,.36,1),transform 1.15s cubic-bezier(.34,1.56,.64,1);
 }
 /* One-time entrance, fired by IntersectionObserver the first time the section
-   scrolls into view (see script section 9): each tile starts held off to the
-   upper-right, small, and transparent, then floats down-and-in to land —
-   a real diagonal float rather than a flat slide, with a touch of overshoot
-   on the transform (the 1.56 in the cubic-bezier) so it visibly settles
-   instead of just arriving; opacity eases in on its own, faster, so there's
-   no flicker. row-2 lags row-1 slightly so the two columns don't land in
-   lockstep. Runs independently of the marquee's translateY loop on .track —
-   different element, same compositor layer, no conflict. Reduced motion is
-   handled globally: the site-wide prefers-reduced-motion block collapses
-   all transition-durations to ~0. */
+   scrolls into view (see script section 9): every tile starts held off to
+   the upper-right, small, and transparent, then floats down-and-in to land
+   together, all in one beat (no per-tile stagger) — a real diagonal float
+   rather than a flat slide, with a touch of overshoot on the transform (the
+   1.56 in the cubic-bezier) so it visibly settles instead of just arriving;
+   opacity eases in on its own, faster, so there's no flicker. Runs
+   independently of the marquee's translateY loop on .track — different
+   element, same compositor layer, no conflict. Reduced motion is handled
+   globally: the site-wide prefers-reduced-motion block collapses all
+   transition-durations to ~0. */
 .ps-gallery.pre-reveal .ps-tile{opacity:0;transform:translate(160px,-34px) scale(.9);}
-.ps-gallery .row-1 .ps-tile:nth-child(1){transition-delay:0s;}
-.ps-gallery .row-1 .ps-tile:nth-child(2){transition-delay:.11s;}
-.ps-gallery .row-1 .ps-tile:nth-child(3){transition-delay:.22s;}
-.ps-gallery .row-1 .ps-tile:nth-child(4){transition-delay:.33s;}
-.ps-gallery .row-1 .ps-tile:nth-child(5){transition-delay:.44s;}
-.ps-gallery .row-1 .ps-tile:nth-child(6){transition-delay:.55s;}
-.ps-gallery .row-2 .ps-tile:nth-child(1){transition-delay:.12s;}
-.ps-gallery .row-2 .ps-tile:nth-child(2){transition-delay:.23s;}
-.ps-gallery .row-2 .ps-tile:nth-child(3){transition-delay:.34s;}
-.ps-gallery .row-2 .ps-tile:nth-child(4){transition-delay:.45s;}
-.ps-gallery .row-2 .ps-tile:nth-child(5){transition-delay:.56s;}
-.ps-gallery .row-2 .ps-tile:nth-child(6){transition-delay:.67s;}
 .ps-tile.t1{background:linear-gradient(150deg,#0677FF,#0D308C 70%);}
 .ps-tile.t2{background:linear-gradient(150deg,#683FE0,#1A0B3D 70%);}
 .ps-tile.t3{background:linear-gradient(150deg,#50A99A,#065499 70%);}
@@ -964,7 +956,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       var s = document.createElement('span');
       s.className = 'w';
       s.textContent = w;
-      s.style.animationDelay = (lazy ? i * 0.075 : base + i * 0.075).toFixed(3) + 's';
+      s.style.animationDelay = (lazy ? i * 0.11 : base + i * 0.075).toFixed(3) + 's';
       if (lazy) s.style.animationPlayState = 'paused';
       el.appendChild(s);
       if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
