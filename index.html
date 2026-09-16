@@ -317,7 +317,30 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .ps-gallery .row-2 .track{animation:ps-marquee-down 22s linear infinite;}
 @keyframes ps-marquee-up{to{transform:translateY(-50%);}}
 @keyframes ps-marquee-down{from{transform:translateY(-50%);}to{transform:translateY(0);}}
-.ps-tile{aspect-ratio:1248/702;border-radius:16px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7);box-shadow:0 18px 40px rgba(0,0,0,.1);}
+.ps-tile{aspect-ratio:1248/702;border-radius:16px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7);box-shadow:0 18px 40px rgba(0,0,0,.1);
+  opacity:1;transform:translateX(0);
+  transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);
+}
+/* One-time entrance, fired by IntersectionObserver the first time the section
+   scrolls into view (see script section 6): each tile starts off held to the
+   right and floats in to land in place, row-2 lagging row-1 slightly so the
+   two columns don't land in lockstep. Runs independently of the marquee's
+   translateY loop on .track — different element, same compositor layer,
+   no conflict. Reduced motion is handled globally: the site-wide
+   prefers-reduced-motion block collapses all transition-durations to ~0. */
+.ps-gallery.pre-reveal .ps-tile{opacity:0;transform:translateX(84px);}
+.ps-gallery .row-1 .ps-tile:nth-child(1){transition-delay:0s;}
+.ps-gallery .row-1 .ps-tile:nth-child(2){transition-delay:.11s;}
+.ps-gallery .row-1 .ps-tile:nth-child(3){transition-delay:.22s;}
+.ps-gallery .row-1 .ps-tile:nth-child(4){transition-delay:.33s;}
+.ps-gallery .row-1 .ps-tile:nth-child(5){transition-delay:.44s;}
+.ps-gallery .row-1 .ps-tile:nth-child(6){transition-delay:.55s;}
+.ps-gallery .row-2 .ps-tile:nth-child(1){transition-delay:.12s;}
+.ps-gallery .row-2 .ps-tile:nth-child(2){transition-delay:.23s;}
+.ps-gallery .row-2 .ps-tile:nth-child(3){transition-delay:.34s;}
+.ps-gallery .row-2 .ps-tile:nth-child(4){transition-delay:.45s;}
+.ps-gallery .row-2 .ps-tile:nth-child(5){transition-delay:.56s;}
+.ps-gallery .row-2 .ps-tile:nth-child(6){transition-delay:.67s;}
 .ps-tile.t1{background:linear-gradient(150deg,#0677FF,#0D308C 70%);}
 .ps-tile.t2{background:linear-gradient(150deg,#683FE0,#1A0B3D 70%);}
 .ps-tile.t3{background:linear-gradient(150deg,#50A99A,#065499 70%);}
@@ -1274,6 +1297,33 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     if (locked || animating) return;
     if (Math.abs(window.scrollY - glide.current) > 2) glideSync();
   }, { passive: true });
+
+  /* ---------- 9. Pixel Spell gallery: one-time float-in from the right ----------
+     Mirrors the word-by-word headline reveal above but for the gallery tiles:
+     held off to the right + transparent, then eased in with a stagger, the
+     first time the section actually scrolls into view. Fires once (the
+     observer disconnects itself) and then the tiles are done — the marquee's
+     own translateY loop on .track carries on underneath, untouched, since
+     it targets a different element than the one this animates. */
+  var psGalleryEl = document.querySelector('.ps-gallery');
+  if (psGalleryEl && !reduce && 'IntersectionObserver' in window){
+    psGalleryEl.classList.add('pre-reveal');
+    var psRevealed = false;
+    function revealPsGallery(){
+      if (psRevealed) return;
+      psRevealed = true;
+      psGalleryEl.classList.remove('pre-reveal');
+      psRevealObserver.disconnect();
+    }
+    var psRevealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ if (entry.isIntersecting) revealPsGallery(); });
+    }, { threshold: 0.2 });
+    psRevealObserver.observe(psGalleryEl);
+    // safety net: never leave the tiles stuck invisible if the observer
+    // somehow misses the crossing (seen once in testing, cause unconfirmed —
+    // this guarantees the gallery is always visible within a few seconds).
+    setTimeout(revealPsGallery, 4000);
+  }
 
   /* ---------- wire up ---------- */
   if (reduce){
