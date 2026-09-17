@@ -379,7 +379,8 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   min-height:100vh;
   grid-template-columns:minmax(0,460px) minmax(0,1fr);
   grid-template-rows:auto auto;
-  row-gap:clamp(28px,4vw,64px);
+  row-gap:20px;
+  align-items:center;
   /* colors sampled directly from Steven's reference export -- brightest
      near the top-right corner, falling off to a darker blue-violet. */
   background:radial-gradient(135% 130% at 90% -15%,#8B7FE9 0%,#6D67EA 18%,#5951E6 35%,#4A42E2 55%,#463CDE 100%);
@@ -392,9 +393,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-noise{position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity:.1;mix-blend-mode:overlay;}
-.min-panel .min-copy{grid-column:1;grid-row:1;position:relative;z-index:1;}
-.min-panel .min-shots{grid-column:2;grid-row:1;position:relative;z-index:1;}
-.min-panel .min-tabs{position:relative;z-index:1;}
+/* .min-copy spans both rows and stays vertically centered next to the
+   shots+tabs stack, which occupies column 2 across both rows. */
+.min-panel .min-copy{grid-column:1;grid-row:1/3;position:relative;z-index:1;align-self:center;}
+/* justify-self:end + margin-right cancelling the panel's own responsive
+   padding pins both the shot and the tabs under it to a fixed 64px gap
+   from the true screen edge, regardless of viewport width -- same
+   technique as .ps-gallery. */
+.min-panel .min-shots{grid-column:2;grid-row:1;position:relative;z-index:1;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));}
+.min-panel .min-tabs{grid-column:2;grid-row:2;position:relative;z-index:1;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));}
 .min-logo{width:132px;height:22px;background-image:var(--img-minimal-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .min-copy h2{font-size:clamp(30px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-top:20px;}
 .min-copy p{margin-top:16px;color:rgba(255,255,255,.72);max-width:44ch;}
@@ -403,18 +410,18 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-check{width:22px;height:22px;border-radius:50%;background:#22C55E;flex:none;display:grid;place-items:center;}
 .min-check::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(-45deg);}
 .min-panel .btn{margin-top:26px;}
-/* Tabs sit on their own full-width grid row below both columns, not
-   inside .min-copy -- matches the reference layout. They're real buttons:
-   clicking one crossfades .min-shot to that tab's screenshot (see JS). */
-.min-tabs{grid-column:1/-1;grid-row:2;display:flex;flex-wrap:wrap;gap:8px;}
+.min-tabs{display:flex;flex-wrap:wrap;gap:8px;}
 .min-tab{padding:10px;border-radius:8px;font-weight:700;font-size:14px;color:rgba(255,255,255,.7);
   font-family:inherit;background:none;border:1px solid transparent;cursor:pointer;}
 .min-tab.on{background:rgba(238,230,66,.14);border-color:var(--acid);color:var(--acid);}
 .min-shots{position:relative;display:grid;place-items:center;}
 /* Screenshot art already has its own drop shadow baked into the PNG
    (Figma export), so no extra box-shadow/border-radius here -- that
-   would double it up, same reasoning as .ps-watermark. */
-.min-shot{width:100%;max-width:620px;aspect-ratio:1230/917;background-repeat:no-repeat;background-position:center;background-size:contain;transition:opacity .3s ease;background-image:var(--img-minimal-home);}
+   would double it up, same reasoning as .ps-watermark. Fixed 724x514 per
+   Steven's spec, not fluid -- .min-shots{display:none} takes over below
+   the 1100px breakpoint instead of this shrinking down awkwardly. */
+.min-shot{width:724px;height:514px;background-repeat:no-repeat;background-position:center;background-size:contain;
+  transition:opacity .3s ease;background-image:var(--img-minimal-home);will-change:transform;}
 
 /* ============================================================
    3b — Hireme
@@ -662,6 +669,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .ps-panel,.min-panel{grid-template-columns:1fr;}
   .ps-gallery{display:none;}
   .min-shots{display:none;}
+  .min-tabs{display:none;}
   .works-head{grid-template-columns:1fr;}
   .banner-copy{width:min(720px,84%);}
   .hv-scene{display:none;}
@@ -1416,6 +1424,32 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
         }, reduce ? 0 : 300);
       });
     });
+  }
+
+  /* ---------- 11. MINIMAL: shot floats toward the cursor ----------
+     Lerped toward the pointer position every frame (own tiny rAF loop,
+     not tied to the scroll-jack engine) rather than snapping straight to
+     it on mousemove, for the same "floaty" easing feel as the site's
+     inertial scroll (see LERP there) instead of a jittery 1:1 follow.
+     Resets to center on mouseleave. */
+  var minPanelEl = document.querySelector('.min-panel');
+  if (minPanelEl && minShotEl && !reduce){
+    var MF_MAX = 18, MF_LERP = 0.08;
+    var mfTargetX = 0, mfTargetY = 0, mfX = 0, mfY = 0;
+    minPanelEl.addEventListener('mousemove', function(e){
+      var r = minPanelEl.getBoundingClientRect();
+      mfTargetX = (((e.clientX - r.left) / r.width) * 2 - 1) * MF_MAX;
+      mfTargetY = (((e.clientY - r.top) / r.height) * 2 - 1) * MF_MAX;
+    });
+    minPanelEl.addEventListener('mouseleave', function(){
+      mfTargetX = 0; mfTargetY = 0;
+    });
+    (function mfTick(){
+      mfX += (mfTargetX - mfX) * MF_LERP;
+      mfY += (mfTargetY - mfY) * MF_LERP;
+      minShotEl.style.transform = 'translate3d(' + mfX.toFixed(2) + 'px,' + mfY.toFixed(2) + 'px,0)';
+      requestAnimationFrame(mfTick);
+    })();
   }
 
   /* ---------- wire up ---------- */
