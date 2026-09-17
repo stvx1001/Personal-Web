@@ -305,7 +305,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .ps-blob.b1{width:44%;aspect-ratio:1;left:-10%;top:-14%;background:#fff;opacity:.35;}
 .ps-blob.b2{width:38%;aspect-ratio:1;right:-8%;bottom:-16%;background:#C3BA01;opacity:.18;}
 .ps-copy,.ps-gallery{position:relative;z-index:1;}
-.ps-logo{width:120px;height:34px;background-image:var(--img-pixelspell-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
+.ps-logo{width:240px;height:68px;background-image:var(--img-pixelspell-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .ps-copy h2{font-weight:800;font-size:clamp(32px,4.2vw,64px);line-height:1.06;letter-spacing:-.03em;margin-top:22px;}
 .ps-copy h2 em{font-style:normal;font-family:var(--display);font-weight:700;color:#C3BA01;display:block;}
 .ps-copy p{margin-top:20px;max-width:44ch;opacity:.72;}
@@ -322,7 +322,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    margin-right then cancels out however much the panel's own responsive
    padding-right (clamp(40px,6vw,96px)) already is, replacing it with a
    fixed 64px gap from the true screen edge regardless of viewport width. */
-.ps-gallery{display:grid;grid-template-columns:300px 300px;gap:16px;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));align-self:start;height:100vh;margin-block:calc(-1 * clamp(40px,6vw,96px));}
+.ps-gallery{display:grid;grid-template-columns:240px 240px;gap:16px;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));align-self:start;height:100vh;margin-block:calc(-1 * clamp(40px,6vw,96px));}
 .ps-gallery .col{overflow:hidden;height:100%;}
 .ps-gallery .track{display:grid;gap:18px;width:fit-content;will-change:transform;}
 /* row-1 (nearest the copy) drifts up; row-2 drifts down — opposite directions,
@@ -331,7 +331,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .ps-gallery .row-2 .track{animation:ps-marquee-down 22s linear infinite;}
 @keyframes ps-marquee-up{to{transform:translateY(-50%);}}
 @keyframes ps-marquee-down{from{transform:translateY(-50%);}to{transform:translateY(0);}}
-.ps-tile{width:300px;aspect-ratio:1248/702;border-radius:16px;background:transparent;
+.ps-tile{width:240px;aspect-ratio:1248/702;border-radius:16px;background:transparent;
   opacity:1;transform:translate(0,0) scale(1);
   transition:opacity .8s cubic-bezier(.22,1,.36,1),transform 1.15s cubic-bezier(.34,1.56,.64,1);
 }
