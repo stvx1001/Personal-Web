@@ -380,11 +380,21 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   grid-template-columns:minmax(0,460px) minmax(0,1fr);
   grid-template-rows:auto auto;
   row-gap:clamp(28px,4vw,64px);
-  background:linear-gradient(160deg,#7A73F2 0%,#5951E6 40%,#443ACC 75%,#3B33C0 100%);
+  /* colors sampled directly from Steven's reference export -- brightest
+     near the top-right corner, falling off to a darker blue-violet. */
+  background:radial-gradient(135% 130% at 90% -15%,#8B7FE9 0%,#6D67EA 18%,#5951E6 35%,#4A42E2 55%,#463CDE 100%);
   color:#fff;
 }
-.min-panel .min-copy{grid-column:1;grid-row:1;}
-.min-panel .min-shots{grid-column:2;grid-row:1;}
+/* Faint film-grain, matching the visible texture in the reference --
+   a separate layer (not on .min-panel itself) so it can sit at z-index:0
+   under the copy/shots/tabs without an extra wrapper, same pattern as
+   .ps-blob under .ps-copy/.ps-gallery. */
+.min-noise{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.1;mix-blend-mode:overlay;}
+.min-panel .min-copy{grid-column:1;grid-row:1;position:relative;z-index:1;}
+.min-panel .min-shots{grid-column:2;grid-row:1;position:relative;z-index:1;}
+.min-panel .min-tabs{position:relative;z-index:1;}
 .min-logo{width:132px;height:22px;background-image:var(--img-minimal-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .min-copy h2{font-size:clamp(30px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-top:20px;}
 .min-copy p{margin-top:16px;color:rgba(255,255,255,.72);max-width:44ch;}
@@ -754,6 +764,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 
 <div class="stack-wrap stack-wrap--min">
   <section class="min-panel" id="minimal">
+    <div class="min-noise" aria-hidden="true"></div>
     <div class="min-copy">
       <div class="min-logo" role="img" aria-label="MINIMAL"></div>
       <h2>Clean and minimal<br>Dashboard UI Design Kit</h2>
