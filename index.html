@@ -308,6 +308,11 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .ps-blob{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;z-index:0;}
 .ps-blob.b1{width:44%;aspect-ratio:1;left:-10%;top:-14%;background:#fff;opacity:.35;}
 .ps-blob.b2{width:38%;aspect-ratio:1;right:-8%;bottom:-16%;background:#C3BA01;opacity:.18;}
+/* Oversized wordmark bleeding off the bottom-left corner, clipped by the
+   panel's own overflow:hidden -- matches the Figma "Home - Scroll 4" frame. */
+.ps-watermark{position:absolute;left:-.06em;bottom:-.14em;z-index:0;pointer-events:none;
+  font-family:var(--display);font-weight:800;line-height:1;letter-spacing:-.02em;
+  font-size:clamp(180px,24vw,360px);color:#fff;opacity:.4;white-space:nowrap;}
 .ps-copy,.ps-gallery{position:relative;z-index:1;}
 .ps-logo{width:240px;height:68px;background-image:var(--img-pixelspell-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .ps-copy h2{font-weight:800;font-size:clamp(32px,4.2vw,64px);line-height:1.06;letter-spacing:-.03em;margin-top:22px;}
@@ -690,6 +695,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   <section class="ps-panel" id="pixelspell">
     <div class="ps-blob b1" aria-hidden="true"></div>
     <div class="ps-blob b2" aria-hidden="true"></div>
+    <div class="ps-watermark" aria-hidden="true">PIXEL</div>
     <div class="ps-copy">
       <div class="ps-logo" role="img" aria-label="Pixel Spell"></div>
       <h2><span data-split data-lazy>Turning pixels pleasant,</span><em data-split data-lazy>one spell at a time.</em></h2>
