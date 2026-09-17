@@ -325,7 +325,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    margin-right then cancels out however much the panel's own responsive
    padding-right (clamp(40px,6vw,96px)) already is, replacing it with a
    fixed 64px gap from the true screen edge regardless of viewport width. */
-.ps-gallery{display:grid;grid-template-columns:360px 360px;gap:16px;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));align-self:start;height:100vh;margin-block:calc(-1 * clamp(40px,6vw,96px));}
+.ps-gallery{display:grid;grid-template-columns:375px 375px;gap:16px;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));align-self:start;height:100vh;margin-block:calc(-1 * clamp(40px,6vw,96px));}
 .ps-gallery .col{overflow:hidden;height:100%;}
 .ps-gallery .track{display:grid;gap:18px;width:fit-content;will-change:transform;}
 /* row-1 (nearest the copy) drifts up; row-2 drifts down — opposite directions,
@@ -334,7 +334,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .ps-gallery .row-2 .track{animation:ps-marquee-down 22s linear infinite;}
 @keyframes ps-marquee-up{to{transform:translateY(-50%);}}
 @keyframes ps-marquee-down{from{transform:translateY(-50%);}to{transform:translateY(0);}}
-.ps-tile{width:360px;aspect-ratio:1248/702;border-radius:16px;background:transparent;
+.ps-tile{width:375px;aspect-ratio:1248/702;border-radius:16px;background:transparent;
   opacity:1;transform:translate(0,0) scale(1);
   transition:opacity .8s cubic-bezier(.22,1,.36,1),transform 1.15s cubic-bezier(.34,1.56,.64,1);
 }
