@@ -379,8 +379,6 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   position:sticky;top:0;
   min-height:100vh;
   grid-template-columns:minmax(0,460px) minmax(0,1fr);
-  grid-template-rows:auto auto;
-  row-gap:20px;
   align-items:center;
   /* colors sampled directly from Steven's reference export -- brightest
      near the top-right corner, falling off to a darker blue-violet. */
@@ -394,15 +392,16 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-noise{position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity:.1;mix-blend-mode:overlay;}
-/* .min-copy spans both rows and stays vertically centered next to the
-   shots+tabs stack, which occupies column 2 across both rows. */
-.min-panel .min-copy{grid-column:1;grid-row:1/3;position:relative;z-index:1;align-self:center;}
-/* justify-self:end + margin-right cancelling the panel's own responsive
-   padding pins both the shot and the tabs under it to a fixed 64px gap
-   from the true screen edge, regardless of viewport width -- same
-   technique as .ps-gallery. */
-.min-panel .min-shots{grid-column:2;grid-row:1;position:relative;z-index:1;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));}
-.min-panel .min-tabs{grid-column:2;grid-row:2;position:relative;z-index:1;justify-self:end;margin-right:calc(64px - clamp(40px,6vw,96px));}
+.min-panel .min-copy{grid-column:1;position:relative;z-index:1;}
+/* .min-right holds the shot and the tabs together and centers them on
+   each other (align-items:center) so the tabs read as centered under
+   the card instead of flush to one edge of it. justify-self:end +
+   margin-right cancelling the panel's own responsive padding then pins
+   that whole stack to a fixed 64px gap from the true screen edge,
+   regardless of viewport width -- same technique as .ps-gallery. */
+.min-panel .min-right{grid-column:2;position:relative;z-index:1;justify-self:end;
+  margin-right:calc(64px - clamp(40px,6vw,96px));
+  display:flex;flex-direction:column;align-items:center;gap:20px;}
 .min-logo{width:132px;height:22px;background-image:var(--img-minimal-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .min-copy h2{font-size:clamp(30px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-top:20px;}
 .min-copy p{margin-top:16px;color:rgba(255,255,255,.72);max-width:44ch;}
@@ -411,23 +410,30 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-check{width:22px;height:22px;border-radius:50%;background:#22C55E;flex:none;display:grid;place-items:center;}
 .min-check::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(-45deg);}
 .min-panel .btn{margin-top:26px;}
-.min-tabs{display:flex;flex-wrap:wrap;gap:8px;}
+.min-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
 .min-tab{padding:10px;border-radius:8px;font-weight:700;font-size:14px;color:rgba(255,255,255,.7);
   font-family:inherit;background:none;border:1px solid transparent;cursor:pointer;}
 .min-tab.on{background:rgba(238,230,66,.14);border-color:var(--acid);color:var(--acid);}
-.min-shots{position:relative;display:grid;place-items:center;}
+/* Fixed 724x514 per Steven's spec, not fluid -- .min-shots{display:none}
+   takes over below the 1100px breakpoint instead of this shrinking down
+   awkwardly. The two .min-shot layers stack inset:0 inside it (see
+   below), and the cursor-follow float (section 11 in the script) moves
+   this container, not the layers -- keeps that transform separate from
+   the per-layer enter/exit transform so they don't fight over the same
+   style property. */
+.min-shots{position:relative;width:724px;height:514px;will-change:transform;}
 /* Screenshot art already has its own drop shadow baked into the PNG
    (Figma export), so no extra box-shadow/border-radius here -- that
-   would double it up, same reasoning as .ps-watermark. Fixed 724x514 per
-   Steven's spec, not fluid -- .min-shots{display:none} takes over below
-   the 1100px breakpoint instead of this shrinking down awkwardly.
+   would double it up, same reasoning as .ps-watermark.
    background-size:cover, not contain -- the art's native ratio (900x671)
    doesn't exactly match this box's (724x514), and contain was leaving
    visible letterboxing on the sides. cover crops instead, and
    top-center keeps the crop off the (visually unimportant) bottom edge
    rather than the header. */
-.min-shot{width:724px;height:514px;background-repeat:no-repeat;background-position:top center;background-size:cover;
-  transition:opacity .3s ease;background-image:var(--img-minimal-home);will-change:transform;}
+.min-shot{position:absolute;inset:0;background-repeat:no-repeat;background-position:top center;background-size:cover;
+  background-image:var(--img-minimal-home);
+  transform:translate3d(0,0,0) scale(1);opacity:1;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .45s ease;}
 
 /* ============================================================
    3b — Hireme
@@ -792,17 +798,20 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       </ul>
       <a class="btn btn--acid" href="#">Buy Now</a>
     </div>
-    <div class="min-shots" aria-hidden="true">
-      <div class="min-shot" id="minShot"></div>
+    <div class="min-right">
+      <div class="min-shots" id="minShots" aria-hidden="true">
+        <div class="min-shot" data-slot="a"></div>
+        <div class="min-shot" data-slot="b" style="opacity:0"></div>
+      </div>
+      <nav class="min-tabs" aria-label="MINIMAL kit sections">
+        <button type="button" class="min-tab on" data-img="minimal-home">01 Home</button>
+        <button type="button" class="min-tab" data-img="minimal-products">02 Products</button>
+        <button type="button" class="min-tab" data-img="minimal-home">03 Customers</button>
+        <button type="button" class="min-tab" data-img="minimal-home">04 Shop</button>
+        <button type="button" class="min-tab" data-img="minimal-home">05 Income</button>
+        <button type="button" class="min-tab" data-img="minimal-home">06 Promote</button>
+      </nav>
     </div>
-    <nav class="min-tabs" aria-label="MINIMAL kit sections">
-      <button type="button" class="min-tab on" data-img="minimal-home">01 Home</button>
-      <button type="button" class="min-tab" data-img="minimal-products">02 Products</button>
-      <button type="button" class="min-tab" data-img="minimal-home">03 Customers</button>
-      <button type="button" class="min-tab" data-img="minimal-home">04 Shop</button>
-      <button type="button" class="min-tab" data-img="minimal-home">05 Income</button>
-      <button type="button" class="min-tab" data-img="minimal-home">06 Promote</button>
-    </nav>
   </section>
 </div>
 
@@ -1406,16 +1415,40 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- 10. MINIMAL: tab switcher ----------
-     Each tab button carries the CSS custom-property suffix for the shot it
-     should show (data-img="minimal-home" -> var(--img-minimal-home)). Click
-     crossfades the single .min-shot: fade out, swap background-image while
-     invisible, fade back in. Home and Products have real art now; the
-     other four point at the Home asset as a placeholder until their own
-     screens are exported (same "still gradient placeholder" situation the
-     Pixel Spell gallery started in). */
+     Reconstructed from Steven's Figma Smart Animate recording of this
+     exact transition: the outgoing card shrinks, fades and drifts toward
+     the top-left while the incoming card grows in from the bottom-right
+     (starting smaller, transparent, offset) and settles into place with
+     a slight overshoot -- not a flat crossfade. That needs two stacked
+     layers alive at once (one shrinking out while the other grows in),
+     so .min-shots holds two .min-shot divs instead of one; each click
+     picks whichever is currently idle as the incoming layer, snaps it to
+     the "just off bottom-right, small, invisible" start state with
+     transitions off, forces a reflow, then lets both layers animate to
+     their target state on the same frame. Durations are this site's own
+     feel (~500ms), not the recording's literal on-screen seconds --
+     same reasoning CLAUDE.md gives for the scroll storyboard's Smart
+     Animate timing: match the sequence of states, not the clock. */
   var minTabs = document.querySelectorAll('.min-tab');
-  var minShotEl = document.getElementById('minShot');
-  if (minTabs.length && minShotEl){
+  var minShotLayers = document.querySelectorAll('.min-shot');
+  var MS_OFFSET = 28, MS_SCALE = 0.88;
+  var MS_ENTER_T = 'transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s ease';
+  var MS_EXIT_T = 'transform .45s cubic-bezier(.4,0,.2,1),opacity .4s ease';
+  function setShotState(el, state, instant){
+    el.style.transition = instant ? 'none' : (state === 'exit' ? MS_EXIT_T : MS_ENTER_T);
+    if (state === 'rest'){
+      el.style.transform = 'translate3d(0,0,0) scale(1)';
+      el.style.opacity = '1';
+    } else if (state === 'exit'){
+      el.style.transform = 'translate3d(-' + MS_OFFSET + 'px,-' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
+      el.style.opacity = '0';
+    } else {
+      el.style.transform = 'translate3d(' + MS_OFFSET + 'px,' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
+      el.style.opacity = '0';
+    }
+  }
+  var minShotActive = 0;
+  if (minTabs.length && minShotLayers.length === 2){
     minTabs.forEach(function(tab){
       tab.addEventListener('click', function(){
         if (tab.classList.contains('on')) return;
@@ -1423,23 +1456,39 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
         tab.classList.add('on');
         var img = tab.dataset.img;
         if (!img) return;
-        minShotEl.style.opacity = '0';
-        setTimeout(function(){
-          minShotEl.style.backgroundImage = 'var(--img-' + img + ')';
-          minShotEl.style.opacity = '1';
-        }, reduce ? 0 : 300);
+        var outEl = minShotLayers[minShotActive];
+        var inEl = minShotLayers[1 - minShotActive];
+        inEl.style.backgroundImage = 'var(--img-' + img + ')';
+        inEl.style.zIndex = '2';
+        outEl.style.zIndex = '1';
+        if (reduce){
+          setShotState(outEl, 'exit', true);
+          setShotState(inEl, 'rest', true);
+        } else {
+          setShotState(inEl, 'enter-start', true);
+          void inEl.offsetWidth; // force the snap above to paint before transitioning
+          requestAnimationFrame(function(){
+            setShotState(outEl, 'exit', false);
+            setShotState(inEl, 'rest', false);
+          });
+        }
+        minShotActive = 1 - minShotActive;
       });
     });
   }
 
-  /* ---------- 11. MINIMAL: shot floats toward the cursor ----------
+  /* ---------- 11. MINIMAL: shots float toward the cursor ----------
      Lerped toward the pointer position every frame (own tiny rAF loop,
      not tied to the scroll-jack engine) rather than snapping straight to
      it on mousemove, for the same "floaty" easing feel as the site's
      inertial scroll (see LERP there) instead of a jittery 1:1 follow.
-     Resets to center on mouseleave. */
+     Resets to center on mouseleave. Moves #minShots (the container), not
+     the .min-shot layers -- they're busy with their own enter/exit
+     transform from section 10, and nested elements compose transforms
+     for free instead of two things fighting over one style property. */
   var minPanelEl = document.querySelector('.min-panel');
-  if (minPanelEl && minShotEl && !reduce){
+  var minShotsEl = document.getElementById('minShots');
+  if (minPanelEl && minShotsEl && !reduce){
     var MF_MAX = 18, MF_LERP = 0.08;
     var mfTargetX = 0, mfTargetY = 0, mfX = 0, mfY = 0;
     minPanelEl.addEventListener('mousemove', function(e){
@@ -1453,7 +1502,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     (function mfTick(){
       mfX += (mfTargetX - mfX) * MF_LERP;
       mfY += (mfTargetY - mfY) * MF_LERP;
-      minShotEl.style.transform = 'translate3d(' + mfX.toFixed(2) + 'px,' + mfY.toFixed(2) + 'px,0)';
+      minShotsEl.style.transform = 'translate3d(' + mfX.toFixed(2) + 'px,' + mfY.toFixed(2) + 'px,0)';
       requestAnimationFrame(mfTick);
     })();
   }
