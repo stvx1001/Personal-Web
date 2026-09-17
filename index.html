@@ -401,7 +401,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    regardless of viewport width -- same technique as .ps-gallery. */
 .min-panel .min-right{grid-column:2;position:relative;z-index:1;justify-self:end;
   margin-right:calc(64px - clamp(40px,6vw,96px));
-  display:flex;flex-direction:column;align-items:center;gap:20px;}
+  display:flex;flex-direction:column;align-items:center;gap:72px;}
 .min-logo{width:132px;height:22px;background-image:var(--img-minimal-logo);background-size:contain;background-repeat:no-repeat;background-position:left center;}
 .min-copy h2{font-size:clamp(30px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-top:20px;}
 .min-copy p{margin-top:16px;color:rgba(255,255,255,.72);max-width:44ch;}
@@ -433,7 +433,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-shot{position:absolute;inset:0;background-repeat:no-repeat;background-position:top center;background-size:cover;
   background-image:var(--img-minimal-home);
   transform:translate3d(0,0,0) scale(1);opacity:1;
-  transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .45s ease;}
+  transition:transform .4s ease-in-out,opacity .4s ease-in-out;}
 
 /* ============================================================
    3b — Hireme
@@ -1415,35 +1415,29 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- 10. MINIMAL: tab switcher ----------
-     Reconstructed from Steven's Figma Smart Animate recording of this
-     exact transition: the outgoing card shrinks, fades and drifts toward
-     the top-left while the incoming card grows in from the bottom-right
-     (starting smaller, transparent, offset) and settles into place with
-     a slight overshoot -- not a flat crossfade. That needs two stacked
+     The outgoing card shrinks, fades and rises straight up until it
+     disappears; the incoming card mirrors that in reverse, starting
+     small/transparent/offset below and growing up into place -- a
+     single ease-in-out over 400ms, no overshoot. That needs two stacked
      layers alive at once (one shrinking out while the other grows in),
      so .min-shots holds two .min-shot divs instead of one; each click
      picks whichever is currently idle as the incoming layer, snaps it to
-     the "just off bottom-right, small, invisible" start state with
-     transitions off, forces a reflow, then lets both layers animate to
-     their target state on the same frame. Durations are this site's own
-     feel (~500ms), not the recording's literal on-screen seconds --
-     same reasoning CLAUDE.md gives for the scroll storyboard's Smart
-     Animate timing: match the sequence of states, not the clock. */
+     its start state with transitions off, forces a reflow, then lets
+     both layers animate to their target state on the same frame. */
   var minTabs = document.querySelectorAll('.min-tab');
   var minShotLayers = document.querySelectorAll('.min-shot');
   var MS_OFFSET = 28, MS_SCALE = 0.88;
-  var MS_ENTER_T = 'transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s ease';
-  var MS_EXIT_T = 'transform .45s cubic-bezier(.4,0,.2,1),opacity .4s ease';
+  var MS_TRANSITION = 'transform .4s ease-in-out,opacity .4s ease-in-out';
   function setShotState(el, state, instant){
-    el.style.transition = instant ? 'none' : (state === 'exit' ? MS_EXIT_T : MS_ENTER_T);
+    el.style.transition = instant ? 'none' : MS_TRANSITION;
     if (state === 'rest'){
       el.style.transform = 'translate3d(0,0,0) scale(1)';
       el.style.opacity = '1';
     } else if (state === 'exit'){
-      el.style.transform = 'translate3d(-' + MS_OFFSET + 'px,-' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
+      el.style.transform = 'translate3d(0,-' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
       el.style.opacity = '0';
     } else {
-      el.style.transform = 'translate3d(' + MS_OFFSET + 'px,' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
+      el.style.transform = 'translate3d(0,' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
       el.style.opacity = '0';
     }
   }
