@@ -419,8 +419,13 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    (Figma export), so no extra box-shadow/border-radius here -- that
    would double it up, same reasoning as .ps-watermark. Fixed 724x514 per
    Steven's spec, not fluid -- .min-shots{display:none} takes over below
-   the 1100px breakpoint instead of this shrinking down awkwardly. */
-.min-shot{width:724px;height:514px;background-repeat:no-repeat;background-position:center;background-size:contain;
+   the 1100px breakpoint instead of this shrinking down awkwardly.
+   background-size:cover, not contain -- the art's native ratio (900x671)
+   doesn't exactly match this box's (724x514), and contain was leaving
+   visible letterboxing on the sides. cover crops instead, and
+   top-center keeps the crop off the (visually unimportant) bottom edge
+   rather than the header. */
+.min-shot{width:724px;height:514px;background-repeat:no-repeat;background-position:top center;background-size:cover;
   transition:opacity .3s ease;background-image:var(--img-minimal-home);will-change:transform;}
 
 /* ============================================================
