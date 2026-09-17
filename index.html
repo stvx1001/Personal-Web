@@ -1415,15 +1415,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- 10. MINIMAL: tab switcher ----------
-     The outgoing card shrinks, fades and rises straight up until it
-     disappears; the incoming card mirrors that in reverse, starting
-     small/transparent/offset below and growing up into place -- a
-     single ease-in-out over 400ms, no overshoot. That needs two stacked
-     layers alive at once (one shrinking out while the other grows in),
-     so .min-shots holds two .min-shot divs instead of one; each click
-     picks whichever is currently idle as the incoming layer, snaps it to
-     its start state with transitions off, forces a reflow, then lets
-     both layers animate to their target state on the same frame. */
+     The outgoing card rises straight up while it fades out; the incoming
+     card comes in from the right while it fades in -- two different
+     axes, not a mirror of each other. A single ease-in-out over 400ms,
+     no overshoot. That needs two stacked layers alive at once (one
+     rising out while the other slides in), so .min-shots holds two
+     .min-shot divs instead of one; each click picks whichever is
+     currently idle as the incoming layer, snaps it to its start state
+     with transitions off, forces a reflow, then lets both layers animate
+     to their target state on the same frame. */
   var minTabs = document.querySelectorAll('.min-tab');
   var minShotLayers = document.querySelectorAll('.min-shot');
   var MS_OFFSET = 28, MS_SCALE = 0.88;
@@ -1437,7 +1437,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       el.style.transform = 'translate3d(0,-' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
       el.style.opacity = '0';
     } else {
-      el.style.transform = 'translate3d(0,' + MS_OFFSET + 'px,0) scale(' + MS_SCALE + ')';
+      el.style.transform = 'translate3d(' + MS_OFFSET + 'px,0,0) scale(' + MS_SCALE + ')';
       el.style.opacity = '0';
     }
   }
