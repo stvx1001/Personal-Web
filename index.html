@@ -320,7 +320,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    panel's padding so it still runs flush to the section's top/bottom edge. */
 .ps-gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-self:start;height:100vh;margin-block:calc(-1 * clamp(40px,6vw,96px));}
 .ps-gallery .col{overflow:hidden;height:100%;}
-.ps-gallery .track{display:grid;gap:18px;width:300px;will-change:transform;}
+.ps-gallery .track{display:grid;gap:18px;width:fit-content;will-change:transform;}
 /* row-1 (nearest the copy) drifts up; row-2 drifts down — opposite directions,
    each track is the tile set doubled back-to-back so -50%/0 loops seamlessly. */
 .ps-gallery .row-1 .track{animation:ps-marquee-up 26s linear infinite;}
