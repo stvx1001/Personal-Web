@@ -414,19 +414,19 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-tab{padding:10px;border-radius:8px;font-weight:700;font-size:14px;color:rgba(255,255,255,.7);
   font-family:inherit;background:none;border:1px solid transparent;cursor:pointer;}
 .min-tab.on{background:rgba(238,230,66,.14);border-color:var(--acid);color:var(--acid);}
-/* Fixed 724x514 per Steven's spec, not fluid -- .min-shots{display:none}
+/* Fixed 800x580 per Steven's spec, not fluid -- .min-shots{display:none}
    takes over below the 1100px breakpoint instead of this shrinking down
    awkwardly. The two .min-shot layers stack inset:0 inside it (see
    below), and the cursor-follow float (section 11 in the script) moves
    this container, not the layers -- keeps that transform separate from
    the per-layer enter/exit transform so they don't fight over the same
    style property. */
-.min-shots{position:relative;width:724px;height:514px;will-change:transform;}
+.min-shots{position:relative;width:800px;height:580px;will-change:transform;}
 /* Screenshot art already has its own drop shadow baked into the PNG
    (Figma export), so no extra box-shadow/border-radius here -- that
    would double it up, same reasoning as .ps-watermark.
-   background-size:cover, not contain -- the art's native ratio (900x671)
-   doesn't exactly match this box's (724x514), and contain was leaving
+   background-size:cover, not contain -- the art's native ratio (900x657)
+   doesn't exactly match this box's (800x580), and contain was leaving
    visible letterboxing on the sides. cover crops instead, and
    top-center keeps the crop off the (visually unimportant) bottom edge
    rather than the header. */
@@ -1426,7 +1426,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
      to their target state on the same frame. */
   var minTabs = document.querySelectorAll('.min-tab');
   var minShotLayers = document.querySelectorAll('.min-shot');
-  var MS_OFFSET = 28, MS_SCALE = 0.88;
+  var MS_OFFSET = 90, MS_SCALE = 0.88;
   var MS_TRANSITION = 'transform .4s ease-in-out,opacity .4s ease-in-out';
   function setShotState(el, state, instant){
     el.style.transition = instant ? 'none' : MS_TRANSITION;
