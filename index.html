@@ -1548,7 +1548,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
      in from the same side it's headed away from, so it reads as one
      strip of screens sliding past rather than one screen dissolving
      into another. Direction follows dot order: a later dot slides the
-     new screen in from the right, an earlier one from the left. */
+     new screen in from the right, an earlier one from the left.
+     The offscreen position is 100% + 80px, not a plain 100%: the layer
+     is inset 40px inside .min-shots, so shifting it by exactly its own
+     width still leaves 40px of the next screen parked inside the box,
+     which reads as two screens stuck together. The extra 80px clears
+     both insets so only one screen is ever in frame. */
+  function msSlideX(sign){
+    return sign > 0 ? 'calc(100% + 80px)' : 'calc(-100% - 80px)';
+  }
   function goToMinPage(index){
     if (index === minCurrentPage || !minShotLayers.length) return;
     var dir = index > minCurrentPage ? 1 : -1;
@@ -1571,12 +1579,12 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     outEl.style.opacity = '1';
     inEl.style.opacity = '1';
     outEl.style.transform = 'translate3d(0,0,0)';
-    inEl.style.transform = 'translate3d(' + (dir * 100) + '%,0,0)';
+    inEl.style.transform = 'translate3d(' + msSlideX(dir) + ',0,0)';
     void inEl.offsetWidth; // force the snap above to paint before transitioning
     requestAnimationFrame(function(){
       outEl.style.transition = 'transform .4s ease-in-out';
       inEl.style.transition = 'transform .4s ease-in-out';
-      outEl.style.transform = 'translate3d(' + (-dir * 100) + '%,0,0)';
+      outEl.style.transform = 'translate3d(' + msSlideX(-dir) + ',0,0)';
       inEl.style.transform = 'translate3d(0,0,0)';
     });
     minShotActive = 1 - minShotActive;
