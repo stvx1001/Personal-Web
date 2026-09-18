@@ -438,22 +438,25 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-dot.on{background:var(--acid);}
 /* Fixed 800x580 per Steven's spec, not fluid -- .min-shots{display:none}
    takes over below the 1100px breakpoint instead of this shrinking down
-   awkwardly. The two .min-shot layers stack inset:0 inside it (see
+   awkwardly. The two .min-shot layers stack inset:40px inside it (see
    below), and the cursor-follow float (section 11 in the script) moves
    this container, not the layers -- keeps that transform separate from
    the per-layer enter/exit transform so they don't fight over the same
    style property. overflow:hidden clips the sub-page slide (section 12)
    to the box instead of it spilling over the panel while sliding. */
 .min-shots{position:relative;width:800px;height:580px;overflow:hidden;will-change:transform;}
-/* Screenshot art already has its own drop shadow baked into the PNG
-   (Figma export), so no extra box-shadow/border-radius here -- that
-   would double it up, same reasoning as .ps-watermark.
-   background-size:cover, not contain -- the art's native ratio (900x657)
-   doesn't exactly match this box's (800x580), and contain was leaving
-   visible letterboxing on the sides. cover crops instead, and
-   top-center keeps the crop off the (visually unimportant) bottom edge
-   rather than the header. */
-.min-shot{position:absolute;inset:0;background-repeat:no-repeat;background-position:top center;background-size:cover;
+/* inset:40px (not 0) leaves a 40px margin on every side per Steven's
+   spec, both so the card reads as floating against the panel and so
+   there's actual room for the box-shadow below to render into before
+   .min-shots' own overflow:hidden clips it -- kept modest (max ~32px
+   reach) so it stays inside that margin instead of getting cut off.
+   None of these exports have their own shadow baked in (all six are
+   flat edge-to-edge screenshots), so every asset gets the same
+   radius+shadow treatment here rather than needing a per-image class.
+   background-size:cover, not contain -- the art's native ratio doesn't
+   exactly match this now-720x500 box, and contain would letterbox. */
+.min-shot{position:absolute;inset:40px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.28);
+  background-repeat:no-repeat;background-position:top center;background-size:cover;
   background-image:var(--img-minimal-home);
   transform:translate3d(0,0,0) scale(1);opacity:1;
   transition:transform .4s ease-in-out,opacity .4s ease-in-out;}
