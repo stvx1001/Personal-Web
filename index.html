@@ -1592,10 +1592,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- MINIMAL: autoplay for tabs with multiple screens ----------
-     Advances to the next dot on its own every 5000ms -- no click needed.
+     Advances to the next dot on its own every 2400ms -- no click needed.
      Re-armed at the end of every goToMinPage call, so a manual dot click
      (or a top-level tab switch, which calls this too) simply restarts
-     the same 5000ms countdown rather than fighting an in-flight timer.
+     the same 2400ms countdown rather than fighting an in-flight timer.
      Skipped under prefers-reduced-motion: an auto-advancing carousel is
      content changing on its own, not just a transition's easing, so it
      gets the same treatment as this site's other non-essential motion. */
@@ -1605,7 +1605,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     if (minCurrentImgs.length < 2 || reduce) return;
     minAutoTimer = setTimeout(function(){
       goToMinPage((minCurrentPage + 1) % minCurrentImgs.length);
-    }, 5000);
+    }, 2400);
   }
 
   /* ---------- 12. MINIMAL: shots float toward the cursor ----------
