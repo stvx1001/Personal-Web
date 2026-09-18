@@ -420,17 +420,17 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .min-tab{padding:10px;border-radius:8px;font-weight:700;font-size:14px;color:rgba(255,255,255,.7);
   font-family:inherit;background:none;border:1px solid transparent;cursor:pointer;}
 .min-tab.on{background:rgba(238,230,66,.14);border-color:var(--acid);color:var(--acid);}
-/* Groups the shot and its page-dots as one unit, 12px apart, so the
+/* Groups the shot and its page-dots as one unit, 16px apart, so the
    72px .min-right gap stays reserved for shots-to-main-tabs spacing
    and doesn't get diluted by this much tighter, unrelated gap. */
-.min-shots-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.min-shots-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;}
 /* Only shown when a tab's data-imgs has more than one entry (Products'
    Dashboard/Drafts sub-screens, so far) -- see section 10 in the script,
    which populates and toggles this on tab switch. */
 .min-dots{display:flex;gap:8px;}
 .min-dots:empty{display:none;}
 .min-dot{width:12px;height:12px;border-radius:50%;padding:0;border:none;cursor:pointer;background:rgba(255,255,255,.35);}
-.min-dot.on{background:#fff;}
+.min-dot.on{background:var(--acid);}
 /* Fixed 800x580 per Steven's spec, not fluid -- .min-shots{display:none}
    takes over below the 1100px breakpoint instead of this shrinking down
    awkwardly. The two .min-shot layers stack inset:0 inside it (see
@@ -452,6 +452,11 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   background-image:var(--img-minimal-home);
   transform:translate3d(0,0,0) scale(1);opacity:1;
   transition:transform .4s ease-in-out,opacity .4s ease-in-out;}
+/* Drafts (Products' 2nd screen) is a flat edge-to-edge export with no
+   rounded corners or shadow baked in, unlike Home/Products/Dashboard --
+   toggled on in JS (setMinShotImage) only for assets that need it, so
+   the ones with their own baked-in shadow don't get a doubled-up one. */
+.min-shot--shadow{border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.35);}
 
 /* ============================================================
    3b — Hireme
@@ -1452,6 +1457,14 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   var minDotsEl = document.getElementById('minDots');
   var MS_OFFSET = 90, MS_SCALE = 0.88;
   var MS_TRANSITION = 'transform .4s ease-in-out,opacity .4s ease-in-out';
+  // Drafts is a flat export with no rounded corners/shadow baked in like
+  // the others (see .min-shot--shadow) -- listed here so whichever asset
+  // needs the synthetic treatment gets it and the rest don't double up.
+  var MS_NEEDS_SHADOW = { 'minimal-drafts': true };
+  function setMinShotImage(el, imgVar){
+    el.style.backgroundImage = 'var(--img-' + imgVar + ')';
+    el.classList.toggle('min-shot--shadow', !!MS_NEEDS_SHADOW[imgVar]);
+  }
   function setShotState(el, state, instant){
     el.style.transition = instant ? 'none' : MS_TRANSITION;
     if (state === 'rest'){
@@ -1494,7 +1507,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
         renderMinDots();
         var outEl = minShotLayers[minShotActive];
         var inEl = minShotLayers[1 - minShotActive];
-        inEl.style.backgroundImage = 'var(--img-' + imgs[0] + ')';
+        setMinShotImage(inEl, imgs[0]);
         inEl.style.zIndex = '2';
         outEl.style.zIndex = '1';
         if (reduce){
@@ -1509,6 +1522,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
           });
         }
         minShotActive = 1 - minShotActive;
+        scheduleMinAuto();
       });
     });
     // seed the dots (or lack of them) for whichever tab starts .on
@@ -1516,6 +1530,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     if (minInitialTab){
       minCurrentImgs = (minInitialTab.dataset.imgs || '').split(',').filter(Boolean);
       renderMinDots();
+      scheduleMinAuto();
     }
   }
 
@@ -1534,7 +1549,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     var dir = index > minCurrentPage ? 1 : -1;
     var outEl = minShotLayers[minShotActive];
     var inEl = minShotLayers[1 - minShotActive];
-    inEl.style.backgroundImage = 'var(--img-' + minCurrentImgs[index] + ')';
+    setMinShotImage(inEl, minCurrentImgs[index]);
     inEl.style.zIndex = '2';
     outEl.style.zIndex = '1';
     minCurrentPage = index;
@@ -1543,6 +1558,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       outEl.style.transition = 'none'; outEl.style.opacity = '0';
       inEl.style.transition = 'none'; inEl.style.opacity = '1'; inEl.style.transform = 'translate3d(0,0,0)';
       minShotActive = 1 - minShotActive;
+      scheduleMinAuto();
       return;
     }
     outEl.style.transition = 'none';
@@ -1559,6 +1575,24 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       inEl.style.transform = 'translate3d(0,0,0)';
     });
     minShotActive = 1 - minShotActive;
+    scheduleMinAuto();
+  }
+
+  /* ---------- MINIMAL: autoplay for tabs with multiple screens ----------
+     Advances to the next dot on its own every 800ms -- no click needed.
+     Re-armed at the end of every goToMinPage call, so a manual dot click
+     (or a top-level tab switch, which calls this too) simply restarts
+     the same 800ms countdown rather than fighting an in-flight timer.
+     Skipped under prefers-reduced-motion: an auto-advancing carousel is
+     content changing on its own, not just a transition's easing, so it
+     gets the same treatment as this site's other non-essential motion. */
+  var minAutoTimer = null;
+  function scheduleMinAuto(){
+    clearTimeout(minAutoTimer);
+    if (minCurrentImgs.length < 2 || reduce) return;
+    minAutoTimer = setTimeout(function(){
+      goToMinPage((minCurrentPage + 1) % minCurrentImgs.length);
+    }, 800);
   }
 
   /* ---------- 12. MINIMAL: shots float toward the cursor ----------
