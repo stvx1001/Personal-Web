@@ -429,11 +429,13 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    72px .min-right gap stays reserved for shots-to-main-tabs spacing
    and doesn't get diluted by this much tighter, unrelated gap. */
 .min-shots-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;}
-/* Only shown when a tab's data-imgs has more than one entry (Products'
-   Dashboard/Drafts sub-screens, so far) -- see section 10 in the script,
-   which populates and toggles this on tab switch. */
-.min-dots{display:flex;gap:8px;}
-.min-dots:empty{display:none;}
+/* Dots only render for tabs whose data-imgs has more than one entry
+   (see section 10 in the script, which repopulates this on tab switch),
+   but the row keeps its height either way -- collapsing it on
+   single-screen tabs would shift the tabs below up and down as you move
+   between tabs. Height matches .min-dot so the reserved space is
+   identical to the filled state. */
+.min-dots{display:flex;gap:8px;height:12px;}
 .min-dot{width:12px;height:12px;border-radius:50%;padding:0;border:none;cursor:pointer;background:rgba(255,255,255,.35);}
 .min-dot.on{background:var(--acid);}
 /* Fixed 800x580 per Steven's spec, not fluid -- .min-shots{display:none}
