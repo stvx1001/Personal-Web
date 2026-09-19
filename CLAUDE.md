@@ -71,11 +71,15 @@ two separate gestures. Reversed on the way back up.
 - **The dot grid stays visible** on the full-bleed banner. Don't fade it out.
 - **The navbar pill turns on at `p > 0.32`**, i.e. when the growing banner
   reaches up behind it — not at a fixed scroll offset.
-- **Pixel Spell → MINIMAL is a pure-CSS sticky stack.** Both panels are
-  `position:sticky; top:0` inside their own 130vh wrappers. MINIMAL is *later in
-  the DOM* — mirroring the Figma layer order — so it paints over Pixel Spell and
-  covers it as scroll reaches it. No JS involved. **That DOM order is the
-  mechanism; don't "fix" it.**
+- **Every handoff — banner → Pixel Spell → MINIMAL — is one pure-CSS sticky
+  stack.** Each panel is `position:sticky; top:0` inside its own tall wrapper,
+  and each wrapper carries `margin-top:-100vh`, which slides it up over the
+  last screen of the previous section's sticky range. So the section you are
+  leaving *stays pinned* while the next one travels from the bottom edge to the
+  top edge in front of it — it never scrolls away underneath. Each panel is
+  *later in the DOM* than the one it covers — mirroring the Figma layer order —
+  so it paints on top with no z-index. No JS involved. **That DOM order and
+  those negative margins are the mechanism; don't "fix" either.**
 - **Inertial smooth scrolling after release** (`LERP = 0.11`, lower is heavier).
   Written inline rather than pulling in Lenis so the file works with no network.
   Pointer-fine only — touch devices have native inertia and hijacking it there
@@ -83,9 +87,14 @@ two separate gestures. Reversed on the way back up.
 - **`prefers-reduced-motion`** adds `body.no-pin`, which drops the whole thing
   back to plain static scrolling. Preserve this.
 
-Stage offsets come from tall wrappers: hero pin 240vh, Pixel Spell 130vh,
-MINIMAL 130vh. A gesture tweens the scroll position to the next offset
-(easeInOutCubic) and the rAF engine turns that movement into the animation.
+Stage offsets come from tall wrappers: hero pin 340vh (140vh of banner
+expansion + 100vh held full-bleed while Pixel Spell covers it), Pixel Spell
+230vh (130vh held + 100vh while MINIMAL covers it), MINIMAL 130vh. A gesture
+tweens the scroll position to the next offset (easeInOutCubic) and the rAF
+engine turns that movement into the animation. The JS reads the offsets from
+the elements, so heights are safe to retune — with one exception: the banner's
+expansion progress divides by `hero-pin height − 2×vh` (one screen for the
+sticky stage, one for the hold), so if the hold changes, that changes too.
 
 ## Assets
 

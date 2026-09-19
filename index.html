@@ -172,8 +172,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;}
 /* Home -> Home-Scroll-1..4: banner is pinned while it expands from a
    rounded card into a fullscreen panel, then Pixel Spell/MINIMAL take
    over as a pure-CSS sticky stack. JS (scroll-pin fx) drives the banner's
-   box each frame; body.no-pin (reduced-motion) drops back to plain flow. */
-.hero-pin{position:relative;height:240vh;}
+   box each frame; body.no-pin (reduced-motion) drops back to plain flow.
+
+   The height is 140vh of expansion travel + 100vh of HOLD. The hold is what
+   makes the full-bleed banner sit still while Pixel Spell rises up over it
+   (see .stack-wrap--ps margin-top) instead of scrolling away underneath it.
+   The JS subtracts that extra 100vh when it works out expansion progress —
+   change one and you must change the other. */
+.hero-pin{position:relative;height:340vh;}
 .hero-stage{position:sticky;top:0;height:100vh;overflow:hidden;}
 .banner{
   position:absolute;
@@ -309,14 +315,22 @@ body.no-pin .banner{
   display:grid;gap:clamp(28px,4vw,64px);
   align-items:center;
 }
-/* Pixel Spell -> MINIMAL: a pure-CSS sticky stack. Both panels are
-   position:sticky;top:0 inside their own tall wrapper — MINIMAL, being
-   later in the DOM, naturally paints over and covers Pixel Spell once
-   scroll reaches it, exactly like the Figma "Home - Scroll 4" handoff. */
-.stack-wrap{position:relative;}
-.stack-wrap--ps{height:130vh;}
+/* Banner -> Pixel Spell -> MINIMAL: a pure-CSS sticky stack, one rule for
+   the whole chain. Each panel is position:sticky;top:0 inside its own tall
+   wrapper and, being later in the DOM, paints over the one before it.
+
+   The `margin-top:-100vh` is the mechanism: it slides each wrapper up so it
+   overlaps the last screen of the previous section's sticky range. That
+   screen's worth of scroll is when the panel travels from the bottom edge to
+   the top edge of the viewport WHILE the section behind it is still pinned —
+   so the new section reads as rising up in front of a section that has
+   stopped, not as two sections scrolling past each other. Each wrapper
+   therefore carries 100vh of "cover" on top of the 130vh it holds for.
+   Don't remove the negative margins without also shortening the wrappers. */
+.stack-wrap{position:relative;margin-top:-100vh;}
+.stack-wrap--ps{height:230vh;}
 .stack-wrap--min{height:130vh;}
-body.no-pin .stack-wrap{height:auto;}
+body.no-pin .stack-wrap{height:auto;margin-top:0;}
 body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 
 .ps-panel{
@@ -1119,9 +1133,11 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   /* ---------- 6. scroll-pinned banner expand + sticky-stack parallax ----------
      Home -> Scroll 1: banner text/blur cards fade out.
      Scroll 1 -> Scroll 2: the rounded banner card expands to fill the screen.
-     Pixel Spell -> MINIMAL: pure-CSS sticky stack (see CSS) does the "sticky
-     because MINIMAL is stacked under it" handoff on its own; here we just
-     add a subtle parallax drift to each panel's visual while it's pinned. */
+     Then every handoff in the chain — banner -> Pixel Spell -> MINIMAL — is
+     the same pure-CSS move (see .stack-wrap in the CSS): the section you are
+     leaving stays pinned while the next one rises up in front of it. No JS
+     involved in the cover itself; here we only add the parallax drift that
+     plays on each panel's visuals while it is pinned. */
   var heroPin = document.getElementById('heroPin');
   var bannerCopyEl = document.querySelector('.banner-copy');
   var hvSceneEl = document.querySelector('.hv-scene');
@@ -1152,7 +1168,11 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     if (!force && hr.top === lastTop && vh === lastVh && vw === lastVw) return;
     lastTop = hr.top; lastVh = vh; lastVw = vw;
 
-    var scrollable = hr.height - vh;
+    /* The last 100vh of .hero-pin is the HOLD, not part of the expansion:
+       the banner reaches full-bleed at p === 1 and then clamp01 keeps it
+       there while Pixel Spell rises up over it. Hence `- vh` twice — one for
+       the screen the sticky stage occupies, one for the hold. */
+    var scrollable = hr.height - vh * 2;
     var p = scrollable > 0 ? clamp01(-hr.top / scrollable) : 0;
     var ease = p * p * (3 - 2 * p); // smoothstep
 
@@ -1250,7 +1270,9 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   var expandDone = 0;   // the beat where the banner has just filled the screen
   function computeStages(){
     var vh = window.innerHeight;
-    expandDone = heroPin.offsetTop + Math.max(0, heroPin.offsetHeight - vh);
+    // ...minus the hold screen, so this lands the beat where the banner has
+    // just filled the screen, not the end of the pin (see updateScrollFX).
+    expandDone = heroPin.offsetTop + Math.max(0, heroPin.offsetHeight - vh * 2);
     stages = [
       heroPin.offsetTop,                  // 0 — banner as a card
       psWrap ? psWrap.offsetTop : 0,      // 1 — Pixel Spell (via the expand beat)
