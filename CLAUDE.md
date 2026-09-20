@@ -148,10 +148,32 @@ account `steven.charlino@cbi.id`, **every** call (`get_design_context`,
 error means the wrong account is signed in, not that the quota ran out — check
 `whoami` first, and fix it by switching accounts in the Figma desktop app.
 
-That account is on a Starter plan: no `use_figma` writes, and a hard cap of
-roughly 20 MCP tool calls per month. Three `get_design_context` calls exhausted
-it in one pass. Budget them — and note that calling it on a *section* node
-returns sparse structure-only metadata, so aim at the frame inside it.
+**Writes DO work** (Sept 21, 2026): `use_figma` successfully rebuilt a frame in
+the SkorKu file despite `whoami` reporting `seat: "View"` everywhere. The old
+"Starter = read-only, no use_figma" note here was wrong. The "~20 calls a month"
+cap also looks wrong, or is counted differently — well over 20 calls ran in a
+single day without being throttled. Still worth not being wasteful, but it is
+not the hard blocker this file used to claim.
+
+Two real limits, both hit in practice:
+- **`get_design_context` on a *section* returns sparse structure-only metadata**,
+  and on a whole *page* it fails outright ("nothing selected"). Aim at a frame.
+- **`get_metadata` on a big page breaks the transport** — the XML exceeds the
+  SSE buffer and dies with a JSON parse error at ~123KB. When you cannot
+  enumerate a page to find a node by name, `get_screenshot` the whole thing at a
+  high `maxDimension`, download it, and crop locally with
+  `sips -c H W --cropOffset Y X`. That found a reference image in one call where
+  metadata could not.
+
+### The SkorKu file
+
+`YUZMDH5kqna1441GZLvRPm` ("01. SkorKu Website 3.0"), page `3448:38297` ("Sum").
+Despite the name it holds the **personal site** mockup too: frame `3854:1595`
+("Home") is the full page, with children Navbar / Banner / Featured / Marquee /
+Works / Hireme / Currently / Footer. **`Home` has `layoutMode: "NONE"`** — the
+sections are absolutely positioned, so if you change one section's height you
+must move every sibling below it and resize `Home`, or it silently overlaps.
+That bit the Currently rebuild (76px into the Footer) and was fixed by hand.
 
 Steven's prototype recordings are `.mov`. Extract frames with ffmpeg rather than
 guessing — `ffmpeg -i in.mov -vf "fps=2,scale=620:-1,tile=4x4" -frames:v 1
