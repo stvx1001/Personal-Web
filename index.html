@@ -501,9 +501,12 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 /* ============================================================
    4 — Marquee
    ============================================================ */
+/* Figma 3861:1777 — the band is no longer the acid strip; it sits on the
+   white page with light grey type, so it reads as a divider between
+   MINIMAL and Works rather than a block of colour. */
 .marquee{
-  background:var(--acid);
-  color:var(--ink);
+  background:var(--paper);
+  color:#D0D0D0;
   overflow:hidden;
   display:flex;
   padding-block:10px;
@@ -637,92 +640,114 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .logo-img.li-cbi{background-image:var(--img-logo-cbi);width:176px;height:65px;}
 
 /* ============================================================
-   6 — Currently / About (dark bento grid — six2eight-style)
+   6 — A Little About Me (white stat-card grid)
    ============================================================ */
-.currently{padding-block:clamp(64px,7.2vw,104px);}
+/* Rebuilt from Figma node 3861:1630. Was a dark bento grid; the design is
+   now white cards on white, headed "A Little About Me" with no eyebrow.
+   Each card is a fixed 412x300 holding a stat, a label, a visual and a
+   sentence, spaced apart vertically. */
+.currently{background:var(--paper);color:var(--ink);padding:80px 86px;}
+.currently .shell{width:100%;max-width:none;margin:0;}
 .currently-head{display:flex;flex-direction:column;align-items:center;text-align:center;}
-.currently-head .eyebrow{font-family:var(--display);font-weight:600;font-size:16px;color:var(--muted);order:2;margin-top:4px;text-transform:none;letter-spacing:0;}
-.currently-head h2{font-family:var(--display);font-weight:600;font-size:var(--t-h3);letter-spacing:-.02em;order:1;}
+.currently-head h2{font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.02em;color:var(--ink);}
 
-.bento{display:flex;gap:16px;min-height:540px;margin-top:clamp(40px,4.4vw,64px);}
-.bcol{flex:1 1 0;display:flex;flex-direction:column;gap:16px;}
-.bcol.mid{flex:.86 1 0;}
-.bcol.stats{flex:.79 1 0;}
-
-.bcard{border-radius:16px;padding:24px;position:relative;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.08);color:#fff;}
-.bc-eyebrow{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:#9a9aa0;}
-
-.bc-hero{flex:1.01 1 0;display:flex;flex-direction:column;padding:25px 27px 0;}
-.bc-hero-copy b{display:block;font-size:30px;font-weight:600;margin-top:6px;letter-spacing:-.01em;}
-.bc-hero-copy span{display:block;margin-top:10px;color:#c7c7ce;font-size:14px;max-width:30ch;line-height:1.55;}
-.bc-hero-visual{
-  position:relative;margin:24px -27px 0;flex:1 1 0;min-height:180px;overflow:hidden;background:#0d0d10;
+.bento{display:flex;flex-direction:column;gap:16px;margin-top:64px;align-items:center;}
+.brow{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+/* Figma draws these 412 wide on a 1440 frame, which needs 1268 of content
+   width -- but a real 1440 viewport has a scrollbar, leaving 1253, so three
+   fixed cards wrap. They flex instead: 412 is the cap, and they give up a
+   few pixels rather than dropping a card onto its own row. */
+.bcard{
+  flex:1 1 380px;max-width:412px;height:300px;
+  background:#FAFAFB;border:1px solid #E6E6E9;border-radius:16px;
+  padding:24px;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  color:var(--ink);
 }
-.bc-hero-visual .glow{position:absolute;border-radius:50%;filter:blur(60px);}
-.bc-hero-visual .g1{width:260px;height:230px;left:-70px;top:-90px;background:#683FE0;opacity:.55;}
-.bc-hero-visual .g2{width:230px;height:200px;right:-40px;top:-60px;background:#0CD9EF;opacity:.4;}
-.bc-hero-visual .g3{width:220px;height:200px;left:60px;bottom:-90px;background:#F07126;opacity:.35;}
-.bc-hero-visual .g4{width:170px;height:150px;right:40px;bottom:-70px;background:#50A99A;opacity:.4;}
-.bc-hero-visual .panel{
-  position:absolute;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:14px;
-  box-shadow:0 20px 44px rgba(13,48,140,.18),0 3px 10px rgba(13,48,140,.08);overflow:hidden;
-}
-.bc-hero-visual .panel-kpi{left:28%;top:22%;width:46%;height:52%;padding:12px 14px;}
-.bc-hero-visual .kpi-dots{display:flex;gap:4px;justify-content:flex-end;}
-.bc-hero-visual .kpi-dots i{width:6px;height:6px;border-radius:50%;background:rgba(38,64,141,.22);}
-.bc-hero-visual .kpi-num{font-size:26px;font-weight:800;color:#0D308C;letter-spacing:-1px;margin-top:6px;}
-.bc-hero-visual .kpi-num span{font-size:13px;color:#50A99A;font-weight:700;margin-left:3px;}
-.bc-hero-visual .kpi-bars{display:flex;align-items:flex-end;gap:5px;height:34%;margin-top:10px;}
-.bc-hero-visual .kpi-bars div{flex:1;border-radius:3px 3px 1px 1px;}
-.bc-hero-visual .panel-palette{left:4%;top:66%;width:34%;height:20%;padding:8px;display:flex;gap:6px;align-items:center;}
-.bc-hero-visual .panel-palette i{flex:1;aspect-ratio:1;border-radius:6px;}
+.bc-stat{font-size:34px;line-height:40px;font-weight:800;letter-spacing:-.01em;}
+.bc-label{font-size:13px;font-weight:500;color:#858585;margin-top:6px;}
+.bc-desc{font-size:13px;line-height:20px;color:#6E6E73;}
+/* 364x96 is the Figma visual box; the shapes inside are positioned against
+   it, so the whole thing scales as one unit on the mobile breakpoint. */
+.bc-vis{position:relative;width:100%;max-width:364px;height:96px;flex:none;}
 
-.bcol.mid .bc-loc{flex:176 1 0;justify-content:space-between;}
-.bc-place{display:flex;flex-direction:column;gap:2px;}
-.bc-place b{font-size:34px;font-weight:600;}
-.bc-place span{font-size:20px;color:#c7c7ce;font-weight:400;}
-.bc-loc .bc-foot{font-size:13px;color:#9a9aa0;}
-.bc-accent-pin{position:absolute;right:19px;top:19px;width:56px;height:56px;border-radius:50%;border:2px solid rgba(0,217,239,.4);display:grid;place-items:center;}
-.bc-accent-pin::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--cyan-bright);}
+/* ---- the six accent visuals, and the motion Steven asked for ----
+   "alive like moving gif": each loops a slow idle animation rather than
+   playing once on scroll, so the section keeps moving while it is read.
+   All of it is CSS so nothing is added to the page weight, and the whole
+   block is switched off under prefers-reduced-motion at the end. */
 
-.bcol.mid .bc-skills{flex:176 1 0;justify-content:flex-start;gap:18px;display:flex;flex-direction:column;}
-.bc-pills{display:flex;flex-wrap:wrap;gap:8px;}
-.bc-pill{background:#17171a;border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:9px 15px;font-size:12px;font-weight:500;color:#c7c7ce;}
+/* 1 — timeline of dots travelling along a rail */
+.v-line{position:absolute;left:84px;top:47px;width:196px;height:2px;background:rgba(12,217,239,.25);}
+.v-dot{position:absolute;border-radius:50%;background:#0CD9EF;}
+.v-dot.d1{left:84px;top:42px;width:12px;height:12px;opacity:.35;}
+.v-dot.d2{left:148px;top:42px;width:12px;height:12px;opacity:.5;}
+.v-dot.d3{left:212px;top:42px;width:12px;height:12px;opacity:.65;}
+.v-dot.d4{left:273px;top:39px;width:18px;height:18px;}
+.v-dot.d1,.v-dot.d2,.v-dot.d3{animation:dot-pulse 2.4s ease-in-out infinite;}
+.v-dot.d2{animation-delay:.3s;}
+.v-dot.d3{animation-delay:.6s;}
+.v-dot.d4{animation:dot-beat 2.4s ease-in-out infinite .9s;}
+@keyframes dot-pulse{0%,100%{opacity:.3;}45%{opacity:1;}}
+@keyframes dot-beat{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(12,217,239,.45);}
+                    45%{transform:scale(1.14);box-shadow:0 0 0 9px rgba(12,217,239,0);}}
 
-.bcol.mid .bc-since{flex:156 1 0;justify-content:space-between;}
-.bc-since .bc-eyebrow{opacity:.75;}
-.bc-value{display:flex;flex-direction:column;gap:2px;}
-.bc-value .num{font-size:44px;font-weight:800;color:var(--cyan-bright);line-height:1.18;}
-.bc-value .lbl{font-size:13px;color:#9a9aa0;font-weight:500;}
-.bc-accent-timeline{position:absolute;right:24px;top:34px;width:70px;height:10px;display:flex;align-items:center;gap:5px;}
-.bc-accent-timeline i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);flex:none;}
-.bc-accent-timeline i:last-child{width:7px;height:7px;background:var(--cyan-bright);}
-.bc-accent-timeline .ln{flex:1;height:1px;background:rgba(255,255,255,.2);}
+/* 2 — app tiles bobbing out of sync */
+.v-tile{position:absolute;width:34px;height:34px;border-radius:10px;animation:tile-bob 3.6s ease-in-out infinite;}
+.v-tile.t1{left:123px;top:18px;background:#693FE0;}
+.v-tile.t2{left:165px;top:6px;background:#00ADC0;animation-delay:.45s;}
+.v-tile.t3{left:207px;top:22px;background:#50AA9A;animation-delay:.9s;}
+.v-tile.t4{left:165px;top:52px;background:#F07126;animation-delay:1.35s;}
+@keyframes tile-bob{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-7px) rotate(-4deg);}}
 
-.bcol.stats .bcard{flex:1 1 0;justify-content:space-between;}
-.bc-stat .bc-eyebrow{opacity:.75;}
-.bc-stat .num{font-size:56px;font-weight:800;letter-spacing:-.02em;line-height:1.14;}
-.bc-stat .lbl{font-size:13px;font-weight:500;margin-top:2px;color:#c7c7ce;}
-.bc-stat.s-cyan .num{color:var(--cyan);}
-.bc-stat.s-green .num{color:var(--green);}
-.bc-accent-tiles{position:absolute;right:24px;bottom:24px;width:140px;height:90px;}
-.bc-accent-tiles i{position:absolute;width:30px;height:30px;border-radius:9px;}
-.bc-accent-tiles i:nth-child(1){left:5px;top:30px;background:#693fe0;transform:rotate(6deg);}
-.bc-accent-tiles i:nth-child(2){left:46px;top:8px;background:#00adc0;transform:rotate(-4deg);}
-.bc-accent-tiles i:nth-child(3){left:82px;top:34px;background:#50aa9a;transform:rotate(3deg);}
-.bc-accent-tiles i:nth-child(4){left:60px;top:54px;background:#f07126;transform:rotate(-7deg);}
-.bc-accent-layers{position:absolute;right:24px;bottom:24px;width:130px;height:90px;}
-.bc-accent-layers i{position:absolute;width:90px;height:48px;border-radius:10px;border:1px solid rgba(255,255,255,.1);}
-.bc-accent-layers i:nth-child(1){left:0;top:42px;background:rgba(105,63,224,.28);}
-.bc-accent-layers i:nth-child(2){left:16px;top:21px;background:rgba(105,63,224,.55);}
-.bc-accent-layers i:nth-child(3){left:32px;top:0;background:#693fe0;}
+/* 3 — layer stack fanning apart and settling */
+.v-layer{position:absolute;width:104px;height:46px;border-radius:10px;border:1px solid #fff;background:#693FE0;
+  animation:layer-fan 4s ease-in-out infinite;}
+.v-layer.l1{left:110px;top:44px;opacity:.28;}
+.v-layer.l2{left:130px;top:24px;opacity:.55;animation-delay:.25s;}
+.v-layer.l3{left:150px;top:4px;animation-delay:.5s;}
+@keyframes layer-fan{0%,100%{transform:translate(0,0);}50%{transform:translate(-9px,5px);}}
+
+/* 4 — skill chips lighting up in sequence */
+.v-chip{position:absolute;height:28px;border-radius:100px;
+  background:rgba(105,63,224,.12);border:1px solid rgba(105,63,224,.28);
+  animation:chip-glow 5s ease-in-out infinite;}
+.v-chip.c1{left:62px;top:16px;width:78px;}
+.v-chip.c2{left:148px;top:16px;width:62px;animation-delay:.4s;}
+.v-chip.c3{left:218px;top:16px;width:84px;animation-delay:.8s;}
+.v-chip.c4{left:77px;top:54px;width:96px;animation-delay:1.2s;}
+.v-chip.c5{left:181px;top:54px;width:54px;animation-delay:1.6s;}
+.v-chip.c6{left:243px;top:54px;width:44px;animation-delay:2s;}
+@keyframes chip-glow{0%,82%,100%{background:rgba(105,63,224,.12);border-color:rgba(105,63,224,.28);transform:translateY(0);}
+                     88%{background:rgba(105,63,224,.3);border-color:rgba(105,63,224,.65);transform:translateY(-3px);}}
+
+/* 5 — location rings pinging outward */
+.v-ring{position:absolute;left:182px;top:48px;width:30px;height:30px;margin:-15px 0 0 -15px;
+  border:2px solid #F07126;border-radius:50%;opacity:0;animation:ring-ping 3s ease-out infinite;}
+.v-ring.r2{animation-delay:1s;}
+.v-ring.r3{animation-delay:2s;}
+.v-pin{position:absolute;left:175px;top:41px;width:14px;height:14px;border-radius:50%;background:#F07126;
+  animation:dot-beat 3s ease-in-out infinite;}
+@keyframes ring-ping{0%{transform:scale(.55);opacity:.85;}100%{transform:scale(2.6);opacity:0;}}
+
+/* 6 — company marks shuffling forward one at a time */
+.v-mark{position:absolute;top:25px;width:46px;height:46px;border-radius:50%;border:2px solid #fff;
+  animation:mark-step 4.8s ease-in-out infinite;}
+.v-mark.m1{left:108px;background:#0D308C;}
+.v-mark.m2{left:142px;background:#00ADC0;animation-delay:1.2s;}
+.v-mark.m3{left:176px;background:#50AA9A;animation-delay:2.4s;}
+.v-mark.m4{left:210px;background:#F07126;animation-delay:3.6s;}
+@keyframes mark-step{0%,70%,100%{transform:translateY(0) scale(1);}
+                     82%{transform:translateY(-8px) scale(1.08);}}
 
 /* ============================================================
    7 — Footer (dark)
    ============================================================ */
+/* Figma 3861:1584 — the footer is white now, not the near-black slab.
+   Headings go black, body copy stays #afafb4. */
 .footer{
   position:relative;overflow:hidden;
-  background:#050506;color:#fff;
+  background:var(--paper);color:var(--ink);
   padding:clamp(56px,6vw,86px) 0 clamp(28px,3.6vw,40px);
 }
 .footer .shell{position:relative;z-index:1;}
@@ -735,21 +760,21 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   flex:1 1 220px;display:flex;align-items:center;gap:14px;
   padding:16px 20px 16px 16px;border-radius:16px;
 }
-.ccard--primary{background:var(--violet);color:#fff;}
-.ccard--secondary{background:#111114;border:1px solid rgba(255,255,255,.1);color:#afafb4;}
+/* Both contact cards are the same #f4f4f4 tile in Figma — the violet /
+   near-black split belonged to the dark footer. */
+.ccard--primary,.ccard--secondary{background:#F4F4F4;color:var(--ink);border:none;}
 .cbadge{
   width:40px;height:40px;border-radius:12px;flex:none;
   display:grid;place-items:center;
 }
-.ccard--primary .cbadge{background:rgba(255,255,255,.2);}
-.ccard--secondary .cbadge{background:var(--mint);}
+.ccard .cbadge{background:rgba(0,0,0,.08);color:var(--ink);}
 .ccard small{display:block;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;opacity:.75;}
 .ccard b{display:block;font-size:15px;font-weight:600;margin-top:3px;}
 
-.footer-col h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:16px;}
+.footer-col h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:16px;}
 .footer-col a,.footer-col span{display:block;font-size:16px;color:#afafb4;text-decoration:none;}
 .footer-col a + a,.footer-col span + a,.footer-col a + span{margin-top:16px;}
-.footer-col a:hover{color:#fff;}
+.footer-col a:hover{color:var(--ink);}
 
 .social-tiles{display:flex;gap:12px;}
 .stile{
@@ -761,11 +786,11 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 
 .footer-bottom{
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  margin-top:clamp(40px,5vw,64px);padding-top:24px;border-top:1px solid rgba(255,255,255,.12);
+  margin-top:clamp(40px,5vw,64px);padding-top:24px;border-top:1px solid rgba(0,0,0,.1);
   color:#afafb4;font-size:14px;
 }
 .back-top{font-weight:500;color:#afafb4;}
-.back-top:hover{color:#fff;}
+.back-top:hover{color:var(--ink);}
 
 /* ============================================================
    Prototype note + responsive
@@ -796,16 +821,24 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .rail--right .rail-run{gap:56px;}
   .banner-copy{width:min(720px,84%);}
   .hv-scene{display:none;}
-  .bento{flex-direction:column;min-height:0;}
-  .bcol,.bcol.mid,.bcol.stats{flex-direction:row;}
-  .bc-hero{min-height:360px;}
-  .bcol .bcard,.bcol.mid .bc-loc,.bcol.mid .bc-since,.bcol.mid .bc-skills{flex:1 1 0;min-height:150px;}
+  /* The 412x300 card is the desktop Figma size; the rows already wrap, so
+     here the cards just go fluid and the visual box scales with them. */
+  .currently{padding:clamp(56px,9vw,80px) clamp(20px,5vw,86px);}
+  .currently-head h2{font-size:clamp(30px,5vw,48px);}
+  /* Below the desktop width the two fixed rows of three would wrap to 2 + a
+     lone centred card. display:contents dissolves the rows so all six flow
+     as one grid and pair up evenly instead. */
+  .bento{flex-direction:row;flex-wrap:wrap;justify-content:center;}
+  .brow{display:contents;}
+  .bcard{flex:1 1 300px;}
   .footer-top{grid-template-columns:1fr;gap:32px;}
 }
 @media (max-width:640px){
-  .bcol,.bcol.mid,.bcol.stats{flex-direction:column;}
   .contact-row{flex-direction:column;}
-  .bc-hero-visual{min-height:140px;}
+  /* Shrink the whole 364x96 visual as one unit so every shape inside keeps
+     its relative position -- they are absolutely placed against that box. */
+  .bcard{height:280px;}
+  .bc-vis{transform:scale(.82);transform-origin:left center;}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
@@ -962,82 +995,65 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   </div>
 </section>
 
-<!-- ===================== 6. CURRENTLY / ABOUT ===================== -->
-<section class="currently">
+<!-- ===================== 6. A LITTLE ABOUT ME ===================== -->
+<section class="currently" id="about">
   <div class="shell">
     <div class="currently-head">
-      <h2>Currently</h2>
-      <div class="eyebrow">About</div>
+      <h2>A Little About Me</h2>
     </div>
 
     <div class="bento">
-      <article class="bcard bc-hero">
-        <div class="bc-hero-copy">
-          <div class="bc-eyebrow">Role</div>
-          <b>Product Designer</b>
-          <span>Interfaces, design systems and the handover in between.</span>
+      <div class="brow">
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#0CD9EF">2019</div>
+          <div class="bc-label">In product design</div>
         </div>
-        <div class="bc-hero-visual" aria-hidden="true">
-          <span class="glow g1"></span><span class="glow g2"></span>
-          <span class="glow g3"></span><span class="glow g4"></span>
-          <div class="panel panel-kpi">
-            <div class="kpi-dots"><i></i><i></i><i></i></div>
-            <div class="kpi-num">98<span>%</span></div>
-            <div class="kpi-bars">
-              <div style="height:38%;background:#CBCDD3"></div>
-              <div style="height:58%;background:#00ADC0"></div>
-              <div style="height:86%;background:#683FE0"></div>
-              <div style="height:48%;background:#50A99A"></div>
-              <div style="height:70%;background:#0CD9EF"></div>
-              <div style="height:32%;background:#CBCDD3"></div>
-            </div>
-          </div>
-          <div class="panel panel-palette">
-            <i style="background:#683FE0"></i><i style="background:#00ADC0"></i>
-            <i style="background:#50A99A"></i><i style="background:#F07126"></i><i style="background:#0D308C"></i>
-          </div>
-        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-line"></span><span class="v-dot d1"></span><span class="v-dot d2"></span><span class="v-dot d3"></span><span class="v-dot d4"></span></div>
+        <p class="bc-desc">Six years shaping interfaces, from fintech dashboards to agritech apps.</p>
       </article>
-
-      <div class="bcol mid">
-        <article class="bcard bc-loc">
-          <div class="bc-eyebrow">Based in</div>
-          <div class="bc-place"><b>Jakarta</b><span>Indonesia</span></div>
-          <div class="bc-foot">GMT+7</div>
-          <div class="bc-accent-pin" aria-hidden="true"></div>
-        </article>
-
-        <article class="bcard bc-skills">
-          <div class="bc-eyebrow">Skills</div>
-          <div class="bc-pills">
-            <span class="bc-pill">UI Design</span>
-            <span class="bc-pill">UX Design</span>
-            <span class="bc-pill">User Research</span>
-            <span class="bc-pill">Design System</span>
-            <span class="bc-pill">HTML</span>
-            <span class="bc-pill">CSS</span>
-            <span class="bc-pill">AI</span>
-          </div>
-        </article>
-
-        <article class="bcard bc-since">
-          <div class="bc-eyebrow">Experience</div>
-          <div class="bc-value"><div class="num">2019</div><div class="lbl">In product design</div></div>
-          <div class="bc-accent-timeline" aria-hidden="true"><i></i><span class="ln"></span><i></i></div>
-        </article>
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#00ADC0">10+</div>
+          <div class="bc-label">Apps designed &amp; shipped</div>
+        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-tile t1"></span><span class="v-tile t2"></span><span class="v-tile t3"></span><span class="v-tile t4"></span></div>
+        <p class="bc-desc">Products taken from first sketch through to release, across mobile and web.</p>
+      </article>
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#50A99A">5+</div>
+          <div class="bc-label">Design systems built</div>
+        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-layer l1"></span><span class="v-layer l2"></span><span class="v-layer l3"></span></div>
+        <p class="bc-desc">Tokens, components and the documentation that keeps a team consistent.</p>
+      </article>
       </div>
-
-      <div class="bcol stats">
-        <article class="bcard bc-stat s-cyan">
-          <div class="bc-eyebrow">Apps</div>
-          <div class="bc-value"><div class="num">10+</div><div class="lbl">Designed &amp; shipped</div></div>
-          <div class="bc-accent-tiles" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        </article>
-        <article class="bcard bc-stat s-green">
-          <div class="bc-eyebrow">Design Systems</div>
-          <div class="bc-value"><div class="num">5+</div><div class="lbl">Built from scratch</div></div>
-          <div class="bc-accent-layers" aria-hidden="true"><i></i><i></i><i></i></div>
-        </article>
+      <div class="brow">
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#693FE0">7</div>
+          <div class="bc-label">Core skills</div>
+        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-chip c1"></span><span class="v-chip c2"></span><span class="v-chip c3"></span><span class="v-chip c4"></span><span class="v-chip c5"></span><span class="v-chip c6"></span></div>
+        <p class="bc-desc">UI, UX, user research, design systems, HTML, CSS and AI.</p>
+      </article>
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#F07126">GMT+7</div>
+          <div class="bc-label">Jakarta, Indonesia</div>
+        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-ring r1"></span><span class="v-ring r2"></span><span class="v-ring r3"></span><span class="v-pin"></span></div>
+        <p class="bc-desc">Based in Jakarta, working with teams across Asia and beyond.</p>
+      </article>
+      <article class="bcard">
+        <div>
+          <div class="bc-stat" style="color:#0D308C">4</div>
+          <div class="bc-label">Companies</div>
+        </div>
+        <div class="bc-vis" aria-hidden="true"><span class="v-mark m1"></span><span class="v-mark m2"></span><span class="v-mark m3"></span><span class="v-mark m4"></span></div>
+        <p class="bc-desc">CBI, TADA, AgriAku and Metrodata — in-house and consulting.</p>
+      </article>
       </div>
     </div>
   </div>
@@ -1105,7 +1121,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 </footer>
 
 <p class="note">
-  Prototype — synced to the current Figma file. Scroll for the navbar pill, the <code>Pixel Spell</code> / <code>MINIMAL</code> featured panels, Works, <code>Hire Me</code>, the dark Currently bento grid, and the footer.
+  Prototype — synced to the current Figma file. Scroll for the navbar pill, the <code>Pixel Spell</code> / <code>MINIMAL</code> featured panels, Works, <code>Hire Me</code>, the <code>A Little About Me</code> stat cards, and the footer.
 </p>
 
 <script>
@@ -1161,8 +1177,9 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- 4. marquee ---------- */
+  // stroke:currentColor so the separators track .marquee's colour (#D0D0D0)
   var X = '<svg viewBox="0 0 48 36" fill="none" aria-hidden="true">' +
-          '<path d="M6 4l36 28M42 4L6 32" stroke="#000" stroke-width="8" stroke-linecap="round"/></svg>';
+          '<path d="M6 4l36 28M42 4L6 32" stroke="currentColor" stroke-width="8" stroke-linecap="round"/></svg>';
   var services = ['UI/UX DESIGN','USER RESEARCH','DESIGN SYSTEM','FIGMA'];
   var one = services.map(function(s){ return '<span>' + s + '</span>' + X; }).join('');
   document.getElementById('marqueeRun').innerHTML = one + one + one + one;
