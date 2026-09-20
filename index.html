@@ -521,11 +521,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 @keyframes run-right{from{transform:translateX(-50%);} to{transform:translateX(0);}}
 .marquee span{
   font-family:var(--poster);
-  font-size:var(--t-poster);
-  line-height:1.28;
+  font-size:24px;          /* Figma 3861:1779 — Days One 24px, was up to 40px */
+  line-height:normal;
   white-space:nowrap;
 }
-.marquee svg{width:clamp(30px,2.4vw,34px);height:auto;flex:none;}
+/* Figma draws the separator 40x30 (3861:1778). The viewBox carries padding —
+   the X itself spans 36 of 48 across and 28 of 36 down — so a 40px box puts
+   roughly 30px of visible mark against 24px type, which is the balance the
+   frame has. Both fixed, since the band scrolls and never has to reflow. */
+.marquee svg{width:40px;height:30px;flex:none;}
 
 /* ============================================================
    5 — Works
