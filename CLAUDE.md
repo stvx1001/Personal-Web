@@ -149,11 +149,15 @@ error means the wrong account is signed in, not that the quota ran out — check
 `whoami` first, and fix it by switching accounts in the Figma desktop app.
 
 **Writes DO work** (Sept 21, 2026): `use_figma` successfully rebuilt a frame in
-the SkorKu file despite `whoami` reporting `seat: "View"` everywhere. The old
-"Starter = read-only, no use_figma" note here was wrong. The "~20 calls a month"
-cap also looks wrong, or is counted differently — well over 20 calls ran in a
-single day without being throttled. Still worth not being wasteful, but it is
-not the hard blocker this file used to claim.
+the SkorKu file despite `whoami` reporting `seat: "View"` everywhere, so the old
+"Starter = read-only, no use_figma" note here was wrong.
+
+**The call cap is real, though — budget hard.** Roughly 20-25 calls exhausted it
+in one day and the next call failed outright with *"You've reached the Figma MCP
+tool call limit on the Starter plan."* Every call counts: reads, writes, failed
+calls and `whoami` alike. When it runs out there is no workaround but upgrading
+or waiting for the reset, so **ask Steven for PNG exports instead of browsing
+the file** — he exports quickly and does it happily, and it costs nothing.
 
 Two real limits, both hit in practice:
 - **`get_design_context` on a *section* returns sparse structure-only metadata**,
