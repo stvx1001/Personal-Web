@@ -535,7 +535,13 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 /* The card row bleeds past the content box on both sides in Figma
    (x:-456 inside a 1248 container) — which is what this marquee rail
    already does for real; the Figma frame is just one still of it. */
-.rail{overflow:hidden;margin-top:64px;}
+/* The rail clips horizontally so the loop can run off both edges, but that
+   same overflow:hidden used to clip the hover lift too -- the rail hugged the
+   card at exactly 540px with no slack, so a card raising 8px just lost its top
+   8px. The padding gives the lift and its shadow somewhere to go; margin-top
+   is reduced by the same amount so the gap below the headline is still the
+   64px Figma asks for (and .clients drops to 80 for the 120 below). */
+.rail{overflow:hidden;margin-top:40px;padding-block:24px 40px;}
 .rail-run{display:flex;gap:40px;flex:none;width:max-content;}
 .rail--left .rail-run{animation:run-left 46s linear infinite;}
 @keyframes run-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
@@ -551,10 +557,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   position:relative;
   display:block;
   background-size:cover;background-position:center;
-  transition:transform .5s var(--ease);
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease);
 }
 .rail:hover .rail-run{animation-play-state:paused;}
-.work:hover{transform:translateY(-8px);}
+.work:hover{transform:translateY(-12px);box-shadow:0 12px 28px rgba(0,0,0,.20);}
 
 /* Scrim. In Figma only AgriAku carries a permanent 32% black wash; the
    other four have none at rest. But the hover label is white, so every
@@ -595,7 +601,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   background-image:var(--img-work-designsystem),linear-gradient(141.58deg,#FA582D 1.62%,#FC6F29 52.35%,#380E0F 106.32%);}
 
 /* Figma: 120px below the work block; header Cabin Bold 20px. */
-.clients{margin-top:120px;}
+.clients{margin-top:80px;}
 .clients h3{
   font-family:var(--display);font-weight:700;
   font-size:20px;letter-spacing:0;
