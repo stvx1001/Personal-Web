@@ -98,17 +98,21 @@ sticky stage, one for the hold), so if the hold changes, that changes too.
 
 ## Assets
 
-17 images in `assets/`. They are referenced through CSS variables near the top
-of `index.html`:
+**Every image is inlined in `index.html` as a base64 data URI** on a CSS
+variable — there is no `assets/` directory any more, and no build step:
 
 ```css
---img-work-skorku:url("assets/work-skorku.png");
+--img-work-agriaku:url("data:image/jpeg;base64,…");
 ```
 
-Names: `work-{skorku,agriaku,sinarmas,alomos,designsystem}` ·
-`logo-{pointstar,metrodata,agriaku,tada,cbi}` ·
-`minimal-{home,dashboard,drafts}` · `pixelspell-logo` ·
-`banner-{designtokens,activity,palette}`
+Groups: `work-*` (Works cards) · `logo-*` (client marks) · `minimal-*` (UI kit
+screens) · `ps-*` (Pixel Spell gallery + watermark) · `pixelspell-logo` ·
+`banner-*` (hero float cards).
+
+Photographs go in as **JPEG q82**, UI screenshots and anything needing
+transparency as **PNG**, both at roughly 2x their rendered size. This matters:
+the Works card photos were 6 MB as PNG and are ~670 KB as JPEG with no visible
+difference. `index.html` is ~8 MB; keep an eye on it.
 
 **Never source assets from Figma via `get_screenshot`.** It bakes layer effects
 (blur) into the pixels. Steven caught this and was clear about it: download the
@@ -116,10 +120,12 @@ raw asset and reapply the effect in CSS. The three banner float cards use raw
 unblurred exports with `blur(1.5px)` / `blur(2.5px)` and `rotate(13.3deg)` on
 Activity, sitting *behind* the dot grid.
 
-There is also a single-file build of this same site (~1.6 MB) where all 17
-images are inlined as base64 data URIs, plus a `swap-asset.py` helper for
-replacing one without hand-editing base64. Portable copy — the repo version is
-the one to build on.
+`get_design_context` returns real asset URLs (`…/api/mcp/asset/…`) that you can
+`curl` directly — no extra MCP call per file, which matters given the quota
+below. They expire in ~7 days, so download and inline them the same session.
+Steven often exports the same art himself into `~/Downloads`; prefer his files
+when they are clean 2x crops, and **copy them to scratch immediately** — they
+have vanished mid-task more than once.
 
 ## Figma
 
@@ -133,10 +139,19 @@ Scroll storyboard: section `2376:1056`, frames `2377:1358` (Home) →
 out first. The interaction was reconstructed from the first three plus two
 screen recordings Steven made.
 
-**Access is tight:** the connected account (`steven.charlino@gmail.com`) is on a
-Starter plan — read-only, no `use_figma` writes, and a hard cap of roughly 20
-MCP tool calls per month. Three `get_design_context` calls exhausted it in one
-pass. Budget them.
+**Access is tight, and the account matters.** The Figma MCP here is the *local
+desktop-app* server — it authenticates as whoever is signed into the Figma
+desktop app, not via a separate OAuth connector. The personal file above is
+owned by `steven.charlino@gmail.com`; when the app was signed in as his work
+account `steven.charlino@cbi.id`, **every** call (`get_design_context`,
+`get_metadata`) failed with *"you don't have edit access to this file"*. That
+error means the wrong account is signed in, not that the quota ran out — check
+`whoami` first, and fix it by switching accounts in the Figma desktop app.
+
+That account is on a Starter plan: no `use_figma` writes, and a hard cap of
+roughly 20 MCP tool calls per month. Three `get_design_context` calls exhausted
+it in one pass. Budget them — and note that calling it on a *section* node
+returns sparse structure-only metadata, so aim at the frame inside it.
 
 Steven's prototype recordings are `.mov`. Extract frames with ffmpeg rather than
 guessing — `ffmpeg -i in.mov -vf "fps=2,scale=620:-1,tile=4x4" -frames:v 1
@@ -169,8 +184,10 @@ headed anyway.
 - Shop/products section not built. Three cover images exist (pixel-spell,
   stvx1001, minimal) but aren't wired in.
 - Instagram handle never provided.
-- The Sinarmas client logo exports from Figma as a ~16px sliver — currently
-  rendered as text. Needs re-export or a swap.
+- Works: Figma's base frame omits the Alomos card label, though all five hover
+  frames have it — implemented as present. Worth confirming with Steven.
+- The PointStar client mark is only a 440x160 export; fine at its 220x80 box
+  but there is no headroom above 2x.
 - NDA status on the CBI (SkorKu / ASWA) work is unresolved and blocks the case
   study template.
 - Domain undecided: `stevencharlino.com` vs `charlino.design`.
