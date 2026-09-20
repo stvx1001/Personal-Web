@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <script>if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);</script>
 <title>Steven Charlino - Product Designer with over 5 years experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -485,7 +486,14 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 /* ============================================================
    3b — Hireme
    ============================================================ */
-.hireme{background:var(--ink);color:var(--paper);text-align:center;padding-block:clamp(88px,10vw,140px);}
+/* A full screen of its own, so the CTA is the only thing in view and gets
+   the focus Steven wants. Figma draws it 900px tall, which is that file's
+   frame height -- 100vh is the same thing on a 900px screen and keeps
+   holding the whole viewport on any other. min-height rather than height so
+   the copy can still grow past it on a short window instead of overflowing. */
+.hireme{background:var(--ink);color:var(--paper);text-align:center;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding-block:clamp(88px,10vw,140px);}
 .hireme h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,60px);line-height:1.16;letter-spacing:-.02em;max-width:16ch;margin-inline:auto;}
 .hireme p{margin:20px auto 0;max-width:44ch;color:rgba(255,255,255,.72);}
 .hireme .btn{margin-top:28px;}
