@@ -305,13 +305,13 @@ body.no-pin .banner{
    ============================================================ */
 .ps-panel,.min-panel{
   position:relative;width:100%;overflow:hidden;
-  /* Horizontal padding is a fixed 80px (not the vw-scaled vertical
+  /* Horizontal padding is a fixed 64px (not the vw-scaled vertical
      rhythm below) so the gap to the true left/right screen edge stays
-     exactly 80px at any viewport width -- both the left-anchored copy
+     exactly 64px at any viewport width -- both the left-anchored copy
      column and the right-pinned gallery/shot rely on this being fixed,
      which is also why their own justify-self:end no longer needs a
      margin-right cancellation trick (see .ps-gallery / .min-right). */
-  padding:clamp(40px,6vw,96px) 80px;
+  padding:clamp(40px,6vw,96px) 64px;
   display:grid;gap:clamp(28px,4vw,64px);
   align-items:center;
 }
@@ -650,7 +650,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    now white cards on white, headed "A Little About Me" with no eyebrow.
    Each card is a fixed 412x300 holding a stat, a label, a visual and a
    sentence, spaced apart vertically. */
-.currently{background:var(--paper);color:var(--ink);padding:80px 86px;}
+/* Horizontal padding is 64px to line up with the Pixel Spell / MINIMAL
+   panels; Figma's own frame uses 86, which left this section 6px out of
+   step with everything else. Vertical stays at the frame's 80. */
+.currently{background:var(--paper);color:var(--ink);padding:80px 64px;}
 .currently .shell{width:100%;max-width:none;margin:0;}
 .currently-head{display:flex;flex-direction:column;align-items:center;text-align:center;}
 .currently-head h2{font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.02em;color:var(--ink);}
@@ -833,7 +836,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .hv-scene{display:none;}
   /* The 412x300 card is the desktop Figma size; the rows already wrap, so
      here the cards just go fluid and the visual box scales with them. */
-  .currently{padding:clamp(56px,9vw,80px) clamp(20px,5vw,86px);}
+  .currently{padding:clamp(56px,9vw,80px) clamp(20px,5vw,64px);}
   .currently-head h2{font-size:clamp(30px,5vw,48px);}
   /* Below the desktop width the two fixed rows of three would wrap to 2 + a
      lone centred card. display:contents dissolves the rows so all six flow
