@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alomos — Steven Charlino</title>
+<meta name="description" content="Case study: brand, design system, website and code for Alomos, a Singapore-based electronics e-commerce newcomer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* ============================================================
+   Alomos case study — built from Figma node 3877:2487
+   ("Alomos Page", file YUZMDH5kqna1441GZLvRPm, page "Sum").
+
+   Lives at /fulltimeworks/alomos/. Every link and asset path is
+   relative, so the same files work on GitHub Pages (/Personal-Web/…)
+   and on the future custom domain without edits.
+
+   Unlike the main index.html, images here are real files in ./assets
+   rather than base64 — a case study is image-heavy and this keeps it
+   cacheable. Photos are JPEG q82, cut-outs PNG, all at ~2x their
+   rendered size (never upscaled).
+   ============================================================ */
+
+/* Tokens — named after the Figma variables (cs/…) they come from. */
+:root{
+  --bg-page:#FFFFFF;
+  --bg-soft:#EFF1F8;
+  --bg-dark:#1E2225;
+  --bg-primary-soft:#FBE7ED;
+  --primary:#D33B66;
+  --primary-dark:#AF274D;
+  --secondary:#4DAFE3;
+  --secondary-dark:#8894CA;
+  --accent:#FFC400;
+  --text:#292929;
+  --text-2:#485359;
+  --muted:#8595A5;
+  --black:#1E2225;
+  --border:#D0DAE6;
+
+  --r-card:10px;
+  --r-panel:20px;
+  --r-bento:28px;
+  --r-pill:999px;
+
+  --poppins:"Poppins",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --inter:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--bg-page);color:var(--text);font-family:var(--poppins);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+img,video{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+
+/* The page is a single 1400 column with 20px gutters and a 40px rhythm
+   between sections, exactly as the Figma frame (pad 40/20/64, gap 40). */
+.page{width:min(1400px,100% - 40px);margin:0 auto;padding:140px 0 64px;
+  display:flex;flex-direction:column;gap:40px;}
+
+/* ---- type styles (Figma "CS/…" text styles) ---- */
+.t-heading{font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;color:var(--text);}
+.t-lead{font-weight:400;font-size:20px;line-height:32px;color:var(--text);}
+.t-eyebrow{font-weight:600;font-size:12px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;}
+.t-title{font-weight:600;font-size:24px;line-height:32px;letter-spacing:-.3px;}
+.t-sub{font-weight:600;font-size:18px;line-height:26px;}
+.t-small{font-weight:400;font-size:14px;line-height:22px;}
+.t-label{font-weight:500;font-size:14px;line-height:20px;}
+
+/* ============================================================
+   01 Navbar — same behaviour as the main site's: fixed, and it turns
+   into a frosted pill once you scroll, so the back arrow is always
+   reachable on a long page.
+   ============================================================ */
+.nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:50;
+  width:min(1248px,100% - 40px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;border-radius:24px;
+  transition:top .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
+.nav.is-stuck{top:16px;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 12px 34px rgba(13,48,140,.12),0 2px 8px rgba(13,48,140,.06);}
+.nav-home{display:flex;align-items:center;gap:24px;}
+.nav-home img{width:24px;height:24px;transition:transform .3s var(--ease);}
+.nav-home:hover img{transform:translateX(-4px);}
+.wordmark{font-family:var(--inter);font-weight:900;font-size:16px;line-height:22px;color:#000;text-transform:uppercase;}
+.btn-hire{font-family:var(--inter);font-weight:600;font-size:15px;line-height:20px;
+  background:#000;color:#fff;padding:10px 16px;border-radius:16px;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
+.btn-hire:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.24);}
+
+/* ============================================================
+   02 Heroes — two 1400x840 media blocks.
+   The first is the VIDEO slot. It is a <video> with only a poster
+   today; drop an MP4 into assets/ and add a <source> and it plays.
+   ============================================================ */
+.media{position:relative;width:100%;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;background:var(--bg-dark);}
+.media > video,.media > img{width:100%;height:100%;object-fit:cover;}
+/* Figma scales this still to 2016 wide inside the 1400 frame (a 1.44x
+   crop), nudged 10px left — reproduced here rather than showing it flat. */
+.media--brand{background:#2b2240 url("assets/hero-brand.jpg") calc(50% - 10px) 50%/144% auto no-repeat;}
+
+/* ============================================================
+   03 Intro — credits column, then title + story at x707 / 600 wide.
+   ============================================================ */
+.intro{display:grid;grid-template-columns:minmax(0,707px) minmax(0,600px);min-height:420px;}
+.intro-credits{max-width:380px;font-size:16px;line-height:26px;color:var(--muted);}
+.intro-credits span{display:block;}
+.intro-credits .gap{height:26px;}
+.intro-title{font-weight:700;font-size:24px;line-height:32px;color:var(--black);}
+.intro-body{margin-top:12px;font-size:16px;line-height:26px;color:var(--text-2);}
+.intro-body p + p{margin-top:26px;}
+
+/* ============================================================
+   04b Result bento — the "product in use" collage.
+   Columns are proportional (310 : 450+20+210 : 330) so the whole thing
+   scales as one piece between desktop widths; heights stay as drawn.
+   ============================================================ */
+.bento{background:var(--bg-soft);border-radius:36px;padding:20px;
+  display:grid;grid-template-columns:310fr 680fr 330fr;gap:20px;}
+.bcol{display:flex;flex-direction:column;gap:20px;min-width:0;}
+.btop{display:grid;grid-template-columns:450fr 210fr;gap:20px;}
+.tile{position:relative;border-radius:var(--r-bento);overflow:hidden;min-width:0;}
+.glass{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);}
+.inv{color:#fff;}
+
+.t-paid{height:430px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:36px 32px;text-align:center;
+  background:linear-gradient(180deg,rgba(211,59,102,0) 0%,rgba(211,59,102,.32) 100%),var(--bg-dark);}
+.t-paid .t-eyebrow{color:var(--accent);font-size:12px;}
+.t-paid h3{font-weight:700;font-size:34px;line-height:40px;letter-spacing:-.8px;color:#fff;}
+.t-paid p{font-size:15px;line-height:23px;color:#fff;opacity:.72;max-width:240px;}
+.t-paid .spacer{height:10px;}
+.pill-btn{display:flex;align-items:center;justify-content:center;width:100%;
+  padding:15px 24px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-weight:600;font-size:16px;}
+
+.t-pay{height:430px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 28px 32px;
+  background:var(--bg-dark) url("assets/tile-pay.jpg") center/cover no-repeat;}
+.t-pay::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(31,33,38,.55) 0%,rgba(31,33,38,.1) 55%,rgba(31,33,38,.35) 100%);}
+.t-pay > *{position:relative;}
+.t-pay .icon{width:30px;height:22px;}
+.t-pay h3{font-weight:600;font-size:26px;line-height:32px;letter-spacing:-.3px;color:#fff;text-align:center;}
+.t-pay .grow{flex:1;}
+.t-pay .glass{width:100%;padding:22px;border-radius:22px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.methods{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.methods span{background:rgba(255,255,255,.9);color:var(--text);font-weight:700;font-size:12px;
+  padding:6px 12px;border-radius:var(--r-pill);}
+.price{display:flex;align-items:baseline;gap:10px;color:#fff;white-space:nowrap;}
+.price b{font-weight:700;font-size:34px;line-height:38px;}
+.price span{font-weight:500;font-size:13px;opacity:.85;}
+
+.t-eta{height:520px;background:var(--bg-dark) url("assets/tile-delivery.jpg") center/cover no-repeat;}
+.t-eta::before{content:"";position:absolute;inset:0;background:rgba(31,33,38,.18);}
+.t-eta .glass{position:absolute;left:50%;top:100px;transform:translateX(-50%);
+  width:300px;height:320px;border-radius:28px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.eta-days{position:absolute;left:0;right:0;top:43px;text-align:center;
+  font-weight:700;font-size:56px;line-height:60px;letter-spacing:-1.5px;color:#fff;}
+.eta-to{position:absolute;left:0;right:0;top:109px;text-align:center;font-weight:500;font-size:22px;color:#fff;}
+.eta-stage{position:absolute;width:30px;height:30px;}
+.eta-stage.s6{width:38px;height:38px;}
+.eta-stage.s6 img{position:absolute;inset:-42.11%;width:auto;height:auto;max-width:none;}
+.eta-carrier{position:absolute;left:0;right:0;top:281px;text-align:center;font-weight:500;font-size:13px;color:#fff;opacity:.85;}
+
+.t-cart,.t-secure{height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:24px 20px 20px;text-align:center;color:#fff;}
+.t-cart{background:var(--primary);}
+.t-secure{background:var(--secondary);}
+.badge{width:118px;height:118px;border-radius:50%;background:#fff;display:grid;place-items:center;
+  box-shadow:0 12px 24px rgba(102,13,38,.25);}
+.badge img{width:54px;height:54px;}
+.ring{width:118px;height:118px;}
+.t-cart b,.t-secure b{display:block;font-weight:600;font-size:15px;}
+.t-cart span{display:block;font-size:13px;opacity:.8;}
+.t-secure span{display:block;font-size:13px;opacity:.85;}
+
+.t-timeline{height:340px;background:#fff;display:flex;align-items:center;gap:28px;padding:36px 32px 36px 48px;}
+.tl-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px;}
+.tl-copy h3{font-weight:700;font-size:28px;line-height:34px;letter-spacing:-.8px;color:var(--primary);}
+.tl-copy p{font-weight:500;font-size:20px;line-height:26px;color:var(--secondary);}
+.tl-stages{width:292px;flex:none;display:flex;flex-direction:column;gap:12px;}
+.stage{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 22px;border-radius:20px;}
+.stage > div{flex:1;min-width:0;}
+.stage b{display:block;font-weight:600;font-size:18px;white-space:nowrap;}
+.stage span{display:block;font-size:13px;opacity:.85;white-space:nowrap;}
+.stage i{flex:none;width:46px;height:46px;border-radius:23px;display:grid;place-items:center;background:#fff;}
+.stage i img{width:22px;height:22px;}
+.stage--placed{background:var(--bg-soft);color:var(--muted);}
+.stage--shipped{background:linear-gradient(90deg,#4DAFE3,#8CD9FF);color:#fff;}
+.stage--delivered{background:linear-gradient(90deg,#D33B66,#8894CA);color:#fff;}
+.stage--delivered i{background:rgba(255,255,255,.25);}
+
+.t-suggest{height:450px;background:#fff;}
+.sg-head{position:absolute;left:0;right:0;top:52px;text-align:center;
+  font-weight:700;font-size:26px;line-height:32px;letter-spacing:-.5px;color:var(--primary);}
+.sg-sub{position:absolute;left:0;right:0;top:130px;text-align:center;font-size:14px;color:var(--text-2);}
+/* positions are the Figma ones, re-anchored to the tile's centre (165)
+   so the fan of products stays centred if the tile flexes */
+.sg-p{position:absolute;}
+.sg-p.left{left:calc(50% - 217px);top:250px;width:132px;height:132px;}
+.sg-p.right{left:calc(50% + 85px);top:250px;width:132px;height:132px;}
+.sg-p.center{left:calc(50% - 92px);top:214px;width:184px;height:184px;}
+.sg-p.center img{position:absolute;left:-15.22%;top:-7.61%;width:130.44%;max-width:none;}
+.sg-add{position:absolute;left:50%;top:392px;transform:translateX(-50%);white-space:nowrap;
+  display:flex;align-items:center;gap:10px;padding:6px 6px 6px 16px;border-radius:var(--r-pill);
+  background:#fff;box-shadow:0 8px 20px rgba(31,33,38,.14);font-weight:500;font-size:13px;color:var(--text);}
+.sg-add b{background:var(--primary);color:#fff;font-weight:600;padding:6px 14px;border-radius:var(--r-pill);}
+
+.t-new{height:410px;background:var(--bg-dark) url("assets/tile-new-arrival.jpg") center/cover no-repeat;}
+.nw-dot{position:absolute;top:36px;width:40px;height:40px;}
+.nw-glass{position:absolute;left:28px;top:336px;display:flex;align-items:center;gap:10px;
+  padding:12px 18px 12px 14px;border-radius:var(--r-pill);white-space:nowrap;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
+  font-weight:600;font-size:15px;color:#fff;}
+.nw-glass img{width:10px;height:10px;}
+
+/* ============================================================
+   05 Approach — process map + persona, then the six stages.
+   Both map halves are fixed 700x900 drawings (absolutely placed, as in
+   Figma) that are scaled to whatever width their half gets — a small
+   script sets --s. That keeps every node and connector in register
+   instead of reflowing a diagram that only makes sense as drawn.
+   ============================================================ */
+.approach{display:flex;flex-direction:column;gap:48px;}
+.pmap{display:grid;grid-template-columns:1fr 1fr;border-radius:20px;overflow:hidden;}
+.pmap-half{position:relative;height:calc(900px * var(--s,1));overflow:hidden;}
+.stage-700{position:absolute;left:0;top:0;width:700px;height:900px;transform:scale(var(--s,1));transform-origin:0 0;}
+
+.flow{background:var(--bg-soft);}
+.conn{position:absolute;}
+.conn .pad{position:absolute;}
+.conn img{position:absolute;inset:0;width:100%;height:100%;max-width:none;}
+.node{position:absolute;display:flex;align-items:center;justify-content:center;white-space:nowrap;
+  padding:13px 26px;border-radius:10px;background:#fff;box-shadow:0 2px 6px rgba(31,33,38,.06);
+  font-weight:500;font-size:17px;line-height:24px;color:var(--text);}
+.node--approval{border:1.5px solid var(--primary);font-weight:600;}
+.node--launch{background:var(--primary);color:#fff;font-weight:600;}
+.flow .t-eyebrow{position:absolute;left:32px;top:30px;color:var(--primary);}
+.flow-note{position:absolute;left:279px;top:520px;font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap;}
+
+.persona{background:var(--bg-dark);}
+.persona-bg{position:absolute;left:-60px;top:-60px;width:820px;height:1020px;
+  background:url("assets/tile-delivery.jpg") center/cover no-repeat;filter:blur(30px);}
+.persona-tint{position:absolute;inset:0;
+  background:linear-gradient(140.24deg,rgba(211,59,102,.82) 14.286%,rgba(136,148,202,.72) 53.571%,rgba(30,34,37,.92) 85.714%);}
+.persona .t-eyebrow{position:absolute;left:32px;top:30px;color:#fff;opacity:.75;}
+.face{position:absolute;}
+.face img{position:absolute;max-width:none;}
+.face.l{left:-70px;top:205px;width:210px;height:210px;opacity:.9;}
+.face.r{left:560px;top:205px;width:210px;height:210px;opacity:.9;}
+.face.l img,.face.r img{left:-19.05%;top:-10.48%;width:138.1%;}
+.face.c{left:200px;top:150px;width:300px;height:300px;}
+.face.c img{left:-13.33%;top:-7.33%;width:126.66%;}
+.persona-chip{position:absolute;left:50%;top:506px;transform:translateX(-50%);white-space:nowrap;
+  padding:10px 22px;border-radius:var(--r-pill);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  font-weight:500;font-size:18px;color:#fff;}
+.persona-chip span{opacity:.9;}
+.persona-quote{position:absolute;left:0;right:0;top:574px;text-align:center;
+  font-weight:700;font-size:48px;line-height:56px;letter-spacing:-1px;color:#fff;}
+.persona-note{position:absolute;left:130px;top:712px;width:440px;text-align:center;
+  font-size:15px;line-height:23px;color:#fff;opacity:.8;}
+.persona-dots{position:absolute;left:322px;top:830px;display:flex;gap:8px;}
+.persona-dots img:first-child{width:22px;height:8px;}
+.persona-dots img{width:8px;height:8px;}
+
+.stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.scard{display:flex;flex-direction:column;gap:12px;min-height:340px;padding:28px;
+  border:1px solid var(--border);border-radius:var(--r-card);}
+.scard-top{display:flex;align-items:center;justify-content:space-between;}
+.scard-num{font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;color:var(--primary);}
+.hat{background:var(--bg-soft);color:var(--text-2);padding:5px 10px;border-radius:var(--r-pill);}
+.scard .t-sub{color:var(--text);}
+.scard .t-small{color:var(--text-2);}
+.scard .grow{flex:1;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{background:var(--bg-soft);color:var(--text-2);padding:5px 10px;border-radius:var(--r-pill);}
+.scard--hot{background:var(--primary);border-color:var(--primary);}
+.scard--hot .scard-num,.scard--hot .t-sub{color:#fff;}
+.scard--hot .t-small{color:#fff;opacity:.88;}
+.scard--hot .hat,.scard--hot .tag{background:rgba(255,255,255,.2);color:#fff;}
+
+/* ============================================================
+   06 Solution — three bento rows of "decision → design" tiles.
+   Every tile: a visual that takes the free space, copy pinned below.
+   ============================================================ */
+.solution{display:flex;flex-direction:column;gap:20px;}
+.srow{display:flex;gap:20px;}
+.srow--a{height:500px;}
+.srow--b,.srow--c{height:540px;}
+.stile{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:20px;padding:28px;
+  border-radius:var(--r-card);background:var(--bg-soft);overflow:hidden;}
+.stile--wide{flex:0 0 calc((100% - 20px) * 880 / 1380);}
+.stile--dark{background:var(--bg-dark);}
+.svis{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.svis > img.fill{width:100%;height:100%;object-fit:contain;}
+.scopy{display:flex;flex-direction:column;gap:8px;}
+.scopy .t-title{color:var(--text);}
+.scopy .t-small{color:var(--text-2);}
+.stile--dark .scopy .t-title{color:#fff;}
+.stile--dark .scopy .t-small{color:#fff;opacity:.7;}
+
+.logo-plate{width:100%;background:#fff;border-radius:var(--r-card);padding:22px;display:grid;place-items:center;}
+.logo-plate img{width:240px;height:46px;object-fit:contain;}
+.swatches{display:flex;gap:8px;width:100%;}
+.swatches i{flex:1;height:40px;border-radius:var(--r-card);}
+
+.chips{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.chips div{display:flex;gap:8px;}
+.chip{background:#fff;border:1px solid var(--border);border-radius:var(--r-pill);white-space:nowrap;}
+.chip--brand{padding:8px 14px;font-weight:500;font-size:14px;line-height:20px;color:var(--text);}
+.chip--filter{padding:6px 12px;font-size:14px;line-height:22px;color:var(--text-2);}
+.filters{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.findsound{width:100%;background:#fff;border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:8px;}
+.findsound .t-sub{color:var(--text);}
+.opt{padding:9px 14px;border-radius:var(--r-card);font-weight:500;font-size:14px;line-height:20px;}
+
+.checkout{width:100%;background:#fff;border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:10px;}
+.ship{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r-card);}
+.ship i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bg-primary-soft);}
+.ship b{display:block;font-weight:500;font-size:14px;line-height:20px;color:var(--primary);}
+.ship span{display:block;font-size:14px;line-height:22px;color:var(--text-2);}
+.addcart{padding:11px 14px;border-radius:var(--r-card);background:var(--primary);color:#fff;
+  text-align:center;font-weight:500;font-size:14px;line-height:20px;}
+
+.pcard{width:100%;background:#fff;border-radius:var(--r-card);display:flex;align-items:center;gap:16px;padding:14px 18px 14px 14px;}
+.pcard > img{width:104px;height:104px;flex:none;object-fit:cover;border-radius:var(--r-card);}
+.pcard-info{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.pcard-info .name{font-weight:600;font-size:18px;line-height:26px;color:var(--text);}
+.pcard-info .brand{font-size:14px;line-height:22px;color:var(--muted);}
+.stars{display:flex;align-items:center;gap:3px;font-size:14px;line-height:22px;color:var(--muted);}
+.stars img{width:13px;height:13px;}
+.pcard-info .amt{font-weight:600;font-size:18px;line-height:26px;color:var(--primary);}
+.pcard-info .mo{font-size:14px;line-height:22px;color:var(--text-2);}
+
+.tokens{width:100%;display:flex;flex-direction:column;gap:10px;align-items:stretch;justify-content:center;}
+.token{display:flex;align-items:center;gap:12px;color:#fff;}
+.token i{flex:none;width:26px;height:26px;border-radius:6px;}
+.token b{flex:1;font-weight:500;font-size:14px;line-height:20px;}
+.token span{font-size:14px;line-height:22px;opacity:.55;}
+.ramp{display:flex;align-items:baseline;gap:14px;padding-top:10px;color:#fff;font-weight:700;white-space:nowrap;}
+.ramp span{font-weight:400;font-size:14px;opacity:.55;}
+
+/* ============================================================
+   07 Design in detail · 08 Design system · 09 Outcome
+   All three open with the same two-column header: a 400px heading
+   and a lead paragraph, inset 72px.
+   ============================================================ */
+.shead{display:flex;gap:80px;padding:0 72px 28px;}
+.shead .t-heading{flex:0 0 400px;}
+.shead .t-lead{flex:1;min-width:0;}
+.block{display:flex;flex-direction:column;gap:20px;}
+
+.screen{display:flex;align-items:center;gap:64px;padding:48px 64px;border-radius:var(--r-panel);background:var(--bg-soft);}
+.screen-img{position:relative;flex:0 0 560px;border-radius:10px;filter:drop-shadow(0 20px 20px rgba(31,33,38,.1));}
+.screen-img > img{width:100%;border-radius:10px;}
+.pin{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--primary);color:#fff;font-weight:700;font-size:14px;line-height:20px;}
+.screen-img .pin{position:absolute;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);}
+.notes{flex:1;min-width:0;display:flex;flex-direction:column;gap:28px;}
+.notes-head{display:flex;flex-direction:column;gap:10px;}
+.notes-head .t-eyebrow{color:var(--primary);}
+.notes-head .t-title{color:var(--text);max-width:460px;}
+.note{display:flex;gap:16px;align-items:flex-start;}
+.note > div{display:flex;flex-direction:column;gap:4px;}
+.note .t-sub{color:var(--text);}
+.note .t-small{color:var(--text-2);}
+
+.ds{background:var(--bg-soft);border-radius:10px;padding:48px 52px;
+  display:grid;grid-template-columns:300px 300px 300px 320px;gap:32px;justify-content:start;min-height:560px;align-content:start;}
+.ds h4{font-weight:600;font-size:14px;color:var(--black);margin-bottom:18px;}
+.ds-card{background:#fff;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:16px;}
+.ds-row{display:flex;align-items:center;gap:10px;height:28px;}
+.ds-row i{flex:none;width:28px;height:28px;border-radius:7px;}
+.ds-row i.edge{border:1px solid var(--border);}
+.ds-row b{flex:1;font-weight:500;font-size:13px;color:var(--black);}
+.ds-row span{font-size:12px;color:var(--muted);}
+.ds-type{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:16px;}
+.ds-type b{display:block;font-weight:700;color:var(--black);}
+.ds-type span{display:block;font-size:12px;color:var(--muted);margin-top:4px;}
+
+.shipped{display:flex;gap:20px;height:460px;}
+.shipped > img{flex:1;min-width:0;height:100%;object-fit:cover;border-radius:var(--r-card);}
+.deliv{flex:1;min-width:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;}
+.dcard{background:var(--bg-soft);border-radius:var(--r-card);padding:24px;display:flex;flex-direction:column;justify-content:space-between;}
+.done{width:30px;height:30px;border-radius:50%;background:var(--primary);display:grid;place-items:center;}
+.done img{width:14px;height:14px;}
+.dcard .t-sub{color:var(--text);margin-bottom:6px;}
+.dcard .t-small{color:var(--text-2);}
+
+/* ============================================================
+   Responsive. The Figma frame is 1440 only; below it the proportional
+   grids above carry us to ~1100, then everything stacks.
+   ============================================================ */
+@media (max-width:1180px){
+  .shead{padding:0 0 20px;gap:40px;}
+  .shead .t-heading{flex-basis:320px;}
+  .screen{gap:40px;padding:40px;}
+  .screen-img{flex-basis:46%;}
+  .ds{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:1024px){
+  .page{padding-top:120px;}
+  .intro{grid-template-columns:1fr;gap:32px;min-height:0;}
+  .bento{grid-template-columns:1fr 1fr;}
+  .bento > .bcol:nth-child(2){grid-column:1 / -1;order:-1;}
+  .t-timeline{flex-direction:column;align-items:flex-start;height:auto;}
+  .tl-stages{width:100%;}
+  .pmap{grid-template-columns:1fr;}
+  .stages{grid-template-columns:1fr 1fr;}
+  .srow{flex-direction:column;height:auto;}
+  .srow .stile,.stile--wide{flex:none;min-height:420px;}
+  .srow--a .stile--wide{min-height:480px;}
+  .shead{flex-direction:column;gap:16px;}
+  .shead .t-heading{flex:none;}
+  .screen{flex-direction:column;align-items:stretch;}
+  .screen--product{flex-direction:column-reverse;}
+  .screen-img{flex:none;width:100%;max-width:560px;align-self:center;}
+  .shipped{flex-direction:column;height:auto;}
+  .shipped > img{height:auto;aspect-ratio:3/2;}
+  .deliv{min-height:360px;}
+}
+@media (max-width:640px){
+  .page{width:calc(100% - 32px);gap:28px;}
+  .nav{width:calc(100% - 32px);}
+  .t-heading{font-size:32px;line-height:40px;}
+  .t-lead{font-size:17px;line-height:28px;}
+  .bento{grid-template-columns:1fr;padding:12px;border-radius:24px;}
+  .btop{grid-template-columns:1fr;}
+  .stages{grid-template-columns:1fr;}
+  .scard{min-height:0;}
+  .ds{grid-template-columns:1fr;padding:28px 20px;}
+  .deliv{grid-template-columns:1fr;grid-template-rows:none;}
+  .dcard{min-height:150px;gap:24px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== 01 NAVBAR ===================== -->
+<header class="nav" id="nav">
+  <a class="nav-home" href="../../" aria-label="Back to Steven Charlino home">
+    <img src="assets/icon-back.svg" alt="">
+    <span class="wordmark">Steven<br>Charlino</span>
+  </a>
+  <a class="btn-hire" href="mailto:steven.charlino@gmail.com">Hire Me</a>
+</header>
+
+<main class="page">
+
+  <!-- ===================== 02 HERO (video slot) ===================== -->
+  <!-- To add the video: put the file at assets/hero.mp4 and uncomment the
+       <source>. Until then the poster is shown. -->
+  <div class="media">
+    <video poster="assets/hero-video-poster.jpg" autoplay muted loop playsinline preload="none" aria-label="Alomos brand film">
+      <!-- <source src="assets/hero.mp4" type="video/mp4"> -->
+    </video>
+  </div>
+
+  <!-- ===================== 03 INTRO ===================== -->
+  <section class="intro">
+    <p class="intro-credits">
+      <span>ALOMOS — Singapore-based e-commerce</span>
+      <span class="gap"></span>
+      <span>Product Designer: Steven Charlino</span>
+      <span>Design System: ALOMOS UI</span>
+      <span>Typeface: Poppins</span>
+      <span>Stack: Web, responsive</span>
+    </p>
+    <div>
+      <h1 class="intro-title">Alomos</h1>
+      <div class="intro-body">
+        <p>Alomos is a Singapore-based e-commerce newcomer aiming to become the trusted one-stop shop for electronics and gadgets — a bold goal in a market already dominated by well-known players. As a new entrant with no brand recognition yet, the challenge was clear: how do you convince customers to trust an unfamiliar name over competitors they already know?</p>
+        <p>I helped Alomos build that trust from the ground up, shaping their brand experience, brand guidelines, website, and design system. Differentiating their offering in a crowded marketplace meant defining a clear unique selling proposition and pairing it with high-quality visuals that could carry a premium brand identity — turning “unknown newcomer” into a credible, trustworthy option for customers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 HERO (brand still) ===================== -->
+  <div class="media media--brand" role="img" aria-label="The Alomos wordmark in neon pink and blue"></div>
+
+  <!-- ===================== 04b RESULT BENTO ===================== -->
+  <section class="bento" aria-label="Alomos storefront moments">
+    <div class="bcol">
+      <div class="tile t-paid">
+        <span class="t-eyebrow">Order placed</span>
+        <h3>Payment<br>successful.</h3>
+        <p>Thanks for shopping with Alomos. Your Airpods Max are being packed.</p>
+        <span class="spacer"></span>
+        <span class="pill-btn">Track my order</span>
+      </div>
+      <div class="tile t-pay">
+        <img class="icon" src="assets/icon-card.svg" alt="">
+        <h3>Pay your<br>way</h3>
+        <span class="grow"></span>
+        <div class="glass">
+          <div class="methods"><span>Stripe</span><span>VISA</span><span>PayPal</span></div>
+          <div class="price"><b>$99.99</b><span>/mo · 6 months</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bcol">
+      <div class="btop">
+        <div class="tile t-eta">
+          <div class="glass">
+            <p class="eta-days">2 days</p>
+            <p class="eta-to">to your door</p>
+            <img class="eta-stage" style="left:52px;top:224px" src="assets/stage1.svg" alt="">
+            <img class="eta-stage" style="left:67.66px;top:175.8px" src="assets/stage2.svg" alt="">
+            <img class="eta-stage" style="left:108.66px;top:146.01px" src="assets/stage3.svg" alt="">
+            <img class="eta-stage" style="left:159.34px;top:146.01px" src="assets/stage4.svg" alt="">
+            <img class="eta-stage" style="left:200.34px;top:175.8px" src="assets/stage5.svg" alt="">
+            <span class="eta-stage s6" style="left:212px;top:220px"><img src="assets/stage6.svg" alt=""></span>
+            <p class="eta-carrier">DHX Express · on track</p>
+          </div>
+        </div>
+        <div class="bcol">
+          <div class="tile t-cart">
+            <span class="badge"><img src="assets/icon-check-big.svg" alt=""></span>
+            <div><b>Added to cart</b><span>View your cart</span></div>
+          </div>
+          <div class="tile t-secure">
+            <img class="ring" src="assets/ring.svg" alt="">
+            <div><b>Secure payment</b><span>encrypted checkout</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tile t-timeline">
+        <div class="tl-copy">
+          <h3>Your order, every step in view.</h3>
+          <p>No guessing,<br>no chasing.</p>
+        </div>
+        <div class="tl-stages">
+          <div class="stage stage--placed"><div><b>Order placed</b><span>Payment confirmed</span></div><i><img src="assets/icon-placed.svg" alt=""></i></div>
+          <div class="stage stage--shipped"><div><b>Shipped</b><span>DHX Express · 2 business days</span></div><i><img src="assets/icon-shipped.svg" alt=""></i></div>
+          <div class="stage stage--delivered"><div><b>Delivered</b><span>Free 30-day returns</span></div><i><img src="assets/icon-delivered.svg" alt=""></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bcol">
+      <div class="tile t-suggest">
+        <p class="sg-head">Goes well with<br>your Airpods Max.</p>
+        <p class="sg-sub">Picked for you — one tap to add.</p>
+        <img class="sg-p left" src="assets/pixel-buds-pro.png" alt="Pixel Buds Pro">
+        <img class="sg-p right" src="assets/sony-wf-c700n.png" alt="Sony WF-C700N">
+        <span class="sg-p center"><img src="assets/airpods-pro.png" alt="Airpods Pro"></span>
+        <span class="sg-add">Airpods Pro · $249.00 <b>Add</b></span>
+      </div>
+      <div class="tile t-new">
+        <img class="nw-dot" style="left:32px" src="assets/dot1.svg" alt="">
+        <img class="nw-dot" style="left:66px" src="assets/dot2.svg" alt="">
+        <img class="nw-dot" style="left:100px" src="assets/dot3.svg" alt="">
+        <span class="nw-glass"><img src="assets/live-dot.svg" alt="">New arrival · in stock</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 APPROACH ===================== -->
+  <section class="approach">
+    <div class="pmap" id="pmap">
+      <div class="pmap-half flow">
+        <div class="stage-700">
+          <span class="conn" style="inset:10.56% 21.43% 8.89% 21.43%"><span class="pad" style="inset:-0.1% -0.19%"><img src="assets/conn1.svg" alt=""></span></span>
+          <span class="conn" style="inset:49.44% 12.86% 26.11% 13.57%"><span class="pad" style="inset:-0.34% -0.15%"><img src="assets/conn2.svg" alt=""></span></span>
+          <span class="conn" style="inset:11.83% 20.93% 10.17% 20.93%"><img src="assets/conn3.svg" alt=""></span>
+          <span class="conn" style="inset:73.5% 32.64% 25.72% 32.64%"><img src="assets/conn4.svg" alt=""></span>
+          <span class="node" style="left:276px;top:45px">Blank page</span>
+          <span class="node" style="left:253px;top:125px">Logo &amp; branding</span>
+          <span class="node" style="left:261px;top:205px">Design system</span>
+          <span class="node" style="left:45px;top:365px;width:210px">Research</span>
+          <span class="node" style="left:45px;top:423px;width:210px">Prototype tests</span>
+          <span class="node" style="left:455px;top:395px;width:190px">UI design</span>
+          <span class="node node--approval" style="left:232px;top:639px;width:236px">Manager approval</span>
+          <span class="node" style="left:257px;top:740px">Front-end build</span>
+          <span class="node node--launch" style="left:226px;top:820px">Launch · first customer</span>
+          <span class="flow-note">Iterate until approved</span>
+          <span class="t-eyebrow">Process map</span>
+        </div>
+      </div>
+      <div class="pmap-half persona">
+        <div class="stage-700">
+          <div class="persona-bg"></div>
+          <div class="persona-tint"></div>
+          <span class="t-eyebrow">Who it was for</span>
+          <span class="face l"><img src="assets/persona-left.png" alt=""></span>
+          <span class="face r"><img src="assets/persona-right.png" alt=""></span>
+          <span class="face c"><img src="assets/persona-center.png" alt="A first-time buyer checking her phone"></span>
+          <span class="persona-chip"><span>First-time buyer</span></span>
+          <p class="persona-quote">“Is this store<br>even real?”</p>
+          <p class="persona-note">Persona insight — the doubt every newcomer store has to beat, and the question each screen was designed to answer.</p>
+          <span class="persona-dots"><img src="assets/dot-active.svg" alt=""><img src="assets/dot-idle.svg" alt=""><img src="assets/dot-idle.svg" alt=""></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stages">
+      <article class="scard">
+        <div class="scard-top"><span class="scard-num">01</span><span class="hat t-eyebrow">Brand</span></div>
+        <h3 class="t-sub">Logo &amp; branding</h3>
+        <p class="t-small">A store with no name needs a face first. I designed the Alomos logo and brand so a newcomer could look established from day one.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">Logo</span><span class="tag t-label">Brand guide</span></div>
+      </article>
+      <article class="scard">
+        <div class="scard-top"><span class="scard-num">02</span><span class="hat t-eyebrow">System</span></div>
+        <h3 class="t-sub">Design system</h3>
+        <p class="t-small">Before the first page, I built ALOMOS UI — colour, type and components — so everything after it would stay consistent.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">Tokens</span><span class="tag t-label">Components</span></div>
+      </article>
+      <article class="scard">
+        <div class="scard-top"><span class="scard-num">03</span><span class="hat t-eyebrow">Research</span></div>
+        <h3 class="t-sub">Research</h3>
+        <p class="t-small">I studied the business goals and how shoppers buy electronics online, to find what makes them trust a store — or leave it.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">Business goals</span><span class="tag t-label">Shopper insight</span></div>
+      </article>
+      <article class="scard">
+        <div class="scard-top"><span class="scard-num">04</span><span class="hat t-eyebrow">Design</span></div>
+        <h3 class="t-sub">UX &amp; prototype</h3>
+        <p class="t-small">I mapped the user flows, wireframed the full journey and built a clickable prototype to test the ideas end to end.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">User flows</span><span class="tag t-label">Prototype</span></div>
+      </article>
+      <article class="scard">
+        <div class="scard-top"><span class="scard-num">05</span><span class="hat t-eyebrow">Approval</span></div>
+        <h3 class="t-sub">Approval</h3>
+        <p class="t-small">I presented the prototype to my line manager, took the feedback, and iterated until it was signed off — the green light to build.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">Stakeholder review</span><span class="tag t-label">Sign-off</span></div>
+      </article>
+      <article class="scard scard--hot">
+        <div class="scard-top"><span class="scard-num">06</span><span class="hat t-eyebrow">Engineering</span></div>
+        <h3 class="t-sub">Build &amp; launch</h3>
+        <p class="t-small">Then I developed the website myself, learning as I built, and took it all the way to launch — and Alomos’s first customer.</p>
+        <span class="grow"></span>
+        <div class="tags"><span class="tag t-label">Front-end</span><span class="tag t-label">Launch</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== 06 SOLUTION ===================== -->
+  <section class="solution">
+    <div class="srow srow--a">
+      <article class="stile stile--wide stile--dark">
+        <div class="svis"><img class="fill" src="assets/shot-homepage-laptop.png" alt="The Alomos homepage on a laptop"></div>
+        <div class="scopy"><h3 class="t-title">A premium first impression</h3><p class="t-small">A dark, product-first hero with high-quality visuals, so a store nobody knew yet still looked established from the first second.</p></div>
+      </article>
+      <article class="stile">
+        <div class="svis" style="gap:18px">
+          <div class="logo-plate"><img src="assets/logo-alomos.png" alt="ALOMOS"></div>
+          <div class="swatches"><i style="background:#D33B66"></i><i style="background:#AF274D"></i><i style="background:#4DAFE3"></i><i style="background:#1E2225"></i><i style="background:#FFC400"></i></div>
+        </div>
+        <div class="scopy"><h3 class="t-title">A brand worth recognising</h3><p class="t-small">Logo, colour and type — documented in a branding guide so Alomos looks the same on every screen.</p></div>
+      </article>
+    </div>
+
+    <div class="srow srow--b">
+      <article class="stile">
+        <div class="svis">
+          <div class="chips">
+            <div><span class="chip chip--brand">Apple</span><span class="chip chip--brand">Sudio</span><span class="chip chip--brand">Logitech</span></div>
+            <div><span class="chip chip--brand">SteelSeries</span><span class="chip chip--brand">Asus</span><span class="chip chip--brand">Jabra</span></div>
+            <div><span class="chip chip--brand">Razer</span><span class="chip chip--brand">Google</span></div>
+          </div>
+        </div>
+        <div class="scopy"><h3 class="t-title">Borrow trust from familiar brands</h3><p class="t-small">Shopping by brand lets people walk in through names they already trust — each with delivery within 24 hours.</p></div>
+      </article>
+      <article class="stile">
+        <div class="svis">
+          <div class="filters"><span class="chip chip--filter">Price&nbsp;&nbsp;▾</span><span class="chip chip--filter">Rating&nbsp;&nbsp;▾</span><span class="chip chip--filter">Color&nbsp;&nbsp;▾</span><span class="chip chip--filter">Offer&nbsp;&nbsp;▾</span></div>
+          <div class="findsound">
+            <p class="t-sub">Find your sound</p>
+            <span class="opt" style="background:var(--bg-soft);color:var(--text-2)">Over-ear</span>
+            <span class="opt" style="background:var(--secondary);color:#fff">In-ear</span>
+            <span class="opt" style="background:var(--primary);color:#fff">Speakers</span>
+          </div>
+        </div>
+        <div class="scopy"><h3 class="t-title">Find by need, not by spec</h3><p class="t-small">Filters for price, rating and colour — plus ‘Find your sound’ by fit — the least-effort route to the right product.</p></div>
+      </article>
+      <article class="stile">
+        <div class="svis">
+          <div class="checkout">
+            <div class="ship"><i></i><div><b>Free Delivery</b><span>Enter your postal code for delivery availability</span></div></div>
+            <div class="ship"><i></i><div><b>Return Delivery</b><span>Free 30-day delivery returns</span></div></div>
+            <span class="addcart">Add to Cart</span>
+          </div>
+        </div>
+        <div class="scopy"><h3 class="t-title">Answers before the question</h3><p class="t-small">Delivery and returns sit right beside Add to Cart, so doubts get settled at the exact moment of paying.</p></div>
+      </article>
+    </div>
+
+    <div class="srow srow--c">
+      <article class="stile">
+        <div class="svis">
+          <div class="pcard">
+            <img src="assets/airpods-max.png" alt="Airpods Max">
+            <div class="pcard-info">
+              <span class="name">Airpods Max</span>
+              <span class="brand">Apple</span>
+              <span class="stars"><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt="">&nbsp;&nbsp;(87)</span>
+              <span class="amt">$SGD 599.00</span>
+              <span class="mo">or $SGD 99.99/month</span>
+            </div>
+          </div>
+        </div>
+        <div class="scopy"><h3 class="t-title">Proof on every product</h3><p class="t-small">Ratings, review counts and clear pricing — including a monthly option — on every card and product page.</p></div>
+      </article>
+      <article class="stile">
+        <div class="svis"><img class="fill" src="assets/shot-product-gallery.jpg" alt="Airpods Max product gallery with colour variants"></div>
+        <div class="scopy"><h3 class="t-title">The product leads</h3><p class="t-small">Every product page opens with the object itself — large, clean, with its colour variants — so quality reads before price.</p></div>
+      </article>
+      <article class="stile stile--dark">
+        <div class="svis tokens">
+          <div class="token"><i style="background:#D33B66"></i><b>primary</b><span>#D33B66</span></div>
+          <div class="token"><i style="background:#4DAFE3"></i><b>secondary</b><span>#4DAFE3</span></div>
+          <div class="token"><i style="background:#EFF1F8"></i><b>gray_100</b><span>#EFF1F8</span></div>
+          <div class="token"><i style="background:#FFC400"></i><b>accent</b><span>#FFC400</span></div>
+          <div class="ramp"><b style="font-size:34px">Aa</b><b style="font-size:24px">Aa</b><b style="font-size:17px">Aa</b><b style="font-size:13px">Aa</b><span>Poppins</span></div>
+        </div>
+        <div class="scopy"><h3 class="t-title">One system behind it all</h3><p class="t-small">ALOMOS UI — colour, type and components — kept every screen consistent and made handover to development smoother.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== 07 DESIGN IN DETAIL ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2 class="t-heading">The screens, and why they work.</h2>
+      <p class="t-lead">Two screens carry most of the trust: the homepage, where people decide whether to stay, and the product page, where they decide whether to pay. I designed both — and wrote the code behind them.</p>
+    </div>
+
+    <div class="screen">
+      <div class="screen-img">
+        <img src="assets/screen-homepage.jpg" alt="Alomos homepage">
+        <span class="pin" style="left:3.39%;top:6.88%">1</span>
+        <span class="pin" style="left:3.04%;top:30.66%">2</span>
+        <span class="pin" style="left:2.5%;top:55.19%">3</span>
+      </div>
+      <div class="notes">
+        <div class="notes-head"><span class="t-eyebrow">Homepage</span><h3 class="t-title">Decide to stay, within one scroll.</h3></div>
+        <div class="note"><span class="pin">1</span><div><p class="t-sub">Product-led campaign banner</p><p class="t-small">One product, one price, one action — a confident first impression instead of a wall of offers.</p></div></div>
+        <div class="note"><span class="pin">2</span><div><p class="t-sub">Filters right under the hero</p><p class="t-small">Price, Rating, Color, Categories and Offer are one tap away — no digging through menus.</p></div></div>
+        <div class="note"><span class="pin">3</span><div><p class="t-sub">Cards that close the decision</p><p class="t-small">Every card shows rating, price and Add to Cart, so the whole choice happens at a glance.</p></div></div>
+      </div>
+    </div>
+
+    <div class="screen screen--product">
+      <div class="notes">
+        <div class="notes-head"><span class="t-eyebrow">Product page</span><h3 class="t-title">Decide to pay, without a doubt left.</h3></div>
+        <div class="note"><span class="pin">1</span><div><p class="t-sub">The product, then its variants</p><p class="t-small">A large product shot with colour variants as thumbnails — people see exactly what will arrive.</p></div></div>
+        <div class="note"><span class="pin">2</span><div><p class="t-sub">Price, rating and a monthly option</p><p class="t-small">Full price, an instalment option and the review count sit together, right under the name.</p></div></div>
+        <div class="note"><span class="pin">3</span><div><p class="t-sub">Delivery and returns beside the buttons</p><p class="t-small">Free delivery and 30-day returns are answered next to Add to Cart and Buy Now — at the moment of doubt.</p></div></div>
+      </div>
+      <div class="screen-img">
+        <img src="assets/screen-product.jpg" alt="Alomos product page for Airpods Max">
+        <span class="pin" style="left:4.11%;top:7.3%">1</span>
+        <span class="pin" style="left:50.54%;top:16.3%">2</span>
+        <span class="pin" style="left:50.54%;top:41.6%">3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 07b MOCKUPS ===================== -->
+  <div class="media"><img src="assets/mockup-desktop.jpg" alt="Alomos homepage on a laptop, in use" loading="lazy"></div>
+  <!-- Website scroll — also a video slot: add assets/website-scroll.mp4
+       and uncomment the <source> to replace the still. -->
+  <div class="media">
+    <video poster="assets/website-scroll.jpg" autoplay muted loop playsinline preload="none" aria-label="Scrolling through the Alomos website">
+      <!-- <source src="assets/website-scroll.mp4" type="video/mp4"> -->
+    </video>
+  </div>
+
+  <!-- ===================== 08 DESIGN SYSTEM ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2 class="t-heading">One system, from brand to build.</h2>
+      <p class="t-lead">I built ALOMOS UI before designing a single page. Because I also wrote the front end, the same tokens — colour, type and states — carried straight from Figma into code, with nothing lost in handover.</p>
+    </div>
+    <div class="ds">
+      <div><h4>Theme colours</h4><div class="ds-card">
+        <div class="ds-row"><i style="background:#D33B66"></i><b>primary</b><span>#D33B66</span></div>
+        <div class="ds-row"><i style="background:#AF274D"></i><b>primary_dark</b><span>#AF274D</span></div>
+        <div class="ds-row"><i style="background:#4DAFE3"></i><b>secondary</b><span>#4DAFE3</span></div>
+        <div class="ds-row"><i style="background:#8894CA"></i><b>secondary_dark</b><span>#8894CA</span></div>
+      </div></div>
+      <div><h4>Grayscale</h4><div class="ds-card">
+        <div class="ds-row"><i class="edge" style="background:#FFFFFF"></i><b>white</b><span>#FFFFFF</span></div>
+        <div class="ds-row"><i style="background:#EFF1F8"></i><b>gray_100</b><span>#EFF1F8</span></div>
+        <div class="ds-row"><i style="background:#D0DAE6"></i><b>gray_200</b><span>#D0DAE6</span></div>
+        <div class="ds-row"><i style="background:#BFCDD9"></i><b>gray_300</b><span>#BFCDD9</span></div>
+        <div class="ds-row"><i style="background:#ADBDCC"></i><b>gray_400</b><span>#ADBDCC</span></div>
+        <div class="ds-row"><i style="background:#8595A5"></i><b>gray_500</b><span>#8595A5</span></div>
+        <div class="ds-row"><i style="background:#485359"></i><b>gray_800</b><span>#485359</span></div>
+        <div class="ds-row"><i style="background:#1E2225"></i><b>black</b><span>#1E2225</span></div>
+      </div></div>
+      <div><h4>Semantics</h4><div class="ds-card">
+        <div class="ds-row"><i style="background:#7FED10"></i><b>warning</b><span>#7FED10</span></div>
+        <div class="ds-row"><i style="background:#90A7FF"></i><b>info</b><span>#90A7FF</span></div>
+        <div class="ds-row"><i style="background:#F24242"></i><b>danger</b><span>#F24242</span></div>
+        <div class="ds-row"><i style="background:#06D34B"></i><b>success</b><span>#06D34B</span></div>
+      </div></div>
+      <div><h4>Typography — Poppins</h4><div class="ds-type">
+        <div><b style="font-size:26px">Display</b><span>54 / 72</span></div>
+        <div><b style="font-size:22px">Title</b><span>40 / 40</span></div>
+        <div><b style="font-size:17px">Headline</b><span>24</span></div>
+        <div><b style="font-size:14px;font-weight:400">Body</b><span>16 / 26</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ===================== 09 OUTCOME ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2 class="t-heading">Live — with its first customer.</h2>
+      <p class="t-lead">Alomos went from a blank page to a launched store with its first customer. Brand, system, prototype and code — every layer of it came from one person.</p>
+    </div>
+    <div class="shipped">
+      <img src="assets/shot-shipped.jpg" alt="The shipped Alomos website on a laptop" loading="lazy">
+      <div class="deliv">
+        <div class="dcard"><span class="done"><img src="assets/icon-check-small.svg" alt=""></span><div><p class="t-sub">Brand identity</p><p class="t-small">Logo, colour and type, documented in a brand guide.</p></div></div>
+        <div class="dcard"><span class="done"><img src="assets/icon-check-small.svg" alt=""></span><div><p class="t-sub">ALOMOS UI</p><p class="t-small">Tokens and components, shared by design and code.</p></div></div>
+        <div class="dcard"><span class="done"><img src="assets/icon-check-small.svg" alt=""></span><div><p class="t-sub">Approved prototype</p><p class="t-small">The full journey, signed off by my line manager.</p></div></div>
+        <div class="dcard"><span class="done"><img src="assets/icon-check-small.svg" alt=""></span><div><p class="t-sub">Live website</p><p class="t-small">Developed by me, launched, and earning its first customer.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  // Navbar turns into the frosted pill once the page moves — same trigger
+  // distance as the main site so the two feel like one product.
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 48); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scale the two fixed 700x900 process-map drawings to their half's width.
+  var map = document.getElementById('pmap');
+  function fit(){
+    var halves = map.querySelectorAll('.pmap-half');
+    for (var i = 0; i < halves.length; i++){
+      halves[i].style.setProperty('--s', halves[i].clientWidth / 700);
+    }
+  }
+  fit();
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(map);
+  else window.addEventListener('resize', fit);
+})();
+</script>
+</body>
+</html>

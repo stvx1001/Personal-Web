@@ -1206,16 +1206,21 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   var projects = [
     ['AgriAku',            'Agriculture Tech',              'w-agriaku'],
     ['Metrodata Academy',  'Education',                     'w-metrodata'],
-    ['Alomos',             'e-Commerce Web',                'w-alomos'],
+    ['Alomos',             'e-Commerce Web',                'w-alomos', 'fulltimeworks/alomos/'],
     ['SkorKu',             'Score Credit App',              'w-skorku'],
     ['Design System',      'Various DS in every companies', 'w-designsystem']
   ];
+  // A 4th field makes the card a link to that project's case study. The
+  // path is relative (no leading slash) so it resolves both on GitHub Pages
+  // under /Personal-Web/ and at the root of the future custom domain.
   var cards = projects.map(function(p){
-    return '<article class="work ' + p[2] + '">' +
+    var tag = p[3] ? 'a' : 'article';
+    var href = p[3] ? ' href="' + p[3] + '" aria-label="' + p[0] + ' case study"' : '';
+    return '<' + tag + ' class="work ' + p[2] + '"' + href + '>' +
            '<div class="work-scrim"></div>' +
            '<div class="work-badge">' + WORK_ARROW + '</div>' +
            '<div class="work-meta"><b>' + p[0] + '</b><span>' + p[1] + '</span></div>' +
-           '</article>';
+           '</' + tag + '>';
   }).join('');
   document.getElementById('workRun').innerHTML = cards + cards;
 

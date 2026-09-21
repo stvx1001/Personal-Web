@@ -16,7 +16,41 @@ Next.js 15 + `motion` + Lenis + Tailwind v4 + MDX on Vercel. Treat this file as
 the reference for how the page looks and behaves, not as the target structure.
 
 Sections in order: navbar · banner/hero · Pixel Spell · MINIMAL · marquee ·
-works rail + client logos · Hire Me · Currently bento · footer.
+works rail + client logos · Hire Me · A Little About Me (stat cards) · footer.
+
+## Case-study pages
+
+Each project gets its own directory, mirroring the URL it will have on the
+custom domain:
+
+```
+fulltimeworks/alomos/index.html   → /fulltimeworks/alomos/
+fulltimeworks/alomos/assets/      → its images (real files, not base64)
+```
+
+- **Every path is relative** — no leading slash, anywhere. The site is served
+  from `/Personal-Web/` on GitHub Pages today and from `/` on the custom domain
+  later; relative paths work in both with no edits. The case study links home
+  with `../../`; the Works card links in with `fulltimeworks/alomos/`.
+- **Works cards link via a 4th field** in the `projects` array in `index.html`
+  (`['Alomos', 'e-Commerce Web', 'w-alomos', 'fulltimeworks/alomos/']`). With it
+  the card renders as an `<a>`, without it as a plain `<article>`. Adding the
+  next case study is: make the directory, add the 4th field.
+- **Assets are files, not base64**, unlike the main page. A case study is
+  image-heavy; files cache and keep the HTML small. Same rules otherwise: JPEG
+  q82 for opaque photos, PNG only when the image truly needs transparency
+  (measure it — several Figma PNGs report alpha but are fully opaque), ~2x the
+  rendered width, **never upscaled** (`sips --resampleWidth` will happily
+  upscale; check the source width first).
+- **Video slots**: Steven supplies video himself. The slots are `<video>` tags
+  with only a `poster`; add the MP4 to `assets/` and uncomment the `<source>`.
+  The Alomos hero poster is cropped from a Figma render because the source is a
+  video fill with no still — replace it when the real video lands.
+- Each page is self-contained (its own `<style>`), matching the main page. A
+  shared stylesheet belongs to the Next.js migration, not this prototype.
+- Case-study pages have `<meta name="viewport">`. **The main `index.html` does
+  not** — it renders mobile at a 980px layout width. Known, not yet fixed; the
+  scroll interaction was tuned without it, so test that before adding it.
 
 ## The scroll interaction — read this before touching the JS
 
@@ -169,6 +203,15 @@ Two real limits, both hit in practice:
   `sips -c H W --cropOffset Y X`. That found a reference image in one call where
   metadata could not.
 
+### Building a page from a tall Figma frame
+
+For something like the Alomos page (1440x13016): `get_design_context` on the
+whole frame truncates at ~100KB, so call it per section node and save the
+output. For the visual, one `get_screenshot` at `maxDimension` equal to the
+frame height gives a 1:1 render; slice it with a small Swift/CoreGraphics
+script (`CGImage.cropping(to:)`). **Don't use `sips --cropOffset` on tall
+images** — it produced slices from the wrong offsets.
+
 ### The SkorKu file
 
 `YUZMDH5kqna1441GZLvRPm` ("01. SkorKu Website 3.0"), page `3448:38297` ("Sum").
@@ -178,6 +221,10 @@ Works / Hireme / Currently / Footer. **`Home` has `layoutMode: "NONE"`** — the
 sections are absolutely positioned, so if you change one section's height you
 must move every sibling below it and resize `Home`, or it silently overlaps.
 That bit the Currently rebuild (76px into the Footer) and was fixed by hand.
+
+Also on page "Sum": `3877:2487` is the **Alomos case study** design, built as
+`fulltimeworks/alomos/`; `3867:2494` is the full ALOMOS project archive (design
+system, storefront pages, marketing shots) to pull assets from.
 
 Steven's prototype recordings are `.mov`. Extract frames with ffmpeg rather than
 guessing — `ffmpeg -i in.mov -vf "fps=2,scale=620:-1,tile=4x4" -frames:v 1
