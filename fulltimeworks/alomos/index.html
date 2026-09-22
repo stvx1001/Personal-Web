@@ -366,7 +366,7 @@ a{color:inherit;text-decoration:none;}
    of his work shots that runs off both edges; right, the next project.
    ============================================================ */
 .cs-foot{background:#0B0B10;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:36px;}
-.cf-card{position:relative;display:block;height:588px;border-radius:16px;overflow:hidden;padding:48px;}
+.cf-card{position:relative;display:block;height:558px;border-radius:16px;overflow:hidden;padding:48px;}
 .cf-hire{background:#fff;color:#0B0B10;}
 .cf-next{background:#121217;color:#fff;box-shadow:inset 0 0 0 1px #26262E;}
 .cf-eyebrow{display:block;font-size:18px;line-height:24px;color:#7A7A7A;}
@@ -376,9 +376,11 @@ a{color:inherit;text-decoration:none;}
   transition:transform .4s var(--ease);}
 .cf-next .cf-arrow{color:#8A8A93;}
 .cf-card:hover .cf-arrow{transform:translate(4px,-4px);}
-.cf-strip{position:absolute;top:232px;bottom:0;left:-118px;display:flex;gap:22px;
+/* three 216x326 shots, centred so both ends bleed off the card equally
+   (3 x 216 + 2 x 22 = 692, half is 346) */
+.cf-strip{position:absolute;top:232px;bottom:0;left:calc(50% - 346px);display:flex;gap:22px;
   transition:transform .8s var(--ease);}
-.cf-strip i{flex:none;width:326px;border-radius:12px;background:center/cover no-repeat;}
+.cf-strip i{flex:none;width:216px;border-radius:12px;background:center/cover no-repeat;}
 .cf-hire:hover .cf-strip{transform:translateX(-40px);}
 .cf-band{position:absolute;left:0;right:0;top:232px;height:210px;
   background:url("assets/work-skorku.jpg") center/cover no-repeat;transition:transform .8s var(--ease);}
@@ -494,13 +496,13 @@ a{color:inherit;text-decoration:none;}
   /* Footer: the two cards stack, each shorter */
   .cs-foot{padding:16px;gap:16px;}
   .cf-card{padding:26px 24px;}
-  .cf-hire{height:420px;}
+  .cf-hire{height:370px;}
   .cf-next{height:330px;}
   .cf-eyebrow{font-size:15px;line-height:20px;}
   .cf-title{margin-top:2px;font-size:44px;line-height:56px;}
   .cf-arrow{top:28px;right:24px;width:24px;height:24px;}
-  .cf-strip{top:128px;left:-60px;gap:14px;}
-  .cf-strip i{width:200px;}
+  .cf-strip{top:128px;left:calc(50% - 254px);gap:14px;}
+  .cf-strip i{width:160px;}
   .cf-band{top:128px;height:170px;}
   .media{aspect-ratio:358/300;}
   .media--brand{aspect-ratio:358/220;}
