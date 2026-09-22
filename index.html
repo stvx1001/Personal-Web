@@ -4,7 +4,7 @@
 <title>Steven Charlino - Product Designer with over 5 years experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Days+One&display=swap">
 
 <style>
 /* ============================================================
@@ -35,7 +35,9 @@
      point at the same family now — 700 is its heaviest weight. */
   --sans:"Radio Canada Big",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --display:var(--sans);
-  --poster:var(--sans);
+  /* the marquee band is the one place that keeps a poster face (Steven,
+     Sept 23 2026) — everything else on the site is Radio Canada Big */
+  --poster:"Days One","Radio Canada Big",Impact,"Arial Black",sans-serif;
 
   --shell:1248px;
   --gutter:clamp(24px,6.6vw,96px);
@@ -509,7 +511,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
    white page with light grey type, so it reads as a divider between
    MINIMAL and Works rather than a block of colour. */
 .marquee{
-  background:var(--paper);
+  background:#000;
   color:#D0D0D0;
   overflow:hidden;
   display:flex;
