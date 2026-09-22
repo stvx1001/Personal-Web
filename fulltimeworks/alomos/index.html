@@ -63,7 +63,7 @@ a{color:inherit;text-decoration:none;}
    20) and a 40px rhythm between sections (Figma: pad 40, gap 40). At 1440
    that leaves 1392 of content; every grid below is proportional, so it all
    narrows as one piece. */
-.page{width:min(1400px,100% - 48px);margin:0 auto;padding:140px 0 64px;
+.page{width:min(1400px,100% - 48px);margin:0 auto;padding:140px 0 20px;
   display:flex;flex-direction:column;gap:40px;}
 
 /* ---- type styles (Figma "CS/…" text styles) ---- */
@@ -314,47 +314,41 @@ a{color:inherit;text-decoration:none;}
 .scard--hot .hat,.scard--hot .tag{background:rgba(255,255,255,.2);color:#fff;}
 
 /* ============================================================
-   06 Solution — three bento rows of "decision → design" tiles.
-   Every tile: a visual that takes the free space, copy pinned below.
+   06 Solution — Figma "Solution / system panel" (3943:1582), after
+   Steven's "Solution" reference: a soft panel of small labelled lists,
+   each a white card of rows (thumbnail + label), with two faded cards
+   bleeding off the edges. Four columns — ghost | list | list | ghost —
+   so the two middle columns sit centred and the ghosts run to the edges.
    ============================================================ */
-.solution{display:flex;flex-direction:column;gap:20px;}
-.srow{display:flex;gap:20px;}
-.srow--a{height:500px;}
-.srow--b,.srow--c{height:540px;}
-.stile{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:20px;padding:28px;
-  border-radius:var(--r-card);background:var(--bg-soft);overflow:hidden;}
-.stile--wide{flex:0 0 calc((100% - 20px) * 880 / 1380);}
-.stile--dark{background:var(--bg-dark);}
-.svis{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
-.svis > img.fill{width:100%;height:100%;object-fit:contain;}
-.scopy{display:flex;flex-direction:column;gap:8px;}
-.scopy .t-title{color:var(--text);}
-.scopy .t-small{color:var(--text-2);}
-.stile--dark .scopy .t-title{color:#fff;}
-.stile--dark .scopy .t-small{color:#fff;opacity:.7;}
-
-.logo-plate{width:100%;background:#fff;border-radius:var(--r-card);padding:22px;display:grid;place-items:center;}
-.logo-plate img{width:240px;height:46px;object-fit:contain;}
-.swatches{display:flex;gap:8px;width:100%;}
-.swatches i{flex:1;height:40px;border-radius:var(--r-card);}
-
-.chips{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.chips div{display:flex;gap:8px;}
-.chip{background:#fff;border:1px solid var(--border);border-radius:var(--r-pill);white-space:nowrap;}
-.chip--brand{padding:8px 14px;font-weight:500;font-size:14px;line-height:20px;color:var(--text);}
-.chip--filter{padding:6px 12px;font-size:14px;line-height:22px;color:var(--text-2);}
-.filters{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
-.findsound{width:100%;background:#fff;border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:8px;}
-.findsound .t-sub{color:var(--text);}
-.opt{padding:9px 14px;border-radius:var(--r-card);font-weight:500;font-size:14px;line-height:20px;}
-
-.checkout{width:100%;background:#fff;border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:10px;}
-.ship{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r-card);}
-.ship i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bg-primary-soft);}
-.ship b{display:block;font-weight:500;font-size:14px;line-height:20px;color:var(--primary);}
-.ship span{display:block;font-size:14px;line-height:22px;color:var(--text-2);}
-.addcart{padding:11px 14px;border-radius:var(--r-card);background:var(--primary);color:#fff;
-  text-align:center;font-weight:500;font-size:14px;line-height:20px;}
+.sys{position:relative;overflow:hidden;background:var(--bg-soft);border-radius:var(--r-card);
+  padding:96px 0 84px;display:grid;grid-template-columns:minmax(0,1fr) 330px 330px minmax(0,1fr);
+  column-gap:30px;row-gap:44px;align-items:start;}
+.sgroup h3{font-weight:600;font-size:18px;line-height:26px;color:var(--black);margin-bottom:12px;}
+.slist{list-style:none;background:#fff;border:1px solid #E3E8F0;border-radius:var(--r-card);
+  padding:0 16px;box-shadow:0 4px 14px rgba(31,33,38,.06);}
+.slist li{display:flex;align-items:center;gap:16px;padding:16px 0;
+  font-weight:500;font-size:16px;line-height:24px;color:var(--text);}
+.slist li + li{border-top:1px solid #E9EDF3;}
+.th{flex:none;width:42px;height:42px;border-radius:6px;background:center/cover no-repeat;
+  display:grid;place-items:center;}
+.th--round{width:46px;height:46px;border-radius:50%;background-color:#F1F2F4;background-size:80%;background-position:center;}
+.th--icon{background:#BFC7D3;color:#fff;}
+.th--icon.th--round{background:#BFC7D3;}
+.th svg{width:22px;height:22px;display:block;}
+/* just the ALOMOS "A": the wordmark, sized so its first letter fills the square */
+.th--logo{background:#fff url("assets/logo-alomos.png") 3px center/190px auto no-repeat;box-shadow:inset 0 0 0 1px #E3E8F0;}
+.sg-a{grid-column:2;grid-row:1;}
+.sg-b{grid-column:3;grid-row:1;}
+.sg-c{grid-column:2;grid-row:2;}
+.sg-d{grid-column:3;grid-row:2;}
+.sg-ghost{opacity:.32;pointer-events:none;}
+.sg-e{grid-column:4;grid-row:2;width:330px;}
+.sys-card{grid-column:1;grid-row:1;justify-self:end;width:300px;margin-top:-16px;}
+.sys-card .pcard{box-shadow:0 4px 14px rgba(31,33,38,.06);padding:10px 14px 10px 10px;gap:12px;}
+.sys-card .pcard > img{width:80px;height:80px;}
+.sys-card .pcard-info{gap:2px;}
+.sys-card .pcard-info .name,.sys-card .pcard-info .amt{font-size:15px;line-height:22px;}
+.sys-card .pcard-info .brand,.sys-card .stars,.sys-card .pcard-info .mo{font-size:12px;line-height:18px;}
 
 .pcard{width:100%;background:#fff;border-radius:var(--r-card);display:flex;align-items:center;gap:16px;padding:14px 18px 14px 14px;}
 .pcard > img{width:104px;height:104px;flex:none;object-fit:cover;border-radius:var(--r-card);}
@@ -366,13 +360,29 @@ a{color:inherit;text-decoration:none;}
 .pcard-info .amt{font-weight:600;font-size:18px;line-height:26px;color:var(--primary);}
 .pcard-info .mo{font-size:14px;line-height:22px;color:var(--text-2);}
 
-.tokens{width:100%;display:flex;flex-direction:column;gap:10px;align-items:stretch;justify-content:center;}
-.token{display:flex;align-items:center;gap:12px;color:#fff;}
-.token i{flex:none;width:26px;height:26px;border-radius:6px;}
-.token b{flex:1;font-weight:500;font-size:14px;line-height:20px;}
-.token span{font-size:14px;line-height:22px;opacity:.55;}
-.ramp{display:flex;align-items:baseline;gap:14px;padding-top:10px;color:#fff;font-weight:700;white-space:nowrap;}
-.ramp span{font-weight:400;font-size:14px;opacity:.55;}
+/* ============================================================
+   10 Footer — Figma "10 Footer" (3945:1582), after Steven's "Footer"
+   reference: a dark band holding two cards. Left, Hire Me over a strip
+   of his work shots that runs off both edges; right, the next project.
+   ============================================================ */
+.cs-foot{background:#0B0B10;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+.cf-card{position:relative;display:block;height:588px;border-radius:16px;overflow:hidden;padding:48px;}
+.cf-hire{background:#fff;color:#0B0B10;}
+.cf-next{background:#121217;color:#fff;box-shadow:inset 0 0 0 1px #26262E;}
+.cf-eyebrow{display:block;font-size:18px;line-height:24px;color:#7A7A7A;}
+.cf-next .cf-eyebrow{color:#9A9AA3;}
+.cf-title{display:block;margin-top:6px;font-weight:500;font-size:72px;line-height:86px;letter-spacing:-.02em;}
+.cf-arrow{position:absolute;top:54px;right:48px;width:32px;height:32px;
+  transition:transform .4s var(--ease);}
+.cf-next .cf-arrow{color:#8A8A93;}
+.cf-card:hover .cf-arrow{transform:translate(4px,-4px);}
+.cf-strip{position:absolute;top:232px;bottom:0;left:-118px;display:flex;gap:22px;
+  transition:transform .8s var(--ease);}
+.cf-strip i{flex:none;width:326px;border-radius:12px;background:center/cover no-repeat;}
+.cf-hire:hover .cf-strip{transform:translateX(-40px);}
+.cf-band{position:absolute;left:0;right:0;top:232px;height:210px;
+  background:url("assets/work-skorku.jpg") center/cover no-repeat;transition:transform .8s var(--ease);}
+.cf-next:hover .cf-band{transform:scale(1.04);}
 
 /* ============================================================
    07 Design in detail · 08 Design system · 09 Outcome
@@ -441,9 +451,9 @@ a{color:inherit;text-decoration:none;}
   .tl-stages{width:100%;}
   .pmap{grid-template-columns:1fr;}
   .stages{grid-template-columns:1fr 1fr;}
-  .srow{flex-direction:column;height:auto;}
-  .srow .stile,.stile--wide{flex:none;min-height:420px;}
-  .srow--a .stile--wide{min-height:480px;}
+  .sys{grid-template-columns:minmax(0,1fr) minmax(0,330px) minmax(0,330px) minmax(0,1fr);column-gap:20px;}
+  .sys-card,.sg-e{display:none;}
+  .cs-foot{grid-template-columns:1fr;}
   .shead{flex-direction:column;gap:16px;}
   .shead .t-heading{flex:none;}
   .screen{flex-direction:column;align-items:stretch;}
@@ -477,7 +487,21 @@ a{color:inherit;text-decoration:none;}
   .nav{top:12px;padding:6px 6px 6px 8px;}
   .nav.is-stuck{top:8px;}
   .nav-home{gap:12px;}
-  .page{padding-top:84px;gap:16px;padding-bottom:48px;}
+  .page{padding-top:84px;gap:16px;padding-bottom:16px;}
+  /* Solution: the lists stack; the faded Order status closes the panel */
+  .sys{display:flex;flex-direction:column;align-items:stretch;gap:28px;padding:28px 16px 32px;}
+  .sg-e{display:block;width:auto;}
+  /* Footer: the two cards stack, each shorter */
+  .cs-foot{padding:16px;gap:16px;}
+  .cf-card{padding:26px 24px;}
+  .cf-hire{height:420px;}
+  .cf-next{height:330px;}
+  .cf-eyebrow{font-size:15px;line-height:20px;}
+  .cf-title{margin-top:2px;font-size:44px;line-height:56px;}
+  .cf-arrow{top:28px;right:24px;width:24px;height:24px;}
+  .cf-strip{top:128px;left:-60px;gap:14px;}
+  .cf-strip i{width:200px;}
+  .cf-band{top:128px;height:170px;}
   .media{aspect-ratio:358/300;}
   .media--brand{aspect-ratio:358/220;}
   .media--brand > video{width:148%;}
@@ -804,86 +828,61 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- ===================== 06 SOLUTION ===================== -->
-  <section class="solution">
-    <div class="srow srow--a">
-      <article class="stile stile--wide stile--dark">
-        <div class="svis"><img class="fill" src="assets/shot-homepage-laptop.png" alt="The Alomos homepage on a laptop"></div>
-        <div class="scopy"><h3 class="t-title">A premium first impression</h3><p class="t-small">A dark, product-first hero with high-quality visuals, so a store nobody knew yet still looked established from the first second.</p></div>
-      </article>
-      <article class="stile">
-        <div class="svis" style="gap:18px">
-          <div class="logo-plate"><img src="assets/logo-alomos.png" alt="ALOMOS"></div>
-          <div class="swatches"><i style="background:#D33B66"></i><i style="background:#AF274D"></i><i style="background:#4DAFE3"></i><i style="background:#1E2225"></i><i style="background:#FFC400"></i></div>
+  <section class="sys" aria-label="How Alomos earns trust">
+    <!-- faded edges, as in the reference: decoration only -->
+    <div class="sys-card sg-ghost" aria-hidden="true">
+      <div class="pcard">
+        <img src="assets/airpods-max.png" alt="">
+        <div class="pcard-info">
+          <span class="name">Airpods Max</span>
+          <span class="brand">Apple</span>
+          <span class="stars"><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt="">&nbsp;&nbsp;(87)</span>
+          <span class="amt">$SGD 599.00</span>
+          <span class="mo">or $SGD 99.99/month</span>
         </div>
-        <div class="scopy"><h3 class="t-title">A brand worth recognising</h3><p class="t-small">Logo, colour and type — documented in a branding guide so Alomos looks the same on every screen.</p></div>
-      </article>
+      </div>
     </div>
 
-    <div class="srow srow--b">
-      <article class="stile">
-        <div class="svis">
-          <div class="chips">
-            <div><span class="chip chip--brand">Apple</span><span class="chip chip--brand">Sudio</span><span class="chip chip--brand">Logitech</span></div>
-            <div><span class="chip chip--brand">SteelSeries</span><span class="chip chip--brand">Asus</span><span class="chip chip--brand">Jabra</span></div>
-            <div><span class="chip chip--brand">Razer</span><span class="chip chip--brand">Google</span></div>
-          </div>
-        </div>
-        <div class="scopy"><h3 class="t-title">Borrow trust from familiar brands</h3><p class="t-small">Shopping by brand lets people walk in through names they already trust — each with delivery within 24 hours.</p></div>
-      </article>
-      <article class="stile">
-        <div class="svis">
-          <div class="filters"><span class="chip chip--filter">Price&nbsp;&nbsp;▾</span><span class="chip chip--filter">Rating&nbsp;&nbsp;▾</span><span class="chip chip--filter">Color&nbsp;&nbsp;▾</span><span class="chip chip--filter">Offer&nbsp;&nbsp;▾</span></div>
-          <div class="findsound">
-            <p class="t-sub">Find your sound</p>
-            <span class="opt" style="background:var(--bg-soft);color:var(--text-2)">Over-ear</span>
-            <span class="opt" style="background:var(--secondary);color:#fff">In-ear</span>
-            <span class="opt" style="background:var(--primary);color:#fff">Speakers</span>
-          </div>
-        </div>
-        <div class="scopy"><h3 class="t-title">Find by need, not by spec</h3><p class="t-small">Filters for price, rating and colour — plus ‘Find your sound’ by fit — the least-effort route to the right product.</p></div>
-      </article>
-      <article class="stile">
-        <div class="svis">
-          <div class="checkout">
-            <div class="ship"><i></i><div><b>Free Delivery</b><span>Enter your postal code for delivery availability</span></div></div>
-            <div class="ship"><i></i><div><b>Return Delivery</b><span>Free 30-day delivery returns</span></div></div>
-            <span class="addcart">Add to Cart</span>
-          </div>
-        </div>
-        <div class="scopy"><h3 class="t-title">Answers before the question</h3><p class="t-small">Delivery and returns sit right beside Add to Cart, so doubts get settled at the exact moment of paying.</p></div>
-      </article>
+    <div class="sgroup sg-a">
+      <h3>Storefront decisions</h3>
+      <ul class="slist">
+        <li><span class="th" style="background-image:url('assets/shot-homepage-laptop.png');background-color:#1E2225"></span>Premium first impression</li>
+        <li><span class="th th--logo"></span>Brand worth recognising</li>
+        <li><span class="th" style="background-image:url('assets/airpods-max.png');background-color:#F1F2F4;background-size:contain"></span>The product leads</li>
+      </ul>
     </div>
-
-    <div class="srow srow--c">
-      <article class="stile">
-        <div class="svis">
-          <div class="pcard">
-            <img src="assets/airpods-max.png" alt="Airpods Max">
-            <div class="pcard-info">
-              <span class="name">Airpods Max</span>
-              <span class="brand">Apple</span>
-              <span class="stars"><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt=""><img src="assets/star.svg" alt="">&nbsp;&nbsp;(87)</span>
-              <span class="amt">$SGD 599.00</span>
-              <span class="mo">or $SGD 99.99/month</span>
-            </div>
-          </div>
-        </div>
-        <div class="scopy"><h3 class="t-title">Proof on every product</h3><p class="t-small">Ratings, review counts and clear pricing — including a monthly option — on every card and product page.</p></div>
-      </article>
-      <article class="stile">
-        <div class="svis"><img class="fill" src="assets/shot-product-gallery.jpg" alt="Airpods Max product gallery with colour variants"></div>
-        <div class="scopy"><h3 class="t-title">The product leads</h3><p class="t-small">Every product page opens with the object itself — large, clean, with its colour variants — so quality reads before price.</p></div>
-      </article>
-      <article class="stile stile--dark">
-        <div class="svis tokens">
-          <div class="token"><i style="background:#D33B66"></i><b>primary</b><span>#D33B66</span></div>
-          <div class="token"><i style="background:#4DAFE3"></i><b>secondary</b><span>#4DAFE3</span></div>
-          <div class="token"><i style="background:#EFF1F8"></i><b>gray_100</b><span>#EFF1F8</span></div>
-          <div class="token"><i style="background:#FFC400"></i><b>accent</b><span>#FFC400</span></div>
-          <div class="ramp"><b style="font-size:34px">Aa</b><b style="font-size:24px">Aa</b><b style="font-size:17px">Aa</b><b style="font-size:13px">Aa</b><span>Poppins</span></div>
-        </div>
-        <div class="scopy"><h3 class="t-title">One system behind it all</h3><p class="t-small">ALOMOS UI — colour, type and components — kept every screen consistent and made handover to development smoother.</p></div>
-      </article>
+    <div class="sgroup sg-b">
+      <h3>Checkout moments</h3>
+      <ul class="slist">
+        <li><span class="th th--icon"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11.92 13.75V5.5H1.83v8.25h10.09Zm0 0h6.41V11l-2.75-2.75h-3.66" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/><circle cx="5.5" cy="16.04" r="1.83" fill="currentColor"/><circle cx="15.58" cy="16.04" r="1.83" fill="currentColor"/></svg></span>Free delivery</li>
+        <li><span class="th th--icon"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3.67 10.08 11 3.67l7.33 6.41v8.25H3.67v-8.25Z" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/><path d="M9.17 18.33v-4.58h3.66v4.58" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/></svg></span>30-day returns</li>
+        <li><span class="th th--icon"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4.58 11.46l4.13 4.12 8.7-8.7" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Added to cart</li>
+      </ul>
+    </div>
+    <div class="sgroup sg-c">
+      <h3>Colour</h3>
+      <ul class="slist">
+        <li><span class="th" style="background:#D33B66"></span>Alomos Pink</li>
+        <li><span class="th" style="background:#4DAFE3"></span>Sky Blue</li>
+        <li><span class="th" style="background:#FFC400"></span>Accent Yellow</li>
+      </ul>
+    </div>
+    <div class="sgroup sg-d">
+      <h3>Find your sound</h3>
+      <ul class="slist">
+        <li><span class="th th--round" style="background-image:url('assets/airpods-max.png');background-size:70%"></span>Over-ear</li>
+        <li><span class="th th--round" style="background-image:url('assets/airpods-pro.png');background-size:150%"></span>In-ear</li>
+        <li><span class="th th--round" style="background-image:url('assets/pixel-buds-pro.png')"></span>Sport buds</li>
+        <li><span class="th th--round" style="background-image:url('assets/sony-wf-c700n.png')"></span>Everyday wireless</li>
+      </ul>
+    </div>
+    <div class="sgroup sg-e sg-ghost" aria-hidden="true">
+      <h3>Order status</h3>
+      <ul class="slist">
+        <li><span class="th th--icon th--round"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4.58 11.46l4.13 4.12 8.7-8.7" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Order placed</li>
+        <li><span class="th th--icon th--round"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11.92 13.75V5.5H1.83v8.25h10.09Zm0 0h6.41V11l-2.75-2.75h-3.66" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/><circle cx="5.5" cy="16.04" r="1.83" fill="currentColor"/><circle cx="15.58" cy="16.04" r="1.83" fill="currentColor"/></svg></span>Shipped</li>
+        <li><span class="th th--icon th--round"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3.67 10.08 11 3.67l7.33 6.41v8.25H3.67v-8.25Z" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/><path d="M9.17 18.33v-4.58h3.66v4.58" stroke="currentColor" stroke-width="1.83" stroke-linejoin="round"/></svg></span>Delivered</li>
+      </ul>
     </div>
   </section>
 
@@ -990,6 +989,26 @@ a{color:inherit;text-decoration:none;}
     </div>
   </section>
 
+  <!-- ===================== 10 FOOTER ===================== -->
+  <footer class="cs-foot">
+    <a class="cf-card cf-hire" href="mailto:steven.charlino@gmail.com">
+      <span class="cf-eyebrow">Liked what you saw?</span>
+      <span class="cf-title">Hire Me</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-strip" aria-hidden="true">
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
+      </span>
+    </a>
+    <!-- SkorKu has no case study page yet, so this goes back to the home page for now -->
+    <a class="cf-card cf-next" href="../../">
+      <span class="cf-eyebrow">Next Project</span>
+      <span class="cf-title">SkorKu</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-band" aria-hidden="true"></span>
+    </a>
+  </footer>
 </main>
 
 <script>

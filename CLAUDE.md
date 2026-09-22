@@ -78,6 +78,9 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   100vh stages jump with the phone address bar. Desktop and tablet keep the
   pinned intro. The Alomos process map has a separate phone chain (`.flow-m`)
   because the scaled 700x900 drawing is unreadable at 0.5x.
+- For headless-Chrome checks of a case study, load it as a `file://` URL.
+  Serving it with `python3 -m http.server` randomly failed image requests
+  while the page's videos streamed, which looked like broken images.
 - Screenshotting a full page in headless Chrome by growing the viewport to the
   page height inflates every `vh` (the Hire Me section becomes 8000px tall). Pin
   those heights with injected CSS for the capture; it is not a real bug.
