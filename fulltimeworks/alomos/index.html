@@ -49,6 +49,7 @@
   --poppins:"Poppins",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --inter:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,.61,.36,1);
+  --ease2:cubic-bezier(.65,0,.35,1);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -255,13 +256,27 @@ a{color:inherit;text-decoration:none;}
 .persona-tint{position:absolute;inset:0;
   background:linear-gradient(140.24deg,rgba(211,59,102,.82) 14.286%,rgba(136,148,202,.72) 53.571%,rgba(30,34,37,.92) 85.714%);}
 .persona .t-eyebrow{position:absolute;left:32px;top:30px;color:#fff;opacity:.75;}
-.face{position:absolute;}
+/* Persona carousel. The three Figma positions are three SLOTS; each face
+   moves between them. A face keeps its own inner image offsets (the side
+   and centre PNGs are cut with different shadow margins), so only the
+   outer box animates and the photo scales with it. The face that wraps
+   round leaves through an off-stage slot and re-enters from the other side
+   rather than sliding across behind the centre one. */
+.face{position:absolute;transition:left .9s var(--ease2),top .9s var(--ease2),width .9s var(--ease2),height .9s var(--ease2),opacity .9s var(--ease2);}
 .face img{position:absolute;max-width:none;}
-.face.l{left:-70px;top:205px;width:210px;height:210px;opacity:.9;}
-.face.r{left:560px;top:205px;width:210px;height:210px;opacity:.9;}
-.face.l img,.face.r img{left:-19.05%;top:-10.48%;width:138.1%;}
-.face.c{left:200px;top:150px;width:300px;height:300px;}
-.face.c img{left:-13.33%;top:-7.33%;width:126.66%;}
+.face.p-side img{left:-19.05%;top:-10.48%;width:138.1%;}
+.face.p-center img{left:-13.33%;top:-7.33%;width:126.66%;}
+.slot-l{left:-70px;top:205px;width:210px;height:210px;opacity:.9;}
+.slot-c{left:200px;top:150px;width:300px;height:300px;opacity:1;z-index:1;}
+.slot-r{left:560px;top:205px;width:210px;height:210px;opacity:.9;}
+.slot-offl{left:-330px;top:235px;width:150px;height:150px;opacity:0;}
+.slot-offr{left:880px;top:235px;width:150px;height:150px;opacity:0;}
+.no-anim{transition:none!important;}
+
+/* each persona's words sit stacked; only the active one is shown */
+.pslide{position:absolute;inset:0;opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.pslide.on{opacity:1;transform:none;transition-delay:.25s;}
 .persona-chip{position:absolute;left:50%;top:506px;transform:translateX(-50%);white-space:nowrap;
   padding:10px 22px;border-radius:var(--r-pill);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
@@ -271,9 +286,16 @@ a{color:inherit;text-decoration:none;}
   font-weight:700;font-size:48px;line-height:56px;letter-spacing:-1px;color:#fff;}
 .persona-note{position:absolute;left:130px;top:712px;width:440px;text-align:center;
   font-size:15px;line-height:23px;color:#fff;opacity:.8;}
-.persona-dots{position:absolute;left:322px;top:830px;display:flex;gap:8px;}
-.persona-dots img:first-child{width:22px;height:8px;}
-.persona-dots img{width:8px;height:8px;}
+.persona-dots{position:absolute;left:50%;top:826px;transform:translateX(-50%);display:flex;gap:8px;z-index:2;}
+/* the Figma dots — active 22x8 pill, idle 8x8 at 40% — as real buttons,
+   with a padded hit area so they are tappable */
+.pdot{width:8px;height:16px;padding:4px 0;border:0;background:none;cursor:pointer;
+  transition:width .4s var(--ease);}
+.pdot::before{content:"";display:block;height:8px;border-radius:4px;background:#fff;opacity:.4;
+  transition:opacity .4s var(--ease);}
+.pdot.on{width:22px;}
+.pdot.on::before{opacity:1;}
+.pdot:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:6px;}
 
 .stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
 .scard{display:flex;flex-direction:column;gap:12px;min-height:340px;padding:28px;
@@ -624,13 +646,36 @@ a{color:inherit;text-decoration:none;}
           <div class="persona-bg"></div>
           <div class="persona-tint"></div>
           <span class="t-eyebrow">Who it was for</span>
-          <span class="face l"><img src="assets/persona-left.png" alt=""></span>
-          <span class="face r"><img src="assets/persona-right.png" alt=""></span>
-          <span class="face c"><img src="assets/persona-center.png" alt="A first-time buyer checking her phone"></span>
-          <span class="persona-chip"><span>First-time buyer</span></span>
-          <p class="persona-quote">“Is this store<br>even real?”</p>
-          <p class="persona-note">Persona insight — the doubt every newcomer store has to beat, and the question each screen was designed to answer.</p>
-          <span class="persona-dots"><img src="assets/dot-active.svg" alt=""><img src="assets/dot-idle.svg" alt=""><img src="assets/dot-idle.svg" alt=""></span>
+          <!-- Persona carousel — auto-advances every few seconds. Only the
+               first persona's words come from Figma; the other two are
+               placeholder copy drawn from the case study, for Steven to edit. -->
+          <span class="face p-center slot-c" data-face="0"><img src="assets/persona-center.png" alt=""></span>
+          <span class="face p-side slot-r" data-face="1"><img src="assets/persona-right.png" alt=""></span>
+          <span class="face p-side slot-l" data-face="2"><img src="assets/persona-left.png" alt=""></span>
+
+          <div class="pslide on" data-slide="0">
+            <span class="persona-chip"><span>First-time buyer</span></span>
+            <p class="persona-quote">“Is this store<br>even real?”</p>
+            <p class="persona-note">Persona insight — the doubt every newcomer store has to beat, and the question each screen was designed to answer.</p>
+          </div>
+          <!-- PLACEHOLDER COPY -->
+          <div class="pslide" data-slide="1" aria-hidden="true">
+            <span class="persona-chip"><span>Brand loyalist</span></span>
+            <p class="persona-quote">“Do they carry<br>brands I trust?”</p>
+            <p class="persona-note">Persona insight — people walk in through names they already know, so shopping by brand gives a new store an open door.</p>
+          </div>
+          <!-- PLACEHOLDER COPY -->
+          <div class="pslide" data-slide="2" aria-hidden="true">
+            <span class="persona-chip"><span>Careful spender</span></span>
+            <p class="persona-quote">“What if it’s not<br>right for me?”</p>
+            <p class="persona-note">Persona insight — commitment worries outweigh the product, so a monthly price and free 30-day returns sit beside every Add to Cart.</p>
+          </div>
+
+          <span class="persona-dots" role="group" aria-label="Personas">
+            <button class="pdot on" type="button" aria-label="Persona 1: First-time buyer" aria-current="true"></button>
+            <button class="pdot" type="button" aria-label="Persona 2: Brand loyalist"></button>
+            <button class="pdot" type="button" aria-label="Persona 3: Careful spender"></button>
+          </span>
         </div>
       </div>
     </div>
@@ -890,6 +935,70 @@ a{color:inherit;text-decoration:none;}
   fit();
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(map);
   else window.addEventListener('resize', fit);
+
+  // ---- persona carousel ----
+  // Face i sits in a slot decided by its distance from the active persona:
+  // 0 → centre, 1 → right, 2 → left. Advancing moves every face one slot
+  // left; the one falling off the left edge re-enters from off-stage right.
+  var panel = document.querySelector('.persona');
+  var faces = [].slice.call(panel.querySelectorAll('.face'));
+  var slides = [].slice.call(panel.querySelectorAll('.pslide'));
+  var dots = [].slice.call(panel.querySelectorAll('.pdot'));
+  var N = faces.length, active = 0, busy = false, timer = null;
+  var SLOTS = ['slot-c', 'slot-r', 'slot-l'];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var HOLD = 3800;
+
+  function setSlot(el, cls){
+    el.classList.remove('slot-c','slot-r','slot-l','slot-offl','slot-offr');
+    el.classList.add(cls);
+  }
+  function show(i){
+    slides.forEach(function(s, k){ s.classList.toggle('on', k === i); s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+    dots.forEach(function(d, k){ d.classList.toggle('on', k === i); if (k === i) d.setAttribute('aria-current','true'); else d.removeAttribute('aria-current'); });
+  }
+  function go(target){
+    if (busy || target === active) return;
+    var dir = ((target - active + N) % N) === 1 ? 1 : -1;   // forward, or one step back
+    busy = true;
+    active = target;
+    faces.forEach(function(f, i){
+      var rel = (i - active + N) % N;
+      var wraps = dir === 1 ? rel === 1 && f.classList.contains('slot-l')
+                            : rel === 2 && f.classList.contains('slot-r');
+      if (!wraps){ setSlot(f, SLOTS[rel]); return; }
+      // the wrapping face: leave off one side, jump, come in from the other
+      setSlot(f, dir === 1 ? 'slot-offl' : 'slot-offr');
+      setTimeout(function(){
+        f.classList.add('no-anim');
+        setSlot(f, dir === 1 ? 'slot-offr' : 'slot-offl');
+        void f.offsetWidth;
+        f.classList.remove('no-anim');
+        setSlot(f, SLOTS[rel]);
+      }, reduce ? 0 : 450);
+    });
+    show(active);
+    setTimeout(function(){ busy = false; }, reduce ? 0 : 950);
+  }
+
+  function stop(){ clearInterval(timer); timer = null; }
+  function start(){
+    stop();
+    if (reduce) return;                       // never auto-advance for reduced motion
+    timer = setInterval(function(){ go((active + 1) % N); }, HOLD);
+  }
+  dots.forEach(function(d, k){ d.addEventListener('click', function(){ go(k); start(); }); });
+  // hold still while someone is looking closely or using the dots
+  panel.addEventListener('mouseenter', stop);
+  panel.addEventListener('mouseleave', start);
+  panel.addEventListener('focusin', stop);
+  panel.addEventListener('focusout', start);
+  // and only run while the panel is actually on screen and the tab is visible
+  var inView = false;
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ inView = es[0].isIntersecting; inView ? start() : stop(); }, { threshold: .3 }).observe(panel);
+  } else { inView = true; start(); }
+  document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : (inView && start()); });
 })();
 </script>
 </body>
