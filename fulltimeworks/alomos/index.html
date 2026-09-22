@@ -304,7 +304,10 @@ a{color:inherit;text-decoration:none;}
 .scard{display:flex;flex-direction:column;gap:12px;min-height:340px;padding:28px;
   border:1px solid var(--border);border-radius:var(--r-card);}
 .scard-top{display:flex;align-items:center;justify-content:space-between;}
-.scard-num{font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;color:var(--primary);}
+/* process-card scale, shared with every other case study (Steven, Sept 23
+   2026): number 44 bold #000, title 18 #000, body 14 #485359. The one
+   coloured card keeps white text, or it would be unreadable. */
+.scard-num{font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;color:var(--text);}
 .hat{background:var(--bg-soft);color:var(--text-2);padding:5px 10px;border-radius:var(--r-pill);}
 .scard .t-sub{color:var(--text);}
 .scard .t-small{color:var(--text-2);}

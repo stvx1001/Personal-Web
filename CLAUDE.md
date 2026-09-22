@@ -182,6 +182,11 @@ are Regular / Medium / SemiBold / Bold (+ italics). The `--display`, `--poster`,
 `--serif` and `--inter` variables still exist on the pages but all alias the one
 family, so old rules keep their sizes.
 
+**Process/stage cards are one scale on every case study:** number 44 bold #000,
+title 18 #000, body 14 #485359 — a coloured card (Alomos 06, Metrodata 06)
+keeps white text. Careful in Figma: the Alomos order-timeline rows in the bento
+are also named `Stage / …` and are product UI, not process cards.
+
 **Case-study text colours (Sept 23, 2026, Steven's call — case studies only,
 never the home page):** every title, headline and section header is **#000**;
 every subtitle, lead and body paragraph is **#485359**. On the Alomos page that
