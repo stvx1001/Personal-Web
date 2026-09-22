@@ -575,7 +575,9 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   background-size:cover;background-position:center;
   transition:transform .5s var(--ease),box-shadow .5s var(--ease);
 }
-.rail:hover .rail-run{animation-play-state:paused;}
+/* only the Works cards pause on hover (so one can be read and clicked);
+   the client logo band below keeps running at the same speed */
+.rail--left:hover .rail-run{animation-play-state:paused;}
 .work:hover{transform:translateY(-12px);box-shadow:0 12px 28px rgba(0,0,0,.20);}
 
 /* Scrim. In Figma only AgriAku carries a permanent 32% black wash; the
