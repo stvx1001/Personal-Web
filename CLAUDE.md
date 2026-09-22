@@ -317,7 +317,6 @@ headed anyway.
   photography in the Figma frame. Most obvious next asset job.
 - Shop/products section not built. Three cover images exist (pixel-spell,
   stvx1001, minimal) but aren't wired in.
-- Instagram handle never provided.
 - Works: Figma's base frame omits the Alomos card label, though all five hover
   frames have it — implemented as present. Worth confirming with Steven.
 - The PointStar client mark is only a 440x160 export; fine at its 220x80 box
