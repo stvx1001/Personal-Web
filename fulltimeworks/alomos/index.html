@@ -376,12 +376,14 @@ a{color:inherit;text-decoration:none;}
   transition:transform .4s var(--ease);}
 .cf-next .cf-arrow{color:#8A8A93;}
 .cf-card:hover .cf-arrow{transform:translate(4px,-4px);}
-/* three 216x326 shots, centred so both ends bleed off the card equally
-   (3 x 216 + 2 x 22 = 692, half is 346) */
-.cf-strip{position:absolute;top:232px;bottom:0;left:calc(50% - 346px);display:flex;gap:22px;
-  transition:transform .8s var(--ease);}
-.cf-strip i{flex:none;width:216px;border-radius:12px;background:center/cover no-repeat;}
-.cf-hire:hover .cf-strip{transform:translateX(-40px);}
+/* three 216x326 shots running left on a loop. The set is in the markup
+   twice and each shot carries its own right margin (not a flex gap), so
+   -50% is exactly one set and the loop joins without a jump. It starts
+   centred, both ends bleeding off the card equally (692 wide, half 346). */
+.cf-strip{position:absolute;top:232px;bottom:0;left:calc(50% - 346px);display:flex;
+  animation:cf-run 20s linear infinite;}
+.cf-strip i{flex:none;width:216px;margin-right:22px;border-radius:12px;background:center/cover no-repeat;}
+@keyframes cf-run{to{transform:translateX(-50%);}}
 .cf-band{position:absolute;left:0;right:0;top:232px;height:210px;
   background:url("assets/work-skorku.jpg") center/cover no-repeat;transition:transform .8s var(--ease);}
 .cf-next:hover .cf-band{transform:scale(1.04);}
@@ -501,8 +503,8 @@ a{color:inherit;text-decoration:none;}
   .cf-eyebrow{font-size:15px;line-height:20px;}
   .cf-title{margin-top:2px;font-size:44px;line-height:56px;}
   .cf-arrow{top:28px;right:24px;width:24px;height:24px;}
-  .cf-strip{top:128px;left:calc(50% - 254px);gap:14px;}
-  .cf-strip i{width:160px;}
+  .cf-strip{top:128px;left:calc(50% - 254px);animation-duration:16s;}
+  .cf-strip i{width:160px;margin-right:14px;}
   .cf-band{top:128px;height:170px;}
   .media{aspect-ratio:358/300;}
   .media--brand{aspect-ratio:358/220;}
@@ -998,6 +1000,9 @@ a{color:inherit;text-decoration:none;}
       <span class="cf-title">Hire Me</span>
       <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="cf-strip" aria-hidden="true">
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
         <i style="background-image:url('assets/work-agriaku.jpg')"></i>
         <i style="background-image:url('assets/work-metrodata.jpg')"></i>
         <i style="background-image:url('assets/work-skorku.jpg')"></i>
