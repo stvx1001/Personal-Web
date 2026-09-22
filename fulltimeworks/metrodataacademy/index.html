@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metrodata Academy — Steven Charlino</title>
+<meta name="description" content="Case study: website, design system and documentation for Metrodata Academy, the IT training and certification arm of Metrodata Electronics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@600;900&display=swap">
+<link rel="preload" as="image" href="assets/homepage-top.jpg">
+<style>
+/* ============================================================
+   Metrodata Academy case study — built from Figma node 3950:12132
+   ("Metrodata Academy page", file YUZMDH5kqna1441GZLvRPm, page "Sum"),
+   phone layout from "Metrodata Academy page — Mobile 390".
+
+   Same series as fulltimeworks/alomos/: same grid, nav and footer, but
+   dressed in the Academy's own brand — Hedvig Letters Serif headings,
+   Instrument Sans text, Metrodata blue. The UI shown is Steven's rebuild
+   of the homepage (Figma 3950:12156), exported as images in ./assets.
+   Every path is relative, as on the Alomos page.
+   ============================================================ */
+:root{
+  --blue:#3056D3;
+  --ink:#212123;
+  --body:#5C5C5C;
+  --muted:#A0A0A3;
+  --soft:#F1F5FD;
+  --line:#E6E6E6;
+  --dark:#151515;
+
+  --serif:"Hedvig Letters Serif",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --inter:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:#fff;color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+
+.page{width:min(1400px,100% - 48px);margin:0 auto;padding:140px 0 20px;
+  display:flex;flex-direction:column;gap:40px;}
+
+/* ---- Navbar: identical to the Alomos page ---- */
+.nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:50;
+  width:min(1248px,100% - 40px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;border-radius:24px;
+  transition:top .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
+.nav.is-stuck{top:16px;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 12px 34px rgba(13,48,140,.12),0 2px 8px rgba(13,48,140,.06);}
+.nav-home{display:flex;align-items:center;gap:24px;}
+.nav-home img{width:24px;height:24px;transition:transform .3s var(--ease);}
+.nav-home:hover img{transform:translateX(-4px);}
+.wordmark{font-family:var(--inter);font-weight:900;font-size:16px;line-height:22px;color:#000;text-transform:uppercase;}
+.btn-hire{font-family:var(--inter);font-weight:600;font-size:15px;line-height:20px;
+  background:#000;color:#fff;padding:10px 16px;border-radius:16px;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
+.btn-hire:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.24);}
+
+/* ============================================================
+   02 Hero — the homepage in a browser window, on its own lavender wash
+   ============================================================ */
+.hero{position:relative;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;
+  background:linear-gradient(160deg,#F4EEF6 0%,#E9E3FB 48%,#DDE4FB 100%);}
+.browser{position:absolute;left:8.571%;right:8.571%;top:72px;bottom:-80px;border-radius:16px;overflow:hidden;
+  background:#fff;box-shadow:0 30px 70px rgba(18,31,89,.18);}
+.bar{height:36px;background:#F4F5F8;display:flex;align-items:center;gap:6px;padding:0 16px;position:relative;}
+.bar i{width:10px;height:10px;border-radius:50%;}
+.bar span{position:absolute;left:0;right:0;text-align:center;font-weight:500;font-size:12px;color:#8A8A90;}
+.browser img{width:100%;}
+
+/* ============================================================
+   03 Intro — credits column, then title + story (Alomos grid)
+   ============================================================ */
+.intro{display:grid;grid-template-columns:minmax(0,707px) minmax(0,600px);}
+.credits{max-width:380px;font-size:16px;line-height:26px;color:var(--muted);}
+.credits span{display:block;}
+.credits .gap{height:26px;}
+.credits .honest{margin-top:26px;font-size:14px;line-height:22px;}
+.intro h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:40px;color:var(--ink);}
+.intro-body{margin-top:12px;font-size:16px;line-height:26px;color:var(--body);}
+.intro-body p + p{margin-top:12px;}
+
+/* ============================================================
+   04 Showcase — calendar on soft blue | announcement + programs on ink
+   ============================================================ */
+.show{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:560px;}
+.show > div{position:relative;border-radius:16px;overflow:hidden;}
+.show-a{background:var(--soft);}
+.show-a img{position:absolute;left:9.3%;top:72px;width:124%;max-width:none;}
+.show-b{background:var(--dark);}
+.show-b .ann{position:absolute;left:50%;top:64px;width:82.6%;transform:translateX(-50%);border-radius:14px;}
+.show-b .row{position:absolute;left:50%;top:202px;width:123.6%;max-width:none;transform:translateX(-50%);}
+
+/* ---- section header (serif heading | lead), as on the Alomos page ---- */
+.shead{display:flex;gap:80px;padding:0 72px 8px;}
+.shead h2{flex:0 0 400px;font-family:var(--serif);font-weight:400;font-size:44px;line-height:52px;letter-spacing:-.01em;color:var(--ink);}
+.shead p{flex:1;min-width:0;font-size:20px;line-height:32px;color:var(--body);}
+.block{display:flex;flex-direction:column;gap:20px;}
+
+/* ============================================================
+   05 Audiences — the homepage's own "benefits board" pattern
+   ============================================================ */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;min-height:380px;padding:48px;border-radius:16px;color:#fff;
+  background:radial-gradient(120% 110% at 10% 110%,rgba(46,86,128,.55) 0%,rgba(21,21,21,0) 60%),#141416;}
+.aud{display:flex;flex-direction:column;}
+.aud b{font-weight:500;font-size:44px;line-height:48px;color:var(--blue);}
+.aud h3{margin-top:auto;padding-top:24px;font-weight:600;font-size:22px;line-height:28px;}
+.aud p{margin-top:12px;font-size:16px;line-height:24px;color:#9A9AA0;}
+
+/* ============================================================
+   06 Process — six stage cards, the last one in brand blue
+   ============================================================ */
+.stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.st{display:flex;flex-direction:column;gap:12px;min-height:320px;padding:28px;border:1px solid var(--line);border-radius:16px;}
+.st-top{display:flex;align-items:center;justify-content:space-between;}
+.st-num{font-family:var(--serif);font-size:44px;line-height:52px;color:var(--blue);}
+.hat{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--soft);padding:5px 10px;border-radius:99px;}
+.st h3{font-weight:600;font-size:20px;line-height:28px;}
+.st p{font-size:15px;line-height:24px;color:var(--body);}
+.st .grow{flex:1;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tags span{font-weight:500;font-size:13px;color:var(--body);background:#F4F4F6;padding:5px 10px;border-radius:99px;}
+.st--hot{background:var(--blue);border-color:var(--blue);color:#fff;}
+.st--hot .st-num{color:#fff;}
+.st--hot p{color:#fff;opacity:.88;}
+.st--hot .hat,.st--hot .tags span{background:rgba(255,255,255,.2);color:#fff;}
+
+/* ============================================================
+   07 Design in detail — annotated screens (Alomos pattern)
+   ============================================================ */
+.screen{display:flex;align-items:center;gap:64px;padding:48px 64px;border-radius:16px;background:var(--soft);}
+.shot{position:relative;flex:0 0 560px;}
+.shot > img{width:100%;border-radius:10px;box-shadow:0 20px 40px rgba(18,31,89,.12);}
+.shot--cal > img{width:106.4%;max-width:none;margin:-2% 0 0 -3.2%;box-shadow:none;}
+.pin{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--blue);color:#fff;font-weight:600;font-size:14px;}
+.shot .pin{position:absolute;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);}
+.notes{flex:1;min-width:0;display:flex;flex-direction:column;gap:28px;}
+.notes .eyebrow{font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);}
+.notes h3{margin-top:10px;font-family:var(--serif);font-weight:400;font-size:32px;line-height:40px;color:var(--ink);}
+.note{display:flex;gap:16px;align-items:flex-start;}
+.note b{display:block;font-weight:600;font-size:18px;line-height:26px;}
+.note p{margin-top:4px;font-size:15px;line-height:24px;color:var(--body);}
+
+/* ============================================================
+   08 Design system — three columns, then the documentation page
+   ============================================================ */
+.ds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding:48px 52px 52px;border-radius:16px;background:var(--soft);align-items:start;}
+.ds h4{font-weight:600;font-size:15px;margin-bottom:14px;}
+.ds-card{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:16px;}
+.tok{display:flex;align-items:center;gap:12px;}
+.tok i{flex:none;width:28px;height:28px;border-radius:7px;}
+.tok b{flex:1;font-weight:500;font-size:14px;}
+.tok span{font-size:13px;color:var(--muted);}
+.ty span{display:block;margin-top:2px;font-size:12px;color:var(--muted);}
+.spec small{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);}
+.spec div{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+/* the Academy's own components, rebuilt in CSS */
+.b-primary{display:inline-flex;align-items:center;padding:14px 28px;border-radius:99px;background:linear-gradient(180deg,#2B2B2E,#111);color:#fff;font-family:var(--inter);font-weight:600;font-size:17px;}
+.b-signal{display:inline-flex;align-items:center;padding:11px 20px;border-radius:99px;background:linear-gradient(90deg,#F06BA8,#B478F0);color:#fff;font-family:var(--inter);font-weight:600;font-size:15px;}
+.b-link{font-family:var(--inter);font-weight:600;font-size:15px;color:var(--blue);}
+.chip{font-family:var(--inter);font-weight:600;font-size:11px;letter-spacing:.08em;padding:6px 9px;border-radius:99px;}
+.chip--solid{background:var(--blue);color:#fff;}
+.chip--soft{background:var(--soft);color:var(--blue);}
+.chip--event{background:var(--blue);color:#fff;border-radius:8px;width:140px;}
+.cat{display:block;width:192px;padding:9px 12px;border-radius:8px;background:var(--blue);color:#fff;font-family:var(--inter);font-weight:500;font-size:15px;}
+
+.docs{position:relative;border-radius:16px;background:var(--dark);padding:40px 80px 0;overflow:hidden;}
+.docs > small{display:block;margin-bottom:22px;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8C8C93;}
+.doc{display:flex;height:620px;border-radius:14px 14px 0 0;overflow:hidden;background:#fff;}
+.doc-side{flex:0 0 240px;background:#F7F8FB;padding:28px 20px 28px 24px;display:flex;flex-direction:column;gap:6px;}
+.doc-side strong{font-weight:600;font-size:15px;margin-bottom:14px;}
+.doc-side em{font-style:normal;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+.doc-side span{font-weight:500;font-size:14px;color:var(--body);padding:7px 10px;border-radius:8px;}
+.doc-side span.on{background:var(--blue);color:#fff;}
+.doc-main{flex:1;min-width:0;padding:36px 48px;display:flex;flex-direction:column;gap:22px;}
+.crumb{font-size:13px;color:var(--muted);}
+.doc-main h3{font-family:var(--serif);font-weight:400;font-size:40px;line-height:46px;}
+.doc-main .lede{margin-top:8px;font-size:15px;line-height:24px;color:var(--body);max-width:640px;}
+.doc-two{display:flex;gap:20px;}
+.box{background:#F4F4F6;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.box h5,.dd h5{font-weight:600;font-size:13px;}
+.variants{flex:1;min-width:0;}
+.variants div{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.specs{flex:0 0 330px;gap:10px;}
+.specs p{display:flex;justify-content:space-between;font-size:13px;color:var(--body);}
+.specs p b{font-weight:500;color:var(--ink);}
+.dd-row{display:flex;gap:20px;}
+.dd{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:12px;border:1px solid;border-top-width:4px;}
+.dd p{font-size:14px;line-height:22px;color:var(--body);}
+.dd div{display:flex;gap:10px;flex-wrap:wrap;}
+.dd--do{border-color:#29B36A;}
+.dd--do h5{color:#1F8F53;}
+.dd--dont{border-color:#E5484D;}
+.dd--dont h5{color:#C7353A;}
+
+/* ============================================================
+   09 Outcome — the CTA screen | four things he brings
+   ============================================================ */
+.shipped{display:flex;gap:20px;height:460px;}
+.shipped-shot{flex:1;min-width:0;border-radius:10px;background:var(--soft);display:grid;place-items:center;padding:0 35px;}
+.shipped-shot img{width:100%;border-radius:16px;}
+.skills{flex:1;min-width:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;}
+.skill{background:var(--soft);border-radius:10px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;}
+.done{width:30px;height:30px;border-radius:50%;background:var(--blue);display:grid;place-items:center;}
+.skill b{display:block;font-weight:600;font-size:18px;line-height:26px;margin-bottom:6px;}
+.skill p{font-size:14px;line-height:22px;color:var(--body);}
+
+/* ============================================================
+   10 Footer — same component as the Alomos page; next project: Alomos
+   ============================================================ */
+.cs-foot{background:#0B0B10;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+.cf-card{position:relative;display:block;height:558px;border-radius:16px;overflow:hidden;padding:48px;font-family:"Poppins",var(--sans);}
+.cf-hire{background:#fff;color:#0B0B10;}
+.cf-next{background:#121217;color:#fff;box-shadow:inset 0 0 0 1px #26262E;}
+.cf-eyebrow{display:block;font-size:18px;line-height:24px;color:#7A7A7A;}
+.cf-next .cf-eyebrow{color:#9A9AA3;}
+.cf-title{display:block;margin-top:6px;font-weight:500;font-size:72px;line-height:86px;letter-spacing:-.02em;}
+.cf-arrow{position:absolute;top:54px;right:48px;width:32px;height:32px;transition:transform .4s var(--ease);}
+.cf-next .cf-arrow{color:#8A8A93;}
+.cf-card:hover .cf-arrow{transform:translate(4px,-4px);}
+.cf-strip{position:absolute;top:232px;bottom:0;left:calc(50% - 346px);display:flex;animation:cf-run 20s linear infinite;}
+.cf-strip i{flex:none;width:216px;margin-right:22px;border-radius:12px;background:center/cover no-repeat;}
+@keyframes cf-run{to{transform:translateX(-50%);}}
+.cf-band{position:absolute;left:0;right:0;top:232px;height:210px;
+  background:url("assets/work-alomos.jpg") center/cover no-repeat;transition:transform .8s var(--ease);}
+.cf-next:hover .cf-band{transform:scale(1.04);}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width:1180px){
+  .shead{padding:0 0 8px;gap:40px;}
+  .shead h2{flex-basis:320px;}
+  .screen{gap:40px;padding:40px;}
+  .shot{flex-basis:46%;}
+}
+@media (max-width:1024px){
+  .page{padding-top:120px;}
+  .intro{grid-template-columns:1fr;gap:32px;}
+  .show{grid-template-columns:1fr;height:auto;}
+  .show > div{height:520px;}
+  .board{grid-template-columns:1fr;gap:36px;}
+  .stages{grid-template-columns:1fr 1fr;}
+  .shead{flex-direction:column;gap:16px;}
+  .shead h2{flex:none;}
+  .screen{flex-direction:column;align-items:stretch;}
+  .screen--rev{flex-direction:column-reverse;}
+  .shot{flex:none;width:100%;max-width:560px;align-self:center;}
+  .ds{grid-template-columns:1fr 1fr;}
+  .docs{padding:32px 32px 0;}
+  .doc-side{display:none;}
+  .shipped{flex-direction:column;height:auto;}
+  .shipped-shot{padding:40px 24px;}
+  .cs-foot{grid-template-columns:1fr;}
+}
+/* Phone — Figma "Metrodata Academy page — Mobile 390": 16px gutters,
+   16px between blocks, everything in one column. */
+@media (max-width:640px){
+  .nav{top:12px;width:calc(100% - 32px);padding:6px 6px 6px 8px;}
+  .nav.is-stuck{top:8px;}
+  .nav-home{gap:12px;}
+  .page{width:calc(100% - 32px);padding:84px 0 16px;gap:16px;}
+  .hero{aspect-ratio:358/300;}
+  .browser{left:20px;right:20px;top:28px;bottom:-60px;border-radius:12px;}
+  .bar{height:26px;padding:0 10px;gap:4px;}
+  .bar i{width:7px;height:7px;}
+  .bar span{font-size:9px;}
+  .intro{display:flex;flex-direction:column-reverse;gap:20px;padding:16px 4px;}
+  .intro h1{font-size:28px;line-height:36px;}
+  .credits{max-width:none;}
+  .show{gap:16px;}
+  .show > div{height:300px;}
+  .show-a img{left:24px;top:32px;width:430px;}
+  .show-b .ann{left:20px;top:24px;width:calc(100% - 40px);transform:none;border-radius:10px;}
+  .show-b .row{left:-120px;top:106px;width:560px;transform:none;}
+  .shead{padding:16px 4px 4px;gap:12px;}
+  .shead h2{font-size:32px;line-height:38px;}
+  .shead p{font-size:17px;line-height:28px;}
+  .block{gap:16px;}
+  .board{padding:28px 24px;gap:28px;min-height:0;}
+  .aud h3{padding-top:8px;}
+  .stages{grid-template-columns:1fr;gap:12px;}
+  .st{min-height:0;padding:22px;}
+  .st .grow{display:none;}
+  .screen{padding:24px 20px;gap:24px;}
+  .screen--rev{flex-direction:column;}
+  .notes h3{font-size:26px;line-height:32px;}
+  .notes{gap:20px;}
+  .ds{grid-template-columns:1fr;gap:24px;padding:24px 16px;}
+  .docs{height:380px;padding:22px 0 0 20px;}
+  .docs > small{font-size:10px;margin-bottom:14px;padding-right:20px;}
+  /* the desktop page at half size, running off the right edge — as in Figma */
+  .doc{width:1240px;height:620px;transform:scale(.5);transform-origin:0 0;}
+  .doc-side{display:flex;}
+  .shipped{gap:12px;}
+  .shipped-shot{height:240px;padding:0 20px;}
+  .skills{grid-template-columns:1fr;grid-template-rows:none;gap:12px;}
+  .skill{gap:20px;}
+  .cs-foot{padding:16px;gap:16px;}
+  .cf-card{padding:26px 24px;}
+  .cf-hire{height:370px;}
+  .cf-next{height:330px;}
+  .cf-eyebrow{font-size:15px;line-height:20px;}
+  .cf-title{margin-top:2px;font-size:44px;line-height:56px;}
+  .cf-arrow{top:28px;right:24px;width:24px;height:24px;}
+  .cf-strip{top:128px;left:calc(50% - 254px);animation-duration:16s;}
+  .cf-strip i{width:160px;margin-right:14px;}
+  .cf-band{top:128px;height:170px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}
+}
+
+/* Page transition from the home page's Works card — same rise-over as
+   the Alomos page (the arriving page owns the animation). */
+@view-transition{navigation:auto;}
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;}
+::view-transition-old(root){animation:none;}
+::view-transition-new(root){animation:cs-rise .8s cubic-bezier(.65,0,.35,1) both;box-shadow:0 -24px 60px rgba(13,48,140,.16);}
+@keyframes cs-rise{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none;}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="nav-home" href="../../" aria-label="Back to Steven Charlino home">
+    <img src="assets/icon-back.svg" alt="">
+    <span class="wordmark">Steven<br>Charlino</span>
+  </a>
+  <a class="btn-hire" href="mailto:steven.charlino@gmail.com">Hire Me</a>
+</header>
+
+<main class="page">
+
+  <!-- ===================== 02 HERO ===================== -->
+  <div class="hero">
+    <div class="browser">
+      <div class="bar" aria-hidden="true"><i style="background:#FF6259"></i><i style="background:#FFBF2F"></i><i style="background:#29CE42"></i><span>metrodataacademy.id</span></div>
+      <img src="assets/homepage-top.jpg" alt="The Metrodata Academy homepage: the headline “Kembangkan potensi IT dan digital Anda”, an event announcement and the training calendar">
+    </div>
+  </div>
+
+  <!-- ===================== 03 INTRO ===================== -->
+  <section class="intro">
+    <p class="credits">
+      <span>Metrodata Academy — IT training &amp; certification</span>
+      <span class="gap"></span>
+      <span>Role: UI/UX Designer</span>
+      <span>Scope: Website, design system, documentation</span>
+      <span>Methods: Research, benchmarking, stakeholder workshops</span>
+      <span>Stack: Web, responsive</span>
+      <span class="honest">Screens rebuilt for this portfolio — the original files stayed with the company.</span>
+    </p>
+    <div>
+      <h1>Metrodata Academy</h1>
+      <div class="intro-body">
+        <p>Metrodata Academy is the learning arm of Metrodata Electronics, one of Indonesia’s largest IT distributors. It exists to close the country’s digital skills gap — bootcamps, certified training and career programs that help students and working professionals level up.</p>
+        <p>I joined as the UI/UX designer responsible for the Academy’s website. The brief sounded simple — put the programs online. The real job was turning a catalogue of trainings, camps, internships and certifications into one clear path, credible enough to stand next to the global certification brands people already trust.</p>
+        <p>Along the way I built the design system and wrote its documentation, so the designers who came after me could pick the work up without starting over.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 SHOWCASE ===================== -->
+  <section class="show" aria-label="Metrodata Academy interface">
+    <div class="show-a"><img src="assets/calendar.jpg" alt="The training calendar: categories on the left, a month of dated certification classes on the right" loading="lazy"></div>
+    <div class="show-b">
+      <img class="ann" src="assets/announce.jpg" alt="An event announcement card with a Daftar (register) button" loading="lazy">
+      <img class="row" src="assets/programs-row.jpg" alt="Program cards for Internship and Mengajar beside the impact numbers" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ===================== 05 AUDIENCES ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>Three audiences, one front door.</h2>
+      <p>Students want a way into IT careers, professionals want certified training that fits around work, and institutions want a partner they can trust. The site had to serve all three without making anyone dig.</p>
+    </div>
+    <div class="board">
+      <div class="aud"><b>01</b><h3>Students &amp; fresh graduates</h3><p>Internships and IT Camp come with a clear next step — apply, get selected, get placed — so a first career move feels within reach.</p></div>
+      <div class="aud"><b>02</b><h3>Working professionals</h3><p>A training calendar right under the hero, with certified instructors and online or in-person classes to fit a busy week.</p></div>
+      <div class="aud"><b>03</b><h3>Institutions &amp; HR teams</h3><p>University partners, training numbers and certification brands up front, so a company or campus can trust the Academy with its people.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 PROCESS ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>How the work got done.</h2>
+      <p>Research first, then the harder part — getting a room full of stakeholders to agree — and a system that would outlast my time on the project.</p>
+    </div>
+    <div class="stages">
+      <article class="st"><div class="st-top"><span class="st-num">01</span><span class="hat">Research</span></div><h3>Know the learner</h3><p>Mapped who the Academy serves and what each group needs to see before they sign up.</p><span class="grow"></span><div class="tags"><span>Audience mapping</span><span>User needs</span></div></article>
+      <article class="st"><div class="st-top"><span class="st-num">02</span><span class="hat">Benchmark</span></div><h3>Learn from the best</h3><p>Studied how established certification brands and learning platforms present programs, schedules and credentials — and where they lose people.</p><span class="grow"></span><div class="tags"><span>Competitor review</span><span>Patterns</span></div></article>
+      <article class="st"><div class="st-top"><span class="st-num">03</span><span class="hat">Stakeholders</span></div><h3>Agree on what matters</h3><p>Worked through priorities with business owners and trainers. When wishes collided, I negotiated the scope around what learners need first.</p><span class="grow"></span><div class="tags"><span>Workshops</span><span>Negotiation</span></div></article>
+      <article class="st"><div class="st-top"><span class="st-num">04</span><span class="hat">Solution</span></div><h3>Present it the right way</h3><p>Turned options into walkthroughs and clickable prototypes, so each decision was made on evidence rather than taste.</p><span class="grow"></span><div class="tags"><span>Prototype</span><span>Presentation</span></div></article>
+      <article class="st"><div class="st-top"><span class="st-num">05</span><span class="hat">System</span></div><h3>Build the design system</h3><p>Colour, type, components and page patterns in Figma, so every page speaks the same language.</p><span class="grow"></span><div class="tags"><span>Tokens</span><span>Components</span></div></article>
+      <article class="st st--hot"><div class="st-top"><span class="st-num">06</span><span class="hat">Handover</span></div><h3>Document it for the next designer</h3><p>Wrote the usage rules, do’s and don’ts and specs, so whoever came next could continue the work without me.</p><span class="grow"></span><div class="tags"><span>Guidelines</span><span>Handover</span></div></article>
+    </div>
+  </section>
+
+  <!-- ===================== 07 DESIGN IN DETAIL ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>The screens, and why they work.</h2>
+      <p>Two parts of the homepage carry most of the decision: the program grid, where people pick a path, and the training calendar, where professionals pick a date.</p>
+    </div>
+    <div class="screen">
+      <div class="shot">
+        <img src="assets/programs.jpg" alt="The program section: Metrodata Training, IT Camp, Internship and Mengajar cards with an impact card" loading="lazy">
+        <span class="pin" style="left:.7%;top:21.8%">1</span>
+        <span class="pin" style="left:64.3%;top:56.6%">2</span>
+        <span class="pin" style="left:.4%;top:56.6%">3</span>
+      </div>
+      <div class="notes">
+        <div><p class="eyebrow">Homepage · Programs</p><h3>Four programs, one clear choice.</h3></div>
+        <div class="note"><span class="pin">1</span><div><b>The flagship leads</b><p>Certified training — the Academy’s main line — takes the widest card, so it is the first thing a professional sees.</p></div></div>
+        <div class="note"><span class="pin">2</span><div><b>Proof beside the offer</b><p>The impact card sits inside the grid, so the numbers are read in the same glance as the programs.</p></div></div>
+        <div class="note"><span class="pin">3</span><div><b>One card per path</b><p>IT Camp, Internship and Mengajar each say who they are for in one line, with a single Detail link.</p></div></div>
+      </div>
+    </div>
+    <div class="screen screen--rev">
+      <div class="notes">
+        <div><p class="eyebrow">Homepage · Training calendar</p><h3>Plan training around work.</h3></div>
+        <div class="note"><span class="pin">1</span><div><b>Dates before the sales pitch</b><p>Professionals book around their jobs, so the calendar sits right under the hero instead of at the end of the page.</p></div></div>
+        <div class="note"><span class="pin">2</span><div><b>Filter by field</b><p>Categories follow how people search — Cybersecurity, Cloud, Data &amp; AI, Microsoft — not how the catalogue is organised internally.</p></div></div>
+        <div class="note"><span class="pin">3</span><div><b>Every date is a door</b><p>Each program chip opens its detail and registration, so a date is always one click from signing up.</p></div></div>
+      </div>
+      <div class="shot shot--cal">
+        <img src="assets/calendar.jpg" alt="The training calendar" loading="lazy">
+        <span class="pin" style="left:38.2%;top:-3.3%">1</span>
+        <span class="pin" style="left:-2.1%;top:13.3%">2</span>
+        <span class="pin" style="left:36.8%;top:35.3%">3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 08 DESIGN SYSTEM ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>One system, from first page to handover.</h2>
+      <p>I built the Academy’s design system alongside the pages — colour, type and components — and documented every piece, so the site stayed consistent after I moved on.</p>
+    </div>
+    <div class="ds">
+      <div>
+        <h4>Colour</h4>
+        <div class="ds-card">
+          <div class="tok"><i style="background:#3056D3"></i><b>Primary blue</b><span>#3056D3</span></div>
+          <div class="tok"><i style="background:#212123"></i><b>Ink</b><span>#212123</span></div>
+          <div class="tok"><i style="background:#5C5C5C"></i><b>Body</b><span>#5C5C5C</span></div>
+          <div class="tok"><i style="background:#A0A0A3"></i><b>Muted</b><span>#A0A0A3</span></div>
+          <div class="tok"><i style="background:#F1F5FD;box-shadow:inset 0 0 0 1px #D6DEEE"></i><b>Soft blue</b><span>#F1F5FD</span></div>
+          <div class="tok"><i style="background:linear-gradient(90deg,#F06BA8,#9A6CF0)"></i><b>Signal gradient</b><span>Daftar</span></div>
+        </div>
+      </div>
+      <div>
+        <h4>Typography</h4>
+        <div class="ds-card">
+          <div class="ty"><b style="font-family:var(--serif);font-weight:400;font-size:36px;line-height:42px">Display</b><span>Hedvig Letters Serif · 64 / 72</span></div>
+          <div class="ty"><b style="font-weight:600;font-size:22px">Heading</b><span>Instrument Sans SemiBold · 22 – 44</span></div>
+          <div class="ty"><b style="font-weight:400;font-size:16px">Body text</b><span>Instrument Sans · 16 / 26</span></div>
+          <div class="ty"><b style="font-family:var(--inter);font-weight:600;font-size:13px;letter-spacing:.04em">LABEL</b><span>Inter SemiBold · 11 – 15</span></div>
+        </div>
+      </div>
+      <div>
+        <h4>Components</h4>
+        <div class="ds-card">
+          <div class="spec"><small>Buttons</small><div><span class="b-primary">Lihat Program</span><span class="b-signal">Daftar</span><span class="b-link">Detail →</span></div></div>
+          <div class="spec"><small>Chips</small><div><span class="chip chip--solid">NEWS</span><span class="chip chip--soft">METRODATA TRAINING</span><span class="chip chip--event">COMPTIA AI</span></div></div>
+          <div class="spec"><small>Category</small><div><span class="cat">Cybersecurity</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="docs">
+      <small>Documentation — written for the designer after me</small>
+      <div class="doc" aria-label="A page from the design system documentation: Button">
+        <div class="doc-side" aria-hidden="true">
+          <strong>MDA Design System</strong>
+          <em>Foundations</em><span>Colour</span><span>Typography</span><span>Spacing &amp; grid</span>
+          <em>Components</em><span class="on">Button</span><span>Chip</span><span>Card</span><span>Calendar</span><span>Navigation</span>
+          <em>Patterns</em><span>Program card</span><span>Announcement</span>
+        </div>
+        <div class="doc-main">
+          <p class="crumb">Components / Button</p>
+          <div><h3>Button</h3><p class="lede">Buttons start an action. Each section gets one primary button for the thing we most want the visitor to do; everything else is secondary or a text link.</p></div>
+          <div class="doc-two">
+            <div class="box variants"><h5>Variants</h5><div><span class="b-primary">Lihat Program</span><span class="b-signal">Daftar</span><span class="b-link">Detail →</span></div></div>
+            <div class="box specs"><h5>Specs</h5><p>Height <b>48 px</b></p><p>Padding <b>14 × 28 px</b></p><p>Radius <b>Full pill</b></p><p>Label <b>Inter SemiBold 17</b></p></div>
+          </div>
+          <div class="dd-row">
+            <div class="dd dd--do"><h5>Do</h5><div><span class="b-primary">Lihat Program</span></div><p>One primary button per section — it is the action we want.</p></div>
+            <div class="dd dd--dont"><h5>Don’t</h5><div><span class="b-primary">Lihat Program</span><span class="b-primary">Lihat Program</span></div><p>Two primary buttons side by side — the visitor has to guess.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 09 OUTCOME ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>What I bring from it.</h2>
+      <p>The website was the deliverable. The way of working behind it is what I bring to the next team — research, clear conversations with stakeholders, and systems other designers can build on.</p>
+    </div>
+    <div class="shipped">
+      <div class="shipped-shot"><img src="assets/cta.jpg" alt="The homepage’s closing call to action: “Temukan jalur belajar yang tepat untuk Anda”" loading="lazy"></div>
+      <div class="skills">
+        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Negotiation</b><p>Kept business goals and learner needs in the same conversation, and found a scope everyone could sign off.</p></div></div>
+        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Presenting solutions</b><p>Showed decisions as prototypes and stories, not opinions — so approvals came on evidence.</p></div></div>
+        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Systems thinking</b><p>A design system with documentation, so other designers could continue the work.</p></div></div>
+        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Research-led design</b><p>Audience research and benchmarks behind every section of the homepage.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 10 FOOTER ===================== -->
+  <footer class="cs-foot">
+    <a class="cf-card cf-hire" href="mailto:steven.charlino@gmail.com">
+      <span class="cf-eyebrow">Liked what you saw?</span>
+      <span class="cf-title">Hire Me</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-strip" aria-hidden="true">
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
+      </span>
+    </a>
+    <a class="cf-card cf-next" href="../alomos/">
+      <span class="cf-eyebrow">Next Project</span>
+      <span class="cf-title">Alomos</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-band" aria-hidden="true"></span>
+    </a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  // navbar turns into the frosted pill once the page moves — same as Alomos
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 48); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

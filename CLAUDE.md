@@ -68,6 +68,14 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   click with `Input.dispatchMouseEvent`, and `Page.captureScreenshot`
   mid-transition. For video, prove playback by drawing the `<video>` to a canvas
   twice and diffing the pixels.
+- **Second case study (Sept 22, 2026): `fulltimeworks/metrodataacademy/`**, from
+  Figma `3950:12132` (desktop) and "Metrodata Academy page — Mobile 390". Same
+  grid, nav and footer as Alomos, but in the Academy's own brand (Hedvig
+  Letters Serif + Instrument Sans, blue #3056D3). The UI shown is Steven's
+  *rebuild* of the homepage (`3950:12156`) — he has no original files, and the
+  page says so in the credits. Keep that line; don't invent metrics for it.
+  Images are `get_screenshot` renders of UI frames (1x is the cap), flattened
+  onto their panel colour as JPEG.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
 - **Phone layout (Sept 22, 2026)** follows the Figma frames "Home — Mobile 390"
