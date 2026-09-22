@@ -182,6 +182,14 @@ are Regular / Medium / SemiBold / Bold (+ italics). The `--display`, `--poster`,
 `--serif` and `--inter` variables still exist on the pages but all alias the one
 family, so old rules keep their sizes.
 
+**Case-study text colours (Sept 23, 2026, Steven's call — case studies only,
+never the home page):** every title, headline and section header is **#000**;
+every subtitle, lead and body paragraph is **#485359**. On the Alomos page that
+made `--text` and `--black` #000 and moved `.t-lead` onto `--text-2`; on the
+Metrodata page `--ink` is #000 and `--body` #485359. Colour *tokens documented
+inside a case study* (e.g. the Academy's own "Body #5C5C5C" swatch) are content
+— leave them. Its intro title is 24/32, matching Alomos.
+
 The home page's **marquee band is the one deliberate exception on Steven's own
 pages**: black (#000) with Days One, his call on Sept 23, 2026 — keep it.
 
