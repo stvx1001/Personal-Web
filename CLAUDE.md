@@ -42,10 +42,32 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   (measure it — several Figma PNGs report alpha but are fully opaque), ~2x the
   rendered width, **never upscaled** (`sips --resampleWidth` will happily
   upscale; check the source width first).
-- **Video slots**: Steven supplies video himself. The slots are `<video>` tags
-  with only a `poster`; add the MP4 to `assets/` and uncomment the `<source>`.
-  The Alomos hero poster is cropped from a Figma render because the source is a
-  video fill with no still — replace it when the real video lands.
+- **Video**: Steven supplies it (he drops files in `~/Downloads/assets`). Use
+  `<video autoplay muted loop playsinline>` with a `poster`, never a GIF: his
+  two Alomos GIFs were 16.5MB and 14MB and became 1.0MB and 2.6MB MP4s.
+  **Watch for Figma disguising animation:** it exported both GIFs as `.png`
+  (same byte count), so an image that looks like a still may be a GIF — check
+  the frame count before flattening it. No ffmpeg on this Mac: convert with an
+  AVFoundation `AVAssetWriter` Swift script, and **encode at 16-pixel-aligned
+  dimensions** (1280x768, not 1400x840) with BT.709 colour tags. Strip audio
+  from muted loops and set `shouldOptimizeForNetworkUse` so it streams.
+- **Page transition** home ⇄ case study is a cross-document View Transition:
+  `@view-transition{navigation:auto}` on *both* pages. The arriving page owns
+  the animation — the case study defines "rise from the bottom over a still
+  home page", the home page defines the reverse "drop away and reveal home".
+  Both set `mix-blend-mode:normal` on the old/new layers (the UA default,
+  plus-lighter, washes the overlap to white). Chrome/Edge/Safari animate it;
+  others just navigate. Off under `prefers-reduced-motion`.
+- **Verifying either of the above: the in-app Browser pane can't.** It does not
+  run cross-document view transitions at all (a bare two-page test fails), and
+  it can't capture playing `<video>` frames — even Steven's own untouched MP4
+  screenshots as a blank box. Don't debug encodes or CSS against it. Use real
+  headless Chrome (`/Applications/Google Chrome.app`, with a throwaway
+  `--user-data-dir`) driven over CDP from Node 24's built-in WebSocket: inject a
+  `pagereveal`/`pageswap` probe with `Page.addScriptToEvaluateOnNewDocument`,
+  click with `Input.dispatchMouseEvent`, and `Page.captureScreenshot`
+  mid-transition. For video, prove playback by drawing the `<video>` to a canvas
+  twice and diffing the pixels.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
 - Case-study pages have `<meta name="viewport">`. **The main `index.html` does

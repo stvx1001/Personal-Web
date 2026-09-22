@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="preload" as="image" href="assets/hero-video-poster.jpg">
 <style>
 /* ============================================================
    Alomos case study — built from Figma node 3877:2487
@@ -57,9 +58,11 @@ body{background:var(--bg-page);color:var(--text);font-family:var(--poppins);
 img,video{display:block;max-width:100%;}
 a{color:inherit;text-decoration:none;}
 
-/* The page is a single 1400 column with 20px gutters and a 40px rhythm
-   between sections, exactly as the Figma frame (pad 40/20/64, gap 40). */
-.page{width:min(1400px,100% - 40px);margin:0 auto;padding:140px 0 64px;
+/* One column with 40px side gutters (Steven's call — the Figma frame has
+   20) and a 40px rhythm between sections (Figma: pad 40, gap 40). At 1440
+   that leaves 1360 of content; every grid below is proportional, so it all
+   narrows as one piece. */
+.page{width:min(1400px,100% - 80px);margin:0 auto;padding:140px 0 64px;
   display:flex;flex-direction:column;gap:40px;}
 
 /* ---- type styles (Figma "CS/…" text styles) ---- */
@@ -100,9 +103,11 @@ a{color:inherit;text-decoration:none;}
    ============================================================ */
 .media{position:relative;width:100%;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;background:var(--bg-dark);}
 .media > video,.media > img{width:100%;height:100%;object-fit:cover;}
-/* Figma scales this still to 2016 wide inside the 1400 frame (a 1.44x
+/* Figma scales this clip to 2016 wide inside the 1400 frame (a 1.44x
    crop), nudged 10px left — reproduced here rather than showing it flat. */
-.media--brand{background:#2b2240 url("assets/hero-brand.jpg") calc(50% - 10px) 50%/144% auto no-repeat;}
+.media--brand{background:#2b2240;}
+.media--brand > video{position:absolute;left:50%;top:50%;width:144%;height:auto;max-width:none;
+  transform:translate(calc(-50% - 10px),-50%);object-fit:initial;}
 
 /* ============================================================
    03 Intro — credits column, then title + story at x707 / 600 wide.
@@ -373,7 +378,7 @@ a{color:inherit;text-decoration:none;}
 .note .t-small{color:var(--text-2);}
 
 .ds{background:var(--bg-soft);border-radius:10px;padding:48px 52px;
-  display:grid;grid-template-columns:300px 300px 300px 320px;gap:32px;justify-content:start;min-height:560px;align-content:start;}
+  display:grid;grid-template-columns:repeat(3,minmax(0,300px)) minmax(0,320px);gap:32px;justify-content:start;min-height:560px;align-content:start;}
 .ds h4{font-weight:600;font-size:14px;color:var(--black);margin-bottom:18px;}
 .ds-card{background:#fff;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:16px;}
 .ds-row{display:flex;align-items:center;gap:10px;height:28px;}
@@ -442,6 +447,26 @@ a{color:inherit;text-decoration:none;}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}
 }
+
+/* ============================================================
+   Page transition — arriving from the home page's Works card.
+   Cross-document View Transitions: the browser keeps a still of the
+   home page exactly where it was (the "sticky" layer) and this page
+   rises from the bottom edge over it, the same move as the home page's
+   own sticky section stack. The home page opts in too, and plays the
+   mirror image on the way back. Browsers without cross-document view
+   transitions simply navigate as normal.
+   ============================================================ */
+@view-transition{navigation:auto;}
+/* the UA default blends the two layers with plus-lighter, which washes
+   their overlap out to white — both must blend normally */
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;}
+::view-transition-old(root){animation:none;}
+::view-transition-new(root){
+  animation:cs-rise .8s cubic-bezier(.65,0,.35,1) both;
+  box-shadow:0 -24px 60px rgba(13,48,140,.16);}
+@keyframes cs-rise{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none;}}
 </style>
 </head>
 <body>
@@ -457,12 +482,12 @@ a{color:inherit;text-decoration:none;}
 
 <main class="page">
 
-  <!-- ===================== 02 HERO (video slot) ===================== -->
-  <!-- To add the video: put the file at assets/hero.mp4 and uncomment the
-       <source>. Until then the poster is shown. -->
+  <!-- ===================== 02 HERO (video) ===================== -->
+  <!-- Steven's hero.mp4 with its audio track stripped (it only ever plays
+       muted) and the index moved to the front so it starts streaming at once. -->
   <div class="media">
-    <video poster="assets/hero-video-poster.jpg" autoplay muted loop playsinline preload="none" aria-label="Alomos brand film">
-      <!-- <source src="assets/hero.mp4" type="video/mp4"> -->
+    <video poster="assets/hero-video-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Alomos brand film">
+      <source src="assets/hero-video.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -486,7 +511,13 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- ===================== 02 HERO (brand still) ===================== -->
-  <div class="media media--brand" role="img" aria-label="The Alomos wordmark in neon pink and blue"></div>
+  <!-- The neon wordmark animates. Figma exported it as a .png but it is
+       Steven's hero-2.gif; converted to MP4 (16.5MB -> 1.4MB). -->
+  <div class="media media--brand">
+    <video poster="assets/hero-brand.jpg" autoplay muted loop playsinline preload="metadata" aria-label="The Alomos wordmark glowing in neon pink and blue">
+      <source src="assets/hero-brand.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- ===================== 04b RESULT BENTO ===================== -->
   <section class="bento" aria-label="Alomos storefront moments">
@@ -774,11 +805,11 @@ a{color:inherit;text-decoration:none;}
 
   <!-- ===================== 07b MOCKUPS ===================== -->
   <div class="media"><img src="assets/mockup-desktop.jpg" alt="Alomos homepage on a laptop, in use" loading="lazy"></div>
-  <!-- Website scroll — also a video slot: add assets/website-scroll.mp4
-       and uncomment the <source> to replace the still. -->
+  <!-- Website scroll — Steven's web-scroll.gif as MP4 (14MB -> 3.4MB).
+       The motion blur on the text is in the source recording, not added. -->
   <div class="media">
     <video poster="assets/website-scroll.jpg" autoplay muted loop playsinline preload="none" aria-label="Scrolling through the Alomos website">
-      <!-- <source src="assets/website-scroll.mp4" type="video/mp4"> -->
+      <source src="assets/website-scroll.mp4" type="video/mp4">
     </video>
   </div>
 

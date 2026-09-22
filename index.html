@@ -853,7 +853,21 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .bcard{height:280px;}
   .bc-vis{transform:scale(.82);transform-origin:left center;}
 }
+/* Page transitions to and from the case studies (fulltimeworks/…).
+   Opting in here lets the Alomos page rise over a still of this one when
+   its Works card is clicked — that animation is defined on the Alomos page,
+   because the arriving page owns the transition. What is defined here is
+   the way back: the case study drops away downward and reveals this page,
+   which stays put. */
+@view-transition{navigation:auto;}
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;}
+::view-transition-new(root){animation:none;}
+::view-transition-old(root){z-index:1;animation:cs-drop .7s cubic-bezier(.65,0,.35,1) both;
+  box-shadow:0 -24px 60px rgba(13,48,140,.16);}
+@keyframes cs-drop{to{transform:translateY(100%);}}
+
 @media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none;}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
   .w{opacity:1;filter:none;transform:none;}
   .banner::after{display:none;}
