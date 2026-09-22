@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script>if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);</script>
 <title>Steven Charlino - Product Designer with over 5 years experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -775,6 +776,9 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   display:grid;place-items:center;
 }
 .ccard .cbadge{background:rgba(0,0,0,.08);color:var(--ink);}
+/* the email glyph was drawn white for the old dark footer; on the light
+   badge it all but vanished */
+.ccard .cbadge svg [stroke="#fff"]{stroke:currentColor;}
 .ccard small{display:block;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;opacity:.75;}
 .ccard b{display:block;font-size:15px;font-weight:600;margin-top:3px;}
 
@@ -796,6 +800,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 }
 .stile:hover{background:rgba(0,0,0,.32);}
 .stile svg{display:block;}
+/* .footer-col a{display:block} and its a + a spacing are for the text links;
+   without this they also caught the tiles, un-centring the glyphs and
+   dropping LinkedIn 16px below Instagram. */
+.footer-col .stile{display:grid;margin-top:0;}
 
 .footer-bottom{
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
@@ -852,6 +860,81 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
      its relative position -- they are absolutely placed against that box. */
   .bcard{height:280px;}
   .bc-vis{transform:scale(.82);transform-origin:left center;}
+}
+/* ============================================================
+   Phone layout — Figma frame "Home — Mobile 390" (SkorKu file, page
+   "Sum"). Below 760px the page runs unpinned (body.no-pin, see the
+   script) and every section stacks: copy first, pictures under it.
+   ============================================================ */
+@media (max-width:760px){
+  :root{--gutter:20px;}
+  .nav{top:12px;width:calc(100% - 24px);padding:6px 8px;}
+  .nav.is-stuck{top:8px;}
+
+  body.no-pin .hero-stage{padding:84px 16px 24px;}
+  body.no-pin .banner{aspect-ratio:auto;height:min(560px,calc(100svh - 120px));min-height:460px;border-radius:32px;}
+  .hv-scene{display:block;}
+  .hv-tokens{left:7%;top:5%;width:34%;}
+  .hv-palette{left:63%;top:2%;width:28%;}
+  .hv-activity{left:66%;top:27%;width:40%;}
+  .banner-copy{left:20px;right:20px;bottom:28px;width:auto;}
+  .banner-copy h1{font-size:38px;}
+
+  .ps-panel,.min-panel{padding:72px 20px 56px;gap:40px;}
+  body.no-pin .ps-panel,body.no-pin .min-panel{min-height:0;}
+  .ps-copy h2{font-size:36px;}
+  .ps-watermark{width:520px;}
+  /* the two drifting columns come back, as two phone-width columns that
+     run to the bottom edge of the panel */
+  .ps-gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;justify-self:stretch;
+    height:520px;margin:0 -5px -56px;}
+  .ps-gallery .track{width:100%;gap:12px;}
+  .ps-tile{width:100%;border-radius:12px;}
+
+  .min-copy h2{font-size:32px;}
+  .min-benefits li{align-items:flex-start;}
+  .min-panel .min-right{grid-column:1;justify-self:stretch;gap:24px;}
+  .min-shots-wrap{display:flex;width:100%;}
+  .min-shots{width:100%;height:auto;aspect-ratio:724/515;}
+  .min-shot{inset:0;border-radius:10px;}
+  .min-tabs{display:flex;gap:6px;}
+  .min-tab{font-size:15px;}
+
+  .marquee-run{gap:20px;padding-right:20px;}
+  .marquee span{font-size:18px;}
+  .marquee svg{width:30px;height:23px;}
+
+  .works{padding-block:64px;}
+  .works-head{gap:12px;}
+  .works-head h2{font-size:30px;}
+  .works-head p{padding-top:0;}
+  .rail{margin-top:8px;}
+  .work{width:320px;height:432px;}
+  /* no hover on a phone, so the name and arrow are simply always shown */
+  .work-scrim,.work-badge,.work-meta{opacity:1;}
+  .clients{margin-top:48px;}
+  /* Figma's phone frame shows the four marks still, in two rows */
+  .rail--right{-webkit-mask-image:none;mask-image:none;margin-top:40px;max-width:300px;}
+  .rail--right .rail-run{animation:none;width:auto;flex-wrap:wrap;justify-content:center;align-items:center;gap:28px 40px;}
+  .rail--right .logo-img:nth-child(n+5){display:none;}
+  .logo-img.li-pointstar{width:125px;height:48px;}
+  .logo-img.li-metrodata{width:55px;height:48px;}
+  .logo-img.li-agriaku{width:103px;height:48px;}
+  .logo-img.li-cbi{width:106px;height:39px;}
+
+  .hireme{padding:96px 20px;}
+
+  .currently{padding:64px 20px;}
+  .currently-head h2{font-size:32px;}
+  .bento{margin-top:32px;gap:12px;}
+  .bcard{flex:1 1 100%;max-width:none;height:240px;}
+
+  .footer-label{font-size:26px;}
+  .footer-avail{font-size:30px;line-height:1.15;}
+  .ccard{flex:none;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px 24px;}
+  .footer-top > div:first-child{grid-column:1 / -1;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px;}
 }
 /* Page transitions to and from the case studies (fulltimeworks/…).
    Opting in here lets the Alomos page rise over a still of this one when
@@ -1150,6 +1233,14 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Phones get the plain stacked page from the Figma "Home — Mobile 390"
+     frame instead of the stepped, pinned intro: that intro hijacks touch
+     scrolling, and its 100vh stages jump whenever a phone's address bar
+     shows or hides. Same switch reduced motion already uses (body.no-pin);
+     the other animations still run. Decided on load, so a desktop window
+     narrowed later keeps the desktop behaviour until a reload. */
+  var phone = window.matchMedia('(max-width: 760px)').matches;
+  var noPin = reduce || phone;
 
   /* ---------- 1. navbar state ---------- */
   var nav = document.getElementById('nav');
@@ -1157,7 +1248,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     nav.classList.toggle('is-stuck', window.scrollY > 48);
   }
 
-  if (reduce) document.body.classList.add('no-pin');
+  if (noPin) document.body.classList.add('no-pin');
 
   /* ---------- 1b. banner cursor parallax (dots + floating layers) ---------- */
   var bannerEl = document.getElementById('banner');
@@ -1274,7 +1365,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   var lastTop = NaN, lastVh = NaN, lastVw = NaN;
 
   function updateScrollFX(force){
-    if (reduce || !heroPin) return;
+    if (noPin || !heroPin) return;
     var vw = window.innerWidth, vh = window.innerHeight;
 
     /* Position is measured off the element itself, never off window.scrollY —
@@ -1458,7 +1549,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     }
   }
 
-  function introActive(){ return locked && !reduce; }
+  function introActive(){ return locked && !noPin; }
 
   function settling(){ return animating || performance.now() < quietUntil; }
 
@@ -1481,7 +1572,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     }
 
     // released: scrolling back up re-enters the stepped intro
-    if (!reduce && e.deltaY < 0 && window.scrollY <= stages[LAST] + 2){
+    if (!noPin && e.deltaY < 0 && window.scrollY <= stages[LAST] + 2){
       locked = true; stage = LAST; acc = 0; glide.on = false;
       e.preventDefault();
       return;
@@ -1788,10 +1879,10 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   }
 
   /* ---------- wire up ---------- */
-  if (reduce){
+  if (noPin){
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    document.querySelectorAll('.w').forEach(function(w){ w.style.animation = 'none'; });
+    if (reduce) document.querySelectorAll('.w').forEach(function(w){ w.style.animation = 'none'; });
   } else {
     computeStages();
     // every reload starts at the top of the intro, regardless of where the

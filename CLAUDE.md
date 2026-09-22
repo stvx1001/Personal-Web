@@ -70,9 +70,17 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   twice and diffing the pixels.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
-- Case-study pages have `<meta name="viewport">`. **The main `index.html` does
-  not** — it renders mobile at a 980px layout width. Known, not yet fixed; the
-  scroll interaction was tuned without it, so test that before adding it.
+- **Phone layout (Sept 22, 2026)** follows the Figma frames "Home — Mobile 390"
+  and "Alomos Page — Mobile 390" (SkorKu file, page "Sum", right of the desktop
+  frames). Both pages now have `<meta name="viewport">`. Below 760px the home
+  page runs **unpinned** (`body.no-pin`, via `noPin = reduce || phone` in the
+  script, decided on load): the stepped intro hijacks touch scrolling and its
+  100vh stages jump with the phone address bar. Desktop and tablet keep the
+  pinned intro. The Alomos process map has a separate phone chain (`.flow-m`)
+  because the scaled 700x900 drawing is unreadable at 0.5x.
+- Screenshotting a full page in headless Chrome by growing the viewport to the
+  page height inflates every `vh` (the Hire Me section becomes 8000px tall). Pin
+  those heights with injected CSS for the capture; it is not a real bug.
 
 ## The scroll interaction — read this before touching the JS
 

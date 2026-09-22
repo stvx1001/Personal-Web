@@ -463,8 +463,69 @@ a{color:inherit;text-decoration:none;}
   .stages{grid-template-columns:1fr;}
   .scard{min-height:0;}
   .ds{grid-template-columns:1fr;padding:28px 20px;}
-  .deliv{grid-template-columns:1fr;grid-template-rows:none;}
-  .dcard{min-height:150px;gap:24px;}
+  .dcard{min-height:200px;gap:20px;padding:20px;}
+}
+/* ============================================================
+   Phone layout — Figma frame "Alomos Page — Mobile 390" (SkorKu file,
+   page "Sum"). 16px gutters, 16px between blocks. The two 700x900 map
+   drawings stop being scaled-down pictures here: at 0.5x their type is
+   unreadable, so the flow becomes a plain top-to-bottom chain (.flow-m)
+   and the persona stage is re-laid out for a tall narrow panel.
+   ============================================================ */
+.flow-m{display:none;}
+@media (max-width:640px){
+  .nav{top:12px;padding:6px 6px 6px 8px;}
+  .nav.is-stuck{top:8px;}
+  .nav-home{gap:12px;}
+  .page{padding-top:84px;gap:16px;padding-bottom:48px;}
+  .media{aspect-ratio:358/300;}
+  .media--brand{aspect-ratio:358/220;}
+  .media--brand > video{width:148%;}
+  .intro{padding:24px 4px;gap:14px;display:flex;flex-direction:column-reverse;}
+  .intro-credits .gap{height:14px;}
+  .approach{gap:16px;}
+
+  .pmap{border-radius:20px;overflow:visible;gap:16px;}
+  .pmap-half{border-radius:20px;}
+  .flow{height:auto;padding:28px 20px 32px;}
+  .flow .stage-700{display:none;}
+  .flow-m{display:flex;flex-direction:column;align-items:center;}
+  .flow-m li{list-style:none;}
+  .flow-m .t-eyebrow{position:static;align-self:stretch;color:var(--primary);margin-bottom:20px;}
+  /* bento reads in Figma's phone order: order tiles, delivery, cart+secure
+     side by side, timeline, then suggestions */
+  .bento > .bcol:nth-child(2){order:0;}
+  .btop > .bcol{flex-direction:row;gap:12px;}
+  .btop > .bcol .tile{flex:1;height:200px;padding:16px 10px;}
+  .btop > .bcol .badge,.btop > .bcol .ring{width:88px;height:88px;}
+  .btop > .bcol .badge img{width:40px;height:40px;}
+  .t-eta{height:460px;}
+  .t-eta .glass{top:70px;}
+  .t-timeline{padding:28px 24px;}
+  .stage span{white-space:normal;}
+  .flow-m .node{position:static;}
+  .flow-m .link{width:1.5px;height:22px;background:#9EA8B8;}
+  .flow-m .loop{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px;
+    border:1.5px dashed #9EA8B8;border-radius:20px;}
+  .flow-m .loop .node{width:220px;}
+  .flow-m .flow-note{position:static;}
+
+  .persona{height:620px;}
+  .persona .stage-700{width:100%;height:100%;transform:none;}
+  .persona-bg{width:calc(100% + 120px);height:740px;}
+  .persona .t-eyebrow{left:20px;top:22px;}
+  .slot-c{left:calc(50% - 98px);top:78px;width:196px;height:196px;}
+  .slot-l{left:-58px;top:112px;width:128px;height:128px;}
+  .slot-r{left:calc(100% - 70px);top:112px;width:128px;height:128px;}
+  .slot-offl{left:-220px;top:130px;width:96px;height:96px;}
+  .slot-offr{left:calc(100% + 124px);top:130px;width:96px;height:96px;}
+  .persona-chip{top:300px;font-size:16px;padding:9px 20px;}
+  .persona-quote{top:366px;padding:0 20px;font-size:30px;line-height:36px;}
+  .persona-note{left:28px;right:28px;width:auto;top:448px;}
+  .persona-dots{top:572px;}
+
+  .deliv{grid-template-columns:1fr 1fr;grid-template-rows:none;gap:12px;}
+  .shipped{gap:12px;}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}
@@ -640,6 +701,22 @@ a{color:inherit;text-decoration:none;}
           <span class="flow-note">Iterate until approved</span>
           <span class="t-eyebrow">Process map</span>
         </div>
+        <!-- phone version of the same map: one chain, top to bottom -->
+        <ol class="flow-m" aria-label="Process map">
+          <li class="t-eyebrow" aria-hidden="true">Process map</li>
+          <li class="node">Blank page</li><li class="link" aria-hidden="true"></li>
+          <li class="node">Logo &amp; branding</li><li class="link" aria-hidden="true"></li>
+          <li class="node">Design system</li><li class="link" aria-hidden="true"></li>
+          <li><ol class="loop">
+            <li class="node">Research</li>
+            <li class="node">Prototype tests</li>
+            <li class="node">UI design</li>
+            <li class="flow-note">Iterate until approved</li>
+          </ol></li><li class="link" aria-hidden="true"></li>
+          <li class="node node--approval">Manager approval</li><li class="link" aria-hidden="true"></li>
+          <li class="node">Front-end build</li><li class="link" aria-hidden="true"></li>
+          <li class="node node--launch">Launch · first customer</li>
+        </ol>
       </div>
       <div class="pmap-half persona">
         <div class="stage-700">
