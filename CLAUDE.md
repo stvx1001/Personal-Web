@@ -76,6 +76,17 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   page says so in the credits. Keep that line; don't invent metrics for it.
   Images are `get_screenshot` renders of UI frames (1x is the cap), flattened
   onto their panel colour as JPEG.
+- **Third case study (Sept 23, 2026): `fulltimeworks/agriaku/`**, from Figma
+  "AgriAku" (`3965:12496`) and "AgriAku — Mobile 390". It is the one with a
+  different structure, at Steven's request: **three projects behind three
+  cards, one panel visible at a time** (the others carry `hidden`), plus a
+  **floating switcher** that slides in while a project is on screen so the
+  reader can change project mid-scroll. Cards and switcher are two views of one
+  state; `#bundling` / `#tempo` / `#search` deep-link a project. **The design
+  system section is deliberately separate from the three feature projects**,
+  and holds two dashed "Add export" slots waiting for Steven's DS exports.
+  Screens are `get_screenshot` renders of his own older AgriAku frames
+  (`3965:14155`, `3965:12595`, `3965:12517`), flattened to JPEG.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
 - **Phone layout (Sept 22, 2026)** follows the Figma frames "Home — Mobile 390"

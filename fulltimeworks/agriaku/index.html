@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgriAku — Steven Charlino</title>
+<meta name="description" content="Case study: three projects designed for the AgriAku Mitra app — product bundling, a separated Tempo credit limit, and a search bar improvement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap">
+<link rel="preload" as="image" href="assets/mockup-bundling.png">
+<style>
+/* ============================================================
+   AgriAku case study — built from Figma "AgriAku" (3965:12496) and
+   "AgriAku — Mobile 390" (SkorKu file, page "Sum").
+
+   Third in the series after alomos/ and metrodataacademy/: same page
+   grid, nav and footer, in AgriAku green. What is new here is the
+   structure Steven asked for — three projects behind three cards, one
+   shown at a time, with a floating switcher that follows the reader so
+   they can change project without scrolling back up. The design system
+   work sits in its own section, apart from the three feature projects.
+   ============================================================ */
+:root{
+  --green:#2E7D32;
+  --green-deep:#0F2E14;
+  --green-mid:#14401B;
+  --mint:#EAF7E9;
+  --lime:#9BE3A0;
+  --ink:#000000;          /* every heading (see CLAUDE.md) */
+  --body:#485359;         /* every subtitle and paragraph */
+  --muted:#A0A0A3;
+  --line:#E2E6E2;
+  --paper:#F4F6F4;
+
+  --sans:"Radio Canada Big",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:#fff;color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:8px;}
+
+.page{width:min(1400px,100% - 48px);margin:0 auto;padding:140px 0 20px;
+  display:flex;flex-direction:column;gap:40px;}
+
+/* ---- navbar: the series component ---- */
+.nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:60;
+  width:min(1248px,100% - 40px);display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;border-radius:24px;
+  transition:top .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
+.nav.is-stuck{top:16px;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 12px 34px rgba(13,48,140,.12),0 2px 8px rgba(13,48,140,.06);}
+.nav-home{display:flex;align-items:center;gap:24px;}
+.nav-home img{width:24px;height:24px;transition:transform .3s var(--ease);}
+.nav-home:hover img{transform:translateX(-4px);}
+.wordmark{font-weight:700;font-size:16px;line-height:22px;text-transform:uppercase;}
+.btn-hire{font-weight:600;font-size:15px;line-height:20px;background:#000;color:#fff;
+  padding:10px 16px;border-radius:16px;transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
+.btn-hire:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.24);}
+
+/* ---- hero ---- */
+.hero{position:relative;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;
+  background:linear-gradient(115deg,#BFEBC0 0%,#DFF3C6 55%,#EFF8E6 100%);}
+.hero-copy{position:absolute;left:5.7%;top:25%;width:40%;}
+.hero-copy .eyebrow{font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
+.hero-copy h1{margin-top:20px;font-weight:700;font-size:clamp(34px,4vw,56px);line-height:1.14;letter-spacing:-1px;}
+.hero-copy p{margin-top:20px;font-size:clamp(15px,1.3vw,18px);line-height:1.55;color:var(--body);}
+.hero-shot{position:absolute;right:2%;top:14%;width:44%;filter:drop-shadow(0 30px 60px rgba(15,46,20,.22));}
+
+/* ---- intro (same grid as the other two case studies) ---- */
+.intro{display:grid;grid-template-columns:minmax(0,707px) minmax(0,600px);}
+.credits{max-width:380px;font-size:16px;line-height:26px;color:var(--muted);}
+.credits span{display:block;}
+.credits .gap{height:26px;}
+.intro h2{font-weight:700;font-size:24px;line-height:32px;}
+.intro-body{margin-top:12px;font-size:16px;line-height:26px;color:var(--body);}
+.intro-body p + p{margin-top:12px;}
+
+/* ---- section header ---- */
+.shead{display:flex;gap:80px;padding:0 72px 8px;}
+.shead h2{flex:0 0 400px;font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;}
+.shead p{flex:1;min-width:0;font-size:20px;line-height:32px;color:var(--body);}
+.block{display:flex;flex-direction:column;gap:20px;}
+
+/* ============================================================
+   The three project cards — they are the tabs
+   ============================================================ */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.card{position:relative;display:flex;flex-direction:column;min-height:440px;border-radius:16px;overflow:hidden;
+  background:var(--paper);text-align:left;transition:transform .4s var(--ease),box-shadow .4s var(--ease),background-color .4s var(--ease);}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(15,46,20,.16);}
+.card-vis{height:240px;background:#E7EFE7;overflow:hidden;display:grid;place-items:center;}
+.card-vis img{width:82%;max-height:100%;object-fit:contain;object-position:center top;}
+.card-body{flex:1;display:flex;flex-direction:column;gap:8px;padding:24px;}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.card-num{font-weight:700;font-size:16px;color:var(--green);}
+.card h3{font-weight:700;font-size:24px;line-height:30px;}
+.card p{font-size:15px;line-height:24px;color:var(--body);}
+.card-flag{display:none;padding:5px 10px;border-radius:99px;background:var(--lime);
+  font-weight:600;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green-deep);}
+/* the open project's card */
+.card.is-open{background:var(--green-deep);box-shadow:0 18px 40px rgba(15,46,20,.22);}
+.card.is-open .card-vis{background:var(--green-mid);}
+.card.is-open .card-num{color:var(--lime);}
+.card.is-open h3{color:#fff;}
+.card.is-open p{color:#C7E3C9;}
+.card.is-open .card-flag{display:inline-block;}
+
+/* ============================================================
+   Project panels — one visible at a time
+   ============================================================ */
+.project[hidden]{display:none;}
+.project{display:flex;flex-direction:column;gap:20px;scroll-margin-top:110px;}
+.pband{display:flex;align-items:center;gap:40px;padding:36px 40px;border-radius:16px;background:var(--mint);}
+.pband-l{flex:1;min-width:0;}
+.pband .eyebrow{font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);}
+.pband h2{margin-top:8px;font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;}
+.pmetrics{display:flex;gap:12px;flex-wrap:wrap;}
+.pmetric{padding:16px 20px;border-radius:12px;background:#fff;}
+.pmetric b{display:block;font-weight:700;font-size:22px;color:var(--green);}
+.pmetric span{display:block;font-size:13px;color:var(--body);}
+
+.pblock{display:flex;gap:80px;padding:8px 72px;}
+.pblock-l{flex:0 0 400px;}
+.pblock-l .eyebrow{font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
+.pblock-l h3{margin-top:10px;font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;}
+.pblock-r{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;}
+.pblock-r p{font-size:20px;line-height:32px;color:var(--body);}
+
+/* five whys */
+.whys{padding:40px;border-radius:16px;background:var(--mint);}
+.whys h3{font-weight:700;font-size:32px;line-height:40px;}
+.whys-row{margin-top:24px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;}
+.why b{display:block;font-weight:600;font-size:18px;line-height:26px;color:var(--green);}
+.why p{margin-top:10px;font-size:14px;line-height:22px;color:var(--body);}
+
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.pcard{padding:28px;border-radius:16px;}
+.pcard h4{font-weight:700;font-size:22px;line-height:30px;}
+.pcard p{margin-top:10px;font-size:15px;line-height:24px;}
+.pcard--amber{background:#FFC46B;color:#3A2600;}
+.pcard--amber p{color:#5A3A00;}
+.pcard--blue{background:#2F7DD1;color:#fff;}
+.pcard--blue p{color:#E7F1FB;}
+
+.flow{padding:32px;border-radius:16px;background:var(--paper);}
+.flow h4{font-weight:600;font-size:16px;margin-bottom:16px;}
+.flow img{width:100%;border-radius:10px;}
+
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.result{padding:28px;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;gap:14px;}
+.result h4{font-weight:600;font-size:18px;line-height:26px;}
+.result-n{display:flex;align-items:center;gap:12px;}
+.result-n small{font-size:16px;color:var(--muted);}
+.result-n b{font-weight:700;font-size:26px;color:var(--green);}
+.result-d{align-self:flex-start;padding:5px 10px;border-radius:99px;background:var(--mint);
+  font-weight:600;font-size:13px;color:var(--green);}
+.result p{font-size:14px;line-height:22px;color:var(--body);}
+
+/* ============================================================
+   The floating switcher — follows the reader inside a project
+   ============================================================ */
+.switch{position:fixed;left:50%;bottom:28px;z-index:55;display:flex;gap:6px;padding:8px;
+  border-radius:99px;background:var(--green-deep);box-shadow:0 14px 34px rgba(15,46,20,.34);
+  transform:translate(-50%,140%);opacity:0;pointer-events:none;
+  transition:transform .45s var(--ease),opacity .45s var(--ease);}
+.switch.is-on{transform:translate(-50%,0);opacity:1;pointer-events:auto;}
+.switch button{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;
+  color:#DDEADF;transition:background-color .3s var(--ease),color .3s var(--ease);}
+.switch button i{font-style:normal;font-weight:700;font-size:12px;color:#7FA184;}
+.switch button span{font-weight:500;font-size:15px;}
+.switch button[aria-selected="true"]{background:var(--lime);color:var(--green-deep);}
+.switch button[aria-selected="true"] i{color:var(--green-deep);}
+
+/* ============================================================
+   Design system — deliberately separate from the three projects
+   ============================================================ */
+.ds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding:48px 52px 52px;
+  border-radius:16px;background:var(--mint);align-items:start;}
+.ds h4{font-weight:600;font-size:15px;margin-bottom:14px;}
+.ds-card{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;}
+.ds-row{display:flex;align-items:center;gap:12px;}
+.ds-row i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--green);}
+.ds-row span{font-weight:500;font-size:15px;line-height:22px;color:var(--body);}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.slot{min-height:300px;display:grid;place-items:center;align-content:center;gap:8px;text-align:center;
+  border:1.5px dashed #C9D6C9;border-radius:16px;background:var(--paper);}
+.slot b{font-weight:600;font-size:16px;color:#7B8C7B;}
+.slot span{font-size:13px;color:#9BA89B;}
+
+/* ---- what I bring ---- */
+.brings{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;}
+.bring{padding:28px;border-radius:16px;background:var(--mint);}
+.bring b{display:block;font-weight:600;font-size:18px;line-height:26px;}
+.bring p{margin-top:8px;font-size:14px;line-height:22px;color:var(--body);}
+
+/* ---- footer: the series component ---- */
+.cs-foot{background:#0B0B10;border-radius:20px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+.cf-card{position:relative;display:block;height:558px;border-radius:16px;overflow:hidden;padding:48px;}
+.cf-hire{background:#fff;color:#0B0B10;}
+.cf-next{background:#121217;color:#fff;box-shadow:inset 0 0 0 1px #26262E;}
+.cf-eyebrow{display:block;font-size:18px;line-height:24px;color:#7A7A7A;}
+.cf-next .cf-eyebrow{color:#9A9AA3;}
+.cf-title{display:block;margin-top:6px;font-weight:500;font-size:clamp(40px,4.4vw,72px);line-height:1.2;letter-spacing:-.02em;}
+.cf-arrow{position:absolute;top:54px;right:48px;width:32px;height:32px;transition:transform .4s var(--ease);}
+.cf-next .cf-arrow{color:#8A8A93;}
+.cf-card:hover .cf-arrow{transform:translate(4px,-4px);}
+.cf-strip{position:absolute;top:232px;bottom:0;left:calc(50% - 346px);display:flex;animation:cf-run 20s linear infinite;}
+.cf-strip i{flex:none;width:216px;margin-right:22px;border-radius:12px;background:center/cover no-repeat;}
+@keyframes cf-run{to{transform:translateX(-50%);}}
+.cf-band{position:absolute;left:0;right:0;top:232px;height:210px;
+  background:url("assets/work-metrodata.jpg") center/cover no-repeat;transition:transform .8s var(--ease);}
+.cf-next:hover .cf-band{transform:scale(1.04);}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width:1180px){
+  .shead,.pblock{padding:0 0 8px;gap:40px;}
+  .shead h2,.pblock-l{flex-basis:320px;}
+  .whys-row{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media (max-width:1024px){
+  .page{padding-top:120px;}
+  .hero-copy{position:static;width:auto;padding:40px 32px 0;}
+  .hero{aspect-ratio:auto;display:flex;flex-direction:column;gap:24px;}
+  .hero-shot{position:static;width:70%;margin:0 auto -6%;}
+  .intro{grid-template-columns:1fr;gap:32px;}
+  .cards{grid-template-columns:1fr;}
+  .card{min-height:0;}
+  .pband{flex-direction:column;align-items:flex-start;gap:24px;}
+  .pblock,.shead{flex-direction:column;}
+  .pblock-l,.shead h2{flex:none;}
+  .whys-row{grid-template-columns:1fr 1fr;}
+  .pair,.results,.ds,.slots{grid-template-columns:1fr;}
+  .brings{grid-template-columns:1fr 1fr;}
+  .cs-foot{grid-template-columns:1fr;}
+}
+/* Phone — Figma "AgriAku — Mobile 390" */
+@media (max-width:640px){
+  .nav{top:12px;width:calc(100% - 32px);padding:6px 6px 6px 8px;}
+  .nav.is-stuck{top:8px;}
+  .nav-home{gap:12px;}
+  .page{width:calc(100% - 32px);padding:84px 0 16px;gap:16px;}
+  .hero-copy{padding:32px 20px 0;}
+  .hero-copy h1{font-size:34px;line-height:40px;}
+  .hero-copy p{font-size:15px;line-height:24px;}
+  .hero-shot{width:78%;}
+  .intro{padding:16px 4px;gap:20px;display:flex;flex-direction:column-reverse;}
+  .shead,.pblock{padding:12px 4px 4px;gap:12px;}
+  .shead h2,.pblock-l h3,.pband h2{font-size:32px;line-height:40px;}
+  .pblock-r p,.shead p{font-size:17px;line-height:28px;}
+  .block{gap:16px;}
+  .card-vis{height:210px;}
+  .pband{padding:24px 20px;}
+  .pmetric{padding:12px 14px;}
+  .pmetric b{font-size:17px;}
+  .whys{padding:28px 24px;}
+  .whys h3{font-size:26px;line-height:32px;}
+  .whys-row{grid-template-columns:1fr;gap:12px;}
+  .pair,.results{gap:12px;}
+  .flow{padding:20px;}
+  .brings{grid-template-columns:1fr;gap:12px;}
+  .ds{padding:24px 16px;gap:24px;}
+  .slot{min-height:200px;}
+  .switch{left:16px;right:16px;bottom:16px;width:auto;transform:translateY(140%);justify-content:center;padding:6px;gap:4px;}
+  .switch.is-on{transform:translateY(0);}
+  .switch button{padding:8px 12px;gap:6px;}
+  .switch button span{font-size:13px;}
+  .cs-foot{padding:16px;gap:16px;}
+  .cf-card{padding:26px 24px;}
+  .cf-hire{height:370px;}
+  .cf-next{height:330px;}
+  .cf-eyebrow{font-size:15px;line-height:20px;}
+  .cf-title{margin-top:2px;font-size:32px;line-height:40px;}
+  .cf-arrow{top:28px;right:24px;width:24px;height:24px;}
+  .cf-strip{top:128px;left:calc(50% - 254px);animation-duration:16s;}
+  .cf-strip i{width:160px;margin-right:14px;}
+  .cf-band{top:128px;height:170px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important;}
+  html{scroll-behavior:auto!important;}
+}
+
+/* page transition in from the home page's Works card — as on the other two */
+@view-transition{navigation:auto;}
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;}
+::view-transition-old(root){animation:none;}
+::view-transition-new(root){animation:cs-rise .8s cubic-bezier(.65,0,.35,1) both;box-shadow:0 -24px 60px rgba(13,48,140,.16);}
+@keyframes cs-rise{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none;}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="nav-home" href="../../" aria-label="Back to Steven Charlino home">
+    <img src="assets/icon-back.svg" alt="">
+    <span class="wordmark">Steven<br>Charlino</span>
+  </a>
+  <a class="btn-hire" href="mailto:steven.charlino@gmail.com">Hire Me</a>
+</header>
+
+<main class="page">
+
+  <!-- ===================== HERO ===================== -->
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">AgriAku Mitra</p>
+      <h1>Three projects inside Indonesia’s agri super app.</h1>
+      <p>Product bundling, a split credit limit and a smarter search — shipped for the Mitra app that farmers and shops buy from every day.</p>
+    </div>
+    <img class="hero-shot" src="assets/mockup-bundling.png" alt="The AgriAku Mitra app showing a bundled product">
+  </div>
+
+  <!-- ===================== INTRO ===================== -->
+  <section class="intro">
+    <p class="credits">
+      <span>AgriAku — agriculture commerce, Indonesia</span>
+      <span class="gap"></span>
+      <span>Role: UI/UX Designer, AgriAku Mitra app</span>
+      <span>Scope: Feature design, research, design system</span>
+      <span>Team: Product, engineering, operations</span>
+      <span>Stack: Android &amp; iOS app</span>
+    </p>
+    <div>
+      <h2>AgriAku</h2>
+      <div class="intro-body">
+        <p>AgriAku is a leading local agribusiness company in Indonesia. Its Mitra app brings agricultural inputs — seed, fertiliser, pesticide — within reach of farmers and village shops anywhere in the country.</p>
+        <p>I designed for that app: features that had to work for a first-time smartphone user standing in a field, and still move the numbers the business cares about — order value, stock turnover, transactions.</p>
+        <p>Three of those projects are here. Each one starts with a real problem the business had, the analysis behind the decision, the screens that shipped, and what happened after.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PICK A PROJECT ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>Pick a project.</h2>
+      <p>Three projects from the Mitra app. Open one to read it end to end — and switch between them at any point, without scrolling back up.</p>
+    </div>
+    <div class="cards" role="tablist" aria-label="AgriAku projects">
+      <button class="card is-open" role="tab" id="tab-bundling" aria-controls="bundling" aria-selected="true" data-p="bundling">
+        <span class="card-vis"><img src="assets/mockup-bundling.png" alt=""></span>
+        <span class="card-body">
+          <span class="card-top"><span class="card-num">01</span><span class="card-flag">Now viewing</span></span>
+          <h3>Product bundling</h3>
+          <p>Slow stock, packed into bundles farmers actually want — and an average order 61% larger.</p>
+        </span>
+      </button>
+      <button class="card" role="tab" id="tab-tempo" aria-controls="tempo" aria-selected="false" data-p="tempo">
+        <span class="card-vis"><img src="assets/card-tempo.jpg" alt=""></span>
+        <span class="card-body">
+          <span class="card-top"><span class="card-num">02</span><span class="card-flag">Now viewing</span></span>
+          <h3>Tempo: separate limit</h3>
+          <p>Splitting the pay-later limit so one credit line could push specific categories.</p>
+        </span>
+      </button>
+      <button class="card" role="tab" id="tab-search" aria-controls="search" aria-selected="false" data-p="search">
+        <span class="card-vis"><img src="assets/card-search.jpg" alt=""></span>
+        <span class="card-body">
+          <span class="card-top"><span class="card-num">03</span><span class="card-flag">Now viewing</span></span>
+          <h3>Search bar improvement</h3>
+          <p>88% of users start at search — so search became the place to find, and be found.</p>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECT 01 ===================== -->
+  <section class="project" id="bundling" role="tabpanel" aria-labelledby="tab-bundling">
+    <div class="pband">
+      <div class="pband-l">
+        <p class="eyebrow">Project 01 · AgriAku Mitra</p>
+        <h2>Product bundling</h2>
+      </div>
+      <div class="pmetrics">
+        <div class="pmetric"><b>+61.6%</b><span>Average order value</span></div>
+        <div class="pmetric"><b>66.7% → 85%</b><span>Sell-through</span></div>
+        <div class="pmetric"><b>54.5%</b><span>Bundle adoption</span></div>
+      </div>
+    </div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Background</p><h3>The stock nobody was buying.</h3></div>
+      <div class="pblock-r">
+        <p>Product bundling matters in agriculture because what a farmer needs is tied to the planting cycle. Two problems came with that: slow-moving products sat long enough to risk expiry, and less popular items piled up as old stock.</p>
+        <p>The business wanted that stock moving without discounting it into the ground.</p>
+      </div>
+    </div>
+
+    <div class="whys">
+      <h3>Why analysis</h3>
+      <div class="whys-row">
+        <div class="why"><b>Why are products at risk of expiry?</b><p>Because they move slowly and stay in inventory too long.</p></div>
+        <div class="why"><b>Why are products moving slowly?</b><p>Because customers are not buying them as often as other products.</p></div>
+        <div class="why"><b>Why are customers not buying them?</b><p>Because the product is less familiar to farmers.</p></div>
+        <div class="why"><b>Why are they less familiar?</b><p>Because they are new, or were never marketed well.</p></div>
+        <div class="why"><b>Why is that a problem?</b><p>Because farmers are unwilling to take a risk on a product they don’t know.</p></div>
+      </div>
+    </div>
+
+    <div class="pair">
+      <div class="pcard pcard--amber"><h4>Insight gained</h4><p>The issue isn’t only slow movement — it is how farmers behave. Bundling a slow item with a fast-selling one raises both its visibility and its perceived value.</p></div>
+      <div class="pcard pcard--blue"><h4>What that meant for design</h4><p>Old stock wasn’t unpopular so much as unknown. Pairing it with essentials farmers already trust puts it in front of them at the moment they are buying anyway.</p></div>
+    </div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Solution &amp; design approach</p><h3>Build on the screen they already know.</h3></div>
+      <div class="pblock-r"><p>Users already knew the product detail page, so the bundle was designed into it rather than as a new flow. That kept the learning curve flat, kept development light, and kept AgriAku’s look intact.</p></div>
+    </div>
+
+    <div class="flow"><h4>Product flow before</h4><img src="assets/flow-before.jpg" alt="The product detail, cart, order confirmation and payment screens before bundling" loading="lazy"></div>
+    <div class="flow"><h4>Product flow after bundling</h4><img src="assets/flow-after.jpg" alt="The same flow with the bundle added to the product detail page" loading="lazy"></div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Result &amp; impact</p><h3>What the numbers did.</h3></div>
+      <div class="pblock-r"><p>January was the month before bundling, February the month after. I tracked three things: how much people spent per order, how fast stock moved, and how many orders included a bundle.</p></div>
+    </div>
+    <div class="results">
+      <div class="result"><h4>Average order value</h4><div class="result-n"><small>IDR 300,000</small><small>→</small><b>IDR 484,848</b></div><span class="result-d">+61.6%</span><p>Customers spent more per order once bundles made the bigger basket the easy choice.</p></div>
+      <div class="result"><h4>Sell-through rate</h4><div class="result-n"><small>66.7%</small><small>→</small><b>85.0%</b></div><span class="result-d">+18.3 pts</span><p>Stock turned over faster, which is what takes expiry risk off the table.</p></div>
+      <div class="result"><h4>Bundle adoption</h4><div class="result-n"><small>0%</small><small>→</small><b>54.5%</b></div><span class="result-d">of orders</span><p>More than half of February’s orders included a bundle — the behaviour change behind the other two numbers.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECT 02 ===================== -->
+  <section class="project" id="tempo" role="tabpanel" aria-labelledby="tab-tempo" hidden>
+    <div class="pband">
+      <div class="pband-l">
+        <p class="eyebrow">Project 02 · AgriAku Mitra</p>
+        <h2>Tempo: separate limit</h2>
+      </div>
+      <div class="pmetrics">
+        <div class="pmetric"><b>Intuitive</b><span>User interface</span></div>
+        <div class="pmetric"><b>Adaptive</b><span>User flow</span></div>
+        <div class="pmetric"><b>Enhanced</b><span>User experience</span></div>
+      </div>
+    </div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Background</p><h3>One credit limit, doing two jobs.</h3></div>
+      <div class="pblock-r">
+        <p>AgriAku Tempo is the app’s pay-later facility: a Mitra shops now and settles later, inside a limit AgriAku sets for them. After several months of it running well, the business saw a chance to use that limit to push specific product categories.</p>
+        <p>That meant splitting one limit into two — a general limit and an exclusive one reserved for chosen categories — without making the Mitra feel their credit had been cut.</p>
+      </div>
+    </div>
+
+    <div class="flow"><h4>AgriAku Tempo before the change</h4><img src="assets/tempo-before.jpg" alt="The Tempo screens before the limit was separated" loading="lazy"></div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Solutioning</p><h3>Make the split obvious, then get out of the way.</h3></div>
+      <div class="pblock-r">
+        <p>Three moments carried the change. Onboarding explains the two limits the first time a Mitra meets them. The Tempo screen shows each limit and what is left of it. Checkout picks the right limit for the basket and says which one is being used.</p>
+        <p>The point was that a Mitra should never have to work out why a product can be paid for one way and not another.</p>
+      </div>
+    </div>
+
+    <div class="flow"><h4>Onboarding, Tempo screen and checkout</h4><img src="assets/tempo-content.jpg" alt="The onboarding, Tempo playground and checkout screens after the change" loading="lazy"></div>
+  </section>
+
+  <!-- ===================== PROJECT 03 ===================== -->
+  <section class="project" id="search" role="tabpanel" aria-labelledby="tab-search" hidden>
+    <div class="pband">
+      <div class="pband-l">
+        <p class="eyebrow">Project 03 · AgriAku Mitra</p>
+        <h2>Search bar improvement</h2>
+      </div>
+      <div class="pmetrics">
+        <div class="pmetric"><b>88%</b><span>Of users start at search</span></div>
+        <div class="pmetric"><b>Trx / user</b><span>Measured on</span></div>
+        <div class="pmetric"><b>Daily trx</b><span>Also tracked</span></div>
+      </div>
+    </div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Background</p><h3>Everyone starts at the search bar.</h3></div>
+      <div class="pblock-r">
+        <p>AgriAku’s users — Mitra — shop with intent. Data showed 88% of them go straight to the search bar, far past the homepage content, the categories and the banners.</p>
+        <p>But search had no history, so the same words were typed again every visit, and the sticky space around the field sat empty while it held the most attention in the app.</p>
+      </div>
+    </div>
+
+    <div class="flow"><h4>User behaviour analysis</h4><img src="assets/search-insight.jpg" alt="A pie chart showing 88% of users going straight to search, with the hypothesis drawn from it" loading="lazy"></div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Ideation &amp; objective</p><h3>Turn the busiest space into the most useful one.</h3></div>
+      <div class="pblock-r">
+        <p>Give search a memory — recent searches and previously bought items — so a repeat order takes one tap instead of one sentence of typing.</p>
+        <p>Use the sticky area around the field to surface relevant products and strategic categories, so the place users already look becomes a place to discover.</p>
+        <p>Collect what people search for, so the catalogue and the promotions can follow real demand rather than assumptions.</p>
+      </div>
+    </div>
+
+    <div class="flow"><h4>Search after the improvement</h4><img src="assets/search-objective.jpg" alt="The improved search with history, suggestions and sticky entry points" loading="lazy"></div>
+
+    <div class="pblock">
+      <div class="pblock-l"><p class="eyebrow">Metrics</p><h3>How it was judged.</h3></div>
+      <div class="pblock-r"><p>Transactions per user, sessions per user and average daily transactions — before and after launch. The feature’s job was to make repeat buying quicker, so the measure had to be repeat behaviour, not clicks on the new UI.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== DESIGN SYSTEM (separate) ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>And the system under all three.</h2>
+      <p>The features above are what shipped. This is the part that made shipping them quick — a shared system for the Mitra app, kept apart here because it is a different kind of work.</p>
+    </div>
+    <div class="ds">
+      <div>
+        <h4>Foundations</h4>
+        <div class="ds-card">
+          <div class="ds-row"><i></i><span>Colour — brand green, states, surfaces</span></div>
+          <div class="ds-row"><i></i><span>Type scale — headings to caption</span></div>
+          <div class="ds-row"><i></i><span>Spacing &amp; grid — 4pt base</span></div>
+          <div class="ds-row"><i></i><span>Iconography</span></div>
+        </div>
+      </div>
+      <div>
+        <h4>Components</h4>
+        <div class="ds-card">
+          <div class="ds-row"><i></i><span>Buttons &amp; quantity steppers</span></div>
+          <div class="ds-row"><i></i><span>Product cards &amp; list rows</span></div>
+          <div class="ds-row"><i></i><span>Chips, tabs and filters</span></div>
+          <div class="ds-row"><i></i><span>Bottom sheets &amp; dialogs</span></div>
+        </div>
+      </div>
+      <div>
+        <h4>Patterns &amp; handover</h4>
+        <div class="ds-card">
+          <div class="ds-row"><i></i><span>Product detail, cart, checkout</span></div>
+          <div class="ds-row"><i></i><span>Empty, loading and error states</span></div>
+          <div class="ds-row"><i></i><span>Usage rules and do’s &amp; don’ts</span></div>
+          <div class="ds-row"><i></i><span>Specs handed to engineering</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- waiting on Steven's design-system exports -->
+    <div class="slots">
+      <div class="slot"><b>Add export: component sheet</b><span>1400 × 300 or taller</span></div>
+      <div class="slot"><b>Add export: tokens / type scale</b><span>1400 × 300 or taller</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT I BRING ===================== -->
+  <section class="block">
+    <div class="shead">
+      <h2>What I bring from AgriAku.</h2>
+      <p>Three years of designing for people who are buying with their own money, on a phone, in a hurry — and of proving afterwards whether the design worked.</p>
+    </div>
+    <div class="brings">
+      <div class="bring"><b>Design that moves a number</b><p>Every project here was tied to a business metric before it was drawn, and measured after it shipped.</p></div>
+      <div class="bring"><b>Analysis before pixels</b><p>Five whys, user behaviour data and a clear hypothesis — so the solution answers the real cause.</p></div>
+      <div class="bring"><b>Built on what users know</b><p>Enhancing familiar screens instead of inventing new ones: lower learning curve, less build time.</p></div>
+      <div class="bring"><b>A system, not one-offs</b><p>Shared foundations and components, documented, so three projects looked like one product.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="cs-foot">
+    <a class="cf-card cf-hire" href="mailto:steven.charlino@gmail.com">
+      <span class="cf-eyebrow">Liked what you saw?</span>
+      <span class="cf-title">Hire Me</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-strip" aria-hidden="true">
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
+        <i style="background-image:url('assets/work-agriaku.jpg')"></i>
+        <i style="background-image:url('assets/work-metrodata.jpg')"></i>
+        <i style="background-image:url('assets/work-skorku.jpg')"></i>
+      </span>
+    </a>
+    <a class="cf-card cf-next" href="../metrodataacademy/">
+      <span class="cf-eyebrow">Next Project</span>
+      <span class="cf-title">Metrodata Academy</span>
+      <svg class="cf-arrow" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M3 29 29 3M9 3h20v20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cf-band" aria-hidden="true"></span>
+    </a>
+  </footer>
+</main>
+
+<!-- the switcher that follows the reader; hidden until a project is on screen -->
+<nav class="switch" id="switch" role="tablist" aria-label="Switch project">
+  <button type="button" data-p="bundling" aria-selected="true"><i>01</i><span>Bundling</span></button>
+  <button type="button" data-p="tempo" aria-selected="false"><i>02</i><span>Tempo limit</span></button>
+  <button type="button" data-p="search" aria-selected="false"><i>03</i><span>Search bar</span></button>
+</nav>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* navbar pill, same trigger as the other case studies */
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 48); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- the three projects behave as tabs ----------
+     One panel is in the DOM at a time (the others carry `hidden`), so the
+     page stays short and the reader is never scrolled past two case
+     studies they didn't ask for. The cards and the floating switcher are
+     two views of the same state. */
+  var panels = {}, cards = {}, sw = document.getElementById('switch');
+  var order = ['bundling','tempo','search'];
+  order.forEach(function(k){
+    panels[k] = document.getElementById(k);
+    cards[k] = document.querySelector('.card[data-p="' + k + '"]');
+  });
+  var current = 'bundling';
+
+  function show(key, opts){
+    if (!panels[key]) return;
+    opts = opts || {};
+    current = key;
+    order.forEach(function(k){
+      panels[k].hidden = (k !== key);
+      cards[k].classList.toggle('is-open', k === key);
+      cards[k].setAttribute('aria-selected', k === key ? 'true' : 'false');
+    });
+    sw.querySelectorAll('button').forEach(function(b){
+      b.setAttribute('aria-selected', b.dataset.p === key ? 'true' : 'false');
+    });
+    if (history.replaceState) history.replaceState(null, '', '#' + key);
+    if (opts.scroll){
+      panels[key].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  Object.keys(cards).forEach(function(k){
+    cards[k].addEventListener('click', function(){ show(k, { scroll: true }); });
+  });
+  sw.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){ show(b.dataset.p, { scroll: true }); });
+  });
+
+  /* a link straight to one project: /fulltimeworks/agriaku/#tempo */
+  var hash = (location.hash || '').replace('#','');
+  if (order.indexOf(hash) > -1) show(hash, { scroll: false });
+
+  /* ---------- the switcher only exists while a project is on screen ----------
+     It slides in once the open panel is in view and slides out again over
+     the footer, so it never floats above the intro or the closing sections. */
+  function syncSwitcher(){
+    var p = panels[current];
+    if (!p) return;
+    var r = p.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var on = r.top < vh * 0.5 && r.bottom > vh * 0.35;
+    sw.classList.toggle('is-on', on);
+  }
+  window.addEventListener('scroll', syncSwitcher, { passive: true });
+  window.addEventListener('resize', syncSwitcher);
+  syncSwitcher();
+})();
+</script>
+</body>
+</html>
