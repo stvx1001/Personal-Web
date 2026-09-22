@@ -7,7 +7,7 @@
 <meta name="description" content="Case study: brand, design system, website and code for Alomos, a Singapore-based electronics e-commerce newcomer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;900&family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Poppins:wght@400;700&display=swap">
 <link rel="preload" as="image" href="assets/hero-video-poster.jpg">
 <style>
 /* ============================================================
@@ -46,8 +46,9 @@
   --r-bento:28px;
   --r-pill:999px;
 
-  --poppins:"Poppins",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-  --inter:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  /* one typeface across the site — see the home page */
+  --poppins:"Radio Canada Big",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --inter:var(--poppins);
   --ease:cubic-bezier(.22,.61,.36,1);
   --ease2:cubic-bezier(.65,0,.35,1);
 }
@@ -91,7 +92,7 @@ a{color:inherit;text-decoration:none;}
 .nav-home{display:flex;align-items:center;gap:24px;}
 .nav-home img{width:24px;height:24px;transition:transform .3s var(--ease);}
 .nav-home:hover img{transform:translateX(-4px);}
-.wordmark{font-family:var(--inter);font-weight:900;font-size:16px;line-height:22px;color:#000;text-transform:uppercase;}
+.wordmark{font-family:var(--inter);font-weight:700;font-size:16px;line-height:22px;color:#000;text-transform:uppercase;}
 .btn-hire{font-family:var(--inter);font-weight:600;font-size:15px;line-height:20px;
   background:#000;color:#fff;padding:10px 16px;border-radius:16px;
   transition:transform .25s var(--ease),box-shadow .25s var(--ease);}
@@ -423,7 +424,9 @@ a{color:inherit;text-decoration:none;}
 .ds-row b{flex:1;font-weight:500;font-size:13px;color:var(--black);}
 .ds-row span{font-size:12px;color:var(--muted);}
 .ds-type{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:16px;}
-.ds-type b{display:block;font-weight:700;color:var(--black);}
+/* This ramp is a specimen of ALOMOS UI, whose typeface is Poppins — it has
+   to be shown in Poppins even though the site itself is Radio Canada Big. */
+.ds-type b{display:block;font-family:"Poppins",var(--poppins);font-weight:700;color:var(--black);}
 .ds-type span{display:block;font-size:12px;color:var(--muted);margin-top:4px;}
 
 .shipped{display:flex;gap:20px;height:460px;}

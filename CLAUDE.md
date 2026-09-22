@@ -171,6 +171,23 @@ the elements, so heights are safe to retune — with one exception: the banner's
 expansion progress divides by `hero-pin height − 2×vh` (one screen for the
 sticky stage, one for the hold), so if the hold changes, that changes too.
 
+## Typography — one family, site-wide
+
+**Radio Canada Big is the typeface for everything Steven's** (Sept 23, 2026, his
+call): home page, every case study, and every Figma frame of them. Use it for
+anything new — don't introduce a second family. Web:
+`https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700`.
+**It stops at 700**, so the old 800/900 weights are now 700; in Figma its styles
+are Regular / Medium / SemiBold / Bold (+ italics). The `--display`, `--poster`,
+`--serif` and `--inter` variables still exist on the pages but all alias the one
+family, so old rules keep their sizes.
+
+The one exception, in both Figma and the HTML: **type specimens inside a case
+study keep the client's own typeface** — the ALOMOS ramp stays Poppins, the
+Metrodata ramp stays Hedvig Letters Serif / Instrument Sans — because they
+document that product's system. The embedded product UI (screenshots and the
+Figma clones of the Metrodata homepage) is left alone for the same reason.
+
 ## Assets
 
 **Every image is inlined in `index.html` as a base64 data URI** on a CSS
