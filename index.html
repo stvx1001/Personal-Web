@@ -909,7 +909,18 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .works-head h2{font-size:30px;}
   .works-head p{padding-top:0;}
   .rail{margin-top:8px;}
+  /* On a phone the cards are a swipeable row instead of a self-running
+     marquee: native horizontal scroll that snaps card by card, first card
+     lined up with the 20px gutter. The second copy of the cards only exists
+     to make the desktop loop seamless, so it is hidden here. */
+  .rail--left{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+    scroll-padding-inline:20px;overscroll-behavior-x:contain;scrollbar-width:none;}
+  .rail--left::-webkit-scrollbar{display:none;}
+  .rail--left .rail-run{animation:none;gap:16px;padding-inline:20px;}
+  .rail--left .work{scroll-snap-align:start;}
+  .rail--left .work:nth-child(n+6){display:none;}
   .work{width:320px;height:432px;}
+  .work:hover{transform:none;box-shadow:none;}
   /* no hover on a phone, so the name and arrow are simply always shown */
   .work-scrim,.work-badge,.work-meta{opacity:1;}
   .clients{margin-top:48px;}
