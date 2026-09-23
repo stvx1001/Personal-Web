@@ -87,6 +87,10 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   and holds two dashed "Add export" slots waiting for Steven's DS exports.
   Screens are `get_screenshot` renders of his own older AgriAku frames
   (`3965:14155`, `3965:12595`, `3965:12517`), flattened to JPEG.
+- **Case-study margins are a flat 24px at every width** (Sept 23, 2026): `.page`
+  and `.nav` are `calc(100% - 48px)` with **no max-width cap** — the old
+  `min(1400px, …)` / `min(1248px, …)` made the margin grow on screens wider
+  than ~1450, which is what Steven was seeing.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
 - **Phone layout (Sept 22, 2026)** follows the Figma frames "Home — Mobile 390"
