@@ -50,7 +50,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 
 /* ---- navbar: the series component ---- */
 .nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:60;
-  width:min(1248px,100% - 40px);display:flex;align-items:center;justify-content:space-between;
+  width:min(1248px,100% - 48px);display:flex;align-items:center;justify-content:space-between;
   padding:8px 10px;border-radius:24px;
   transition:top .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
 .nav.is-stuck{top:16px;background:rgba(255,255,255,.92);
@@ -244,10 +244,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 }
 /* Phone — Figma "AgriAku — Mobile 390" */
 @media (max-width:640px){
-  .nav{top:12px;width:calc(100% - 32px);padding:6px 6px 6px 8px;}
+  .nav{top:12px;width:calc(100% - 48px);padding:6px 6px 6px 8px;}
   .nav.is-stuck{top:8px;}
   .nav-home{gap:12px;}
-  .page{width:calc(100% - 32px);padding:84px 0 16px;gap:16px;}
+  .page{width:calc(100% - 48px);padding:84px 0 16px;gap:16px;}
   .hero-copy{padding:32px 20px 0;}
   .hero-copy h1{font-size:34px;line-height:40px;}
   .hero-copy p{font-size:15px;line-height:24px;}
