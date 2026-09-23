@@ -189,7 +189,10 @@ the CSS marquee hands over to a small rAF engine (`.rail--drag`, right after the
 cards are rendered): same drift speed as the CSS (one card set per 46s), pointer
 drag on top, momentum on release, and a wrap at half the track width — which is
 why the card set is still in the DOM twice. A drag of more than 6px swallows the
-following click, so dragging never opens a case study. With JS off, the CSS
+following click, so dragging never opens a case study. **Do not call
+`setPointerCapture` or `preventDefault()` on that pointerdown** — either one
+retargets the click to the rail and the card never opens (that bug shipped once;
+the move/up listeners live on `window` instead). With JS off, the CSS
 marquee still runs. Phones are untouched: below 760px the rail is a native
 scroll-snap row and the engine bails out, because dragging a native scroller
 fights the browser's own gesture.

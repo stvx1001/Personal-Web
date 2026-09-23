@@ -896,14 +896,16 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .banner-copy{left:20px;right:20px;bottom:28px;width:auto;}
   .banner-copy h1{font-size:38px;}
 
-  .ps-panel,.min-panel{padding:72px 20px 56px;gap:40px;}
+  /* Steven's call (Sept 23 2026): the two featured panels keep their 64px
+     side padding on phones too, so they match the desktop rhythm */
+  .ps-panel,.min-panel{padding:72px 64px 56px;gap:40px;}
   body.no-pin .ps-panel,body.no-pin .min-panel{min-height:0;}
   .ps-copy h2{font-size:36px;}
   .ps-watermark{width:520px;}
   /* the two drifting columns come back, as two phone-width columns that
      run to the bottom edge of the panel */
   .ps-gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;justify-self:stretch;
-    height:520px;margin:0 -5px -56px;}
+    height:520px;margin:0 -44px -56px;}
   .ps-gallery .track{width:100%;gap:12px;}
   .ps-tile{width:100%;border-radius:12px;}
 
@@ -1403,29 +1405,31 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     rail.addEventListener('pointerenter', function(){ hovering = true; });
     rail.addEventListener('pointerleave', function(){ hovering = false; });
 
+    /* No setPointerCapture and no preventDefault on pointerdown: either one
+       retargets the click to the rail, and the card underneath never opens.
+       The move/up listeners live on the window instead, so a drag still
+       works when the cursor leaves the rail. */
     rail.addEventListener('pointerdown', function(e){
       if (e.button !== 0) return;
       dragging = true; moved = 0; vel = 0;
       lastX = e.clientX; lastT = performance.now();
       rail.classList.add('is-grabbing');
-      try { rail.setPointerCapture(e.pointerId); } catch(_){}   // synthetic pointers have no capture
-      e.preventDefault();               // don't start a native image/link drag
     });
-    rail.addEventListener('pointermove', function(e){
+    window.addEventListener('pointermove', function(e){
       if (!dragging) return;
       var now = performance.now(), dx = e.clientX - lastX, dt = now - lastT || 16;
       x += dx; moved += Math.abs(dx);
       vel = dx / dt;                     // px per ms, for the release
       lastX = e.clientX; lastT = now;
+      if (moved > 6) e.preventDefault(); // once it is a drag, stop text selection
     });
-    function endDrag(e){
+    function endDrag(){
       if (!dragging) return;
       dragging = false;
       rail.classList.remove('is-grabbing');
-      try { if (e && e.pointerId != null && rail.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId); } catch(_){}
     }
-    rail.addEventListener('pointerup', endDrag);
-    rail.addEventListener('pointercancel', endDrag);
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
     /* a drag that ends on a card must not also open that case study */
     rail.addEventListener('click', function(e){
       if (moved > 6){ e.preventDefault(); e.stopPropagation(); }
