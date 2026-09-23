@@ -229,9 +229,12 @@ The home page's **marquee band is the one deliberate exception on Steven's own
 pages**: black (#000) with Days One, his call on Sept 23, 2026 — keep it.
 
 The other exception, in both Figma and the HTML: **type specimens inside a case
-study keep the client's own typeface** — the ALOMOS ramp stays Poppins, the
-Metrodata ramp stays Hedvig Letters Serif / Instrument Sans — because they
-document that product's system. The embedded product UI (screenshots and the
+study keep the client's own typeface** — the ALOMOS ramp stays Poppins, and the
+**Metrodata Academy UI is Poppins too** (Steven's call, Sept 24, 2026: every
+text *inside* his rebuilt Academy UI is Poppins, while the case-study page
+around it stays Radio Canada Big). The Figma frame `4004:5828` was converted,
+and the six exported UI images in `metrodataacademy/assets/` were re-rendered
+from it — re-export them if that frame changes again. The embedded product UI (screenshots and the
 Figma clones of the Metrodata homepage) is left alone for the same reason.
 
 ## Assets

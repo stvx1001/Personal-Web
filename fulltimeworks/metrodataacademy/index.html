@@ -7,7 +7,7 @@
 <meta name="description" content="Case study: website, design system and documentation for Metrodata Academy, the IT training and certification arm of Metrodata Electronics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Hedvig+Letters+Serif&family=Instrument+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Poppins:wght@400;500;600&display=swap">
 <link rel="preload" as="image" href="assets/homepage-top.jpg">
 <style>
 /* ============================================================
@@ -16,8 +16,8 @@
    phone layout from "Metrodata Academy page — Mobile 390".
 
    Same series as fulltimeworks/alomos/: same grid, nav and footer, but
-   dressed in the Academy's own brand — Hedvig Letters Serif headings,
-   Instrument Sans text, Metrodata blue. The UI shown is Steven's rebuild
+   dressed in the Academy's own brand — Metrodata blue, and Poppins wherever
+   the Academy's own UI is quoted (Steven's call, Sept 24 2026). The UI shown is Steven's rebuild
    of the homepage (Figma 3950:12156), exported as images in ./assets.
    Every path is relative, as on the Alomos page.
    ============================================================ */
@@ -165,9 +165,9 @@ a{color:inherit;text-decoration:none;}
 .tok i{flex:none;width:28px;height:28px;border-radius:7px;}
 .tok b{flex:1;font-weight:500;font-size:14px;}
 .tok span{font-size:13px;color:var(--muted);}
-/* The specimens document the Academy's own system, so they keep its
-   typefaces even though the rest of the site is Radio Canada Big. */
-.ty b{font-family:"Instrument Sans",var(--sans);}
+/* The specimens document the Academy's own system, which is set in Poppins,
+   even though the rest of this site is Radio Canada Big. */
+.ty b{font-family:"Poppins",var(--sans);}
 .ty span{display:block;margin-top:2px;font-size:12px;color:var(--muted);}
 .spec small{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);}
 .spec div{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
@@ -472,10 +472,10 @@ a{color:inherit;text-decoration:none;}
       <div>
         <h4>Typography</h4>
         <div class="ds-card">
-          <div class="ty"><b style="font-family:'Hedvig Letters Serif',Georgia,serif;font-weight:400;font-size:36px;line-height:42px">Display</b><span>Hedvig Letters Serif · 64 / 72</span></div>
-          <div class="ty"><b style="font-weight:600;font-size:22px">Heading</b><span>Instrument Sans SemiBold · 22 – 44</span></div>
-          <div class="ty"><b style="font-weight:400;font-size:16px">Body text</b><span>Instrument Sans · 16 / 26</span></div>
-          <div class="ty"><b style="font-family:var(--inter);font-weight:600;font-size:13px;letter-spacing:.04em">LABEL</b><span>Inter SemiBold · 11 – 15</span></div>
+          <div class="ty"><b style="font-family:'Poppins',var(--sans);font-weight:600;font-size:36px;line-height:42px">Display</b><span>Poppins SemiBold · 64 / 72</span></div>
+          <div class="ty"><b style="font-weight:600;font-size:22px">Heading</b><span>Poppins SemiBold · 22 – 44</span></div>
+          <div class="ty"><b style="font-weight:400;font-size:16px">Body text</b><span>Poppins · 16 / 26</span></div>
+          <div class="ty"><b style="font-family:'Poppins',var(--sans);font-weight:500;font-size:13px;letter-spacing:.04em">LABEL</b><span>Poppins Medium · 11 – 15</span></div>
         </div>
       </div>
       <div>
@@ -501,7 +501,7 @@ a{color:inherit;text-decoration:none;}
           <div><h3>Button</h3><p class="lede">Buttons start an action. Each section gets one primary button for the thing we most want the visitor to do; everything else is secondary or a text link.</p></div>
           <div class="doc-two">
             <div class="box variants"><h5>Variants</h5><div><span class="b-primary">Lihat Program</span><span class="b-signal">Daftar</span><span class="b-link">Detail →</span></div></div>
-            <div class="box specs"><h5>Specs</h5><p>Height <b>48 px</b></p><p>Padding <b>14 × 28 px</b></p><p>Radius <b>Full pill</b></p><p>Label <b>Inter SemiBold 17</b></p></div>
+            <div class="box specs"><h5>Specs</h5><p>Height <b>48 px</b></p><p>Padding <b>14 × 28 px</b></p><p>Radius <b>Full pill</b></p><p>Label <b>Poppins SemiBold 17</b></p></div>
           </div>
           <div class="dd-row">
             <div class="dd dd--do"><h5>Do</h5><div><span class="b-primary">Lihat Program</span></div><p>One primary button per section — it is the action we want.</p></div>
