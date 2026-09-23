@@ -565,6 +565,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
 .rail{overflow:hidden;margin-top:40px;padding-block:24px 40px;}
 .rail-run{display:flex;gap:40px;flex:none;width:max-content;}
 .rail--left .rail-run{animation:run-left 46s linear infinite;}
+/* Drag-to-scroll (Steven, Sept 23 2026). With a mouse the rail is grabbable:
+   the JS engine below takes the loop over from this CSS animation, keeps the
+   same drift speed, and adds dragging with a little momentum on release.
+   .rail--drag is set by that script, so with JS off the CSS marquee still
+   runs and nothing is lost. */
+.rail--left.rail--drag{cursor:grab;}
+.rail--left.rail--drag .rail-run{animation:none;will-change:transform;}
+.rail--left.is-grabbing{cursor:grabbing;}
+.rail--left.is-grabbing .work{transition:none;}
 @keyframes run-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
 
 /* Card: a fixed 400x540 with a 16px radius, per Steven's "follow the size
@@ -1346,6 +1355,83 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
            '</' + tag + '>';
   }).join('');
   document.getElementById('workRun').innerHTML = cards + cards;
+
+  /* ---------- 5b. Works rail: drag it left or right with the mouse ----------
+     The rail is a marquee of the card set twice over, so the loop is a plain
+     translateX that wraps at half the track width. CSS can animate that, but
+     it cannot be dragged, so on pointer devices this engine takes over: same
+     drift speed as the CSS (one set per 46s), pointer drag on top, and a
+     little inertia when you let go. Touch keeps the native scroll-snap row
+     from the phone breakpoint -- dragging a native scroll there would fight
+     the browser's own gesture. */
+  (function(){
+    var rail = document.querySelector('.rail--left');
+    var track = document.getElementById('workRun');
+    if (!rail || !track) return;
+    var fine = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!fine || window.matchMedia('(max-width: 760px)').matches) return;
+
+    rail.classList.add('rail--drag');
+    var x = 0, vel = 0, half = 0, dragging = false, moved = 0, lastX = 0, lastT = 0, hovering = false;
+    var DRIFT = -1;                 // direction: the CSS ran right-to-left
+    function measure(){ half = track.scrollWidth / 2; }
+    measure();
+    window.addEventListener('resize', measure);
+
+    function wrap(){
+      if (!half) return;
+      if (x <= -half) x += half;
+      else if (x > 0) x -= half;
+    }
+    var last = performance.now();
+    function frame(now){
+      var dt = Math.min(64, now - last); last = now;
+      if (!dragging){
+        if (Math.abs(vel) > 0.02){          // momentum from the last drag
+          x += vel * dt;
+          vel *= Math.pow(0.9, dt / 16);
+        } else if (!hovering && !reduce){    // idle drift, same speed as the CSS
+          x += DRIFT * (half / 46000) * dt;
+        }
+      }
+      wrap();
+      track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)';
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    rail.addEventListener('pointerenter', function(){ hovering = true; });
+    rail.addEventListener('pointerleave', function(){ hovering = false; });
+
+    rail.addEventListener('pointerdown', function(e){
+      if (e.button !== 0) return;
+      dragging = true; moved = 0; vel = 0;
+      lastX = e.clientX; lastT = performance.now();
+      rail.classList.add('is-grabbing');
+      try { rail.setPointerCapture(e.pointerId); } catch(_){}   // synthetic pointers have no capture
+      e.preventDefault();               // don't start a native image/link drag
+    });
+    rail.addEventListener('pointermove', function(e){
+      if (!dragging) return;
+      var now = performance.now(), dx = e.clientX - lastX, dt = now - lastT || 16;
+      x += dx; moved += Math.abs(dx);
+      vel = dx / dt;                     // px per ms, for the release
+      lastX = e.clientX; lastT = now;
+    });
+    function endDrag(e){
+      if (!dragging) return;
+      dragging = false;
+      rail.classList.remove('is-grabbing');
+      try { if (e && e.pointerId != null && rail.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId); } catch(_){}
+    }
+    rail.addEventListener('pointerup', endDrag);
+    rail.addEventListener('pointercancel', endDrag);
+    /* a drag that ends on a card must not also open that case study */
+    rail.addEventListener('click', function(e){
+      if (moved > 6){ e.preventDefault(); e.stopPropagation(); }
+    }, true);
+    rail.addEventListener('dragstart', function(e){ e.preventDefault(); });
+  })();
 
   // Figma keeps four client marks; Tada and the Sinarmas wordmark are gone.
   var logos = [
