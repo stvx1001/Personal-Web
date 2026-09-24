@@ -1993,9 +1993,16 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
      starts at the top. If the saved spot is inside the stepped intro, it
      lands on the stage at or above it, so the intro state stays whole. */
   var RETURN_KEY = 'home-return-y';
-  window.addEventListener('pagehide', function(){
+  function saveReturn(){
     try { sessionStorage.setItem(RETURN_KEY, String(Math.round(window.scrollY))); } catch (e) {}
-  });
+  }
+  // saved on the click itself as well as on pagehide: pagehide is not
+  // reliably delivered in every browser (Safari in particular)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="fulltimeworks/"]');
+    if (a) saveReturn();
+  }, true);
+  window.addEventListener('pagehide', saveReturn);
   function restoreReturn(){
     var y = null;
     try { y = sessionStorage.getItem(RETURN_KEY); sessionStorage.removeItem(RETURN_KEY); } catch (e) {}
