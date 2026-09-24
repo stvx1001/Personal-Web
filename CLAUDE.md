@@ -85,6 +85,12 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   AVAssetWriter). People and rooms are Pexels stock photos; the site pages in
   it are built for the film. It plays only while on screen and not under
   reduced motion.
+- **Metrodata screen wall (Sept 24, 2026)**, `.wall` under the film, from
+  Figma "03c Screens" (`4090:1611`): ten screens in three offset columns on
+  #161618, running off every edge. Each `<img>` sits at its Figma x/y/w/h as
+  a percentage of the 1400x900 stage, so it scales with the page; on phones
+  the stage is 184% wide and centred on the middle column. Images are the
+  raw Figma fills (`assets/wall-*.jpg`, ~2x, q82), not screenshots.
 - **Third case study (Sept 23, 2026): `fulltimeworks/agriaku/`**, from Figma
   "AgriAku" (`3965:12496`) and "AgriAku — Mobile 390". It is the one with a
   different structure, at Steven's request: **three projects behind three
