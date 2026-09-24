@@ -1,0 +1,3 @@
+{"Turnaround-Front":[60,30,330,425],"Turnaround-Three-Quarter":[340,30,640,425],"Turnaround-Side":[690,30,920,425],"Turnaround-Back":[940,30,1215,425],
+"Pose-Idle":[50,430,330,690],"Pose-Slash":[340,430,660,690],"Pose-Guard":[680,430,920,690],"Pose-Rest":[930,430,1225,690],
+"Prop-Sword":[40,700,390,815],"Prop-Jacket":[390,690,590,830],"Prop-Boots":[595,700,790,815],"Prop-Tail":[795,700,930,800]}
