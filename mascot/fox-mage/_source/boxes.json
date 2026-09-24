@@ -1,0 +1,4 @@
+{"Turnaround-Front":[60,30,320,318],"Turnaround-Three-Quarter":[370,30,630,318],"Turnaround-Side":[650,30,900,318],"Turnaround-Back":[950,30,1210,318],
+"Pose-Idle":[60,320,320,630],"Pose-Casting":[340,315,630,630],"Pose-Reading":[650,320,920,630],"Pose-Victory":[940,315,1215,630],
+"Expression-Calm":[40,650,172,800],"Expression-Happy":[172,650,298,800],"Expression-Surprised":[298,650,422,800],"Expression-Focused":[422,650,546,800],"Expression-Sleepy":[546,650,690,800],
+"Prop-Staff":[690,630,782,830],"Prop-Glasses":[782,650,930,745],"Prop-Boots":[930,630,1080,745],"Prop-Tail":[1080,630,1225,745]}
