@@ -82,5 +82,47 @@
   "w": 475,
   "h": 380,
   "parts": 1
+ },
+ "Expression-Calm": {
+  "x": 232,
+  "y": 603,
+  "w": 1074,
+  "h": 916,
+  "parts": 1
+ },
+ "Expression-Fierce": {
+  "x": 1968,
+  "y": 626,
+  "w": 1074,
+  "h": 893,
+  "parts": 1
+ },
+ "Expression-Smug": {
+  "x": 3672,
+  "y": 603,
+  "w": 1071,
+  "h": 917,
+  "parts": 1
+ },
+ "Expression-Grumpy": {
+  "x": 598,
+  "y": 1787,
+  "w": 1073,
+  "h": 966,
+  "parts": 1
+ },
+ "Expression-Surprised": {
+  "x": 1969,
+  "y": 1753,
+  "w": 1074,
+  "h": 987,
+  "parts": 1
+ },
+ "Expression-Weary": {
+  "x": 3216,
+  "y": 1917,
+  "w": 1225,
+  "h": 834,
+  "parts": 1
  }
 }
