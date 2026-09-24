@@ -92,6 +92,12 @@ a{color:inherit;text-decoration:none;}
 .intro-body p + p{margin-top:12px;}
 
 /* ============================================================
+   03b Film — the 39s product film, full width under the intro
+   ============================================================ */
+.film{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;}
+.film video{display:block;width:100%;height:100%;object-fit:cover;}
+
+/* ============================================================
    04 Showcase — calendar on soft blue | announcement + programs on ink
    ============================================================ */
 .show{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:560px;}
@@ -377,6 +383,12 @@ a{color:inherit;text-decoration:none;}
     </div>
   </section>
 
+  <!-- ===================== 03b FILM ===================== -->
+  <section class="film" aria-label="Metrodata Academy product film">
+    <video src="assets/film.mp4" poster="assets/film-poster.jpg" autoplay muted loop playsinline preload="metadata"
+      aria-label="A 39-second film: a learner browses the Academy site, the page is redesigned in Figma — new hero, type switched to Poppins, desktop, tablet and phone — then published and seen on a laptop."></video>
+  </section>
+
   <!-- ===================== 04 SHOWCASE ===================== -->
   <section class="show" aria-label="Metrodata Academy interface">
     <div class="show-a"><img src="assets/calendar.jpg" alt="The training calendar: categories on the left, a month of dated certification classes on the right" loading="lazy"></div>
@@ -560,6 +572,15 @@ a{color:inherit;text-decoration:none;}
   function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 48); }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // the film only plays while it is on screen, and never under reduced motion
+  var film = document.querySelector('.film video');
+  if (film) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { film.removeAttribute('autoplay'); film.pause(); film.controls = true; }
+    else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? film.play().catch(function(){}) : film.pause(); }); }, { threshold: 0.25 }).observe(film);
+    }
+  }
 })();
 </script>
 </body>

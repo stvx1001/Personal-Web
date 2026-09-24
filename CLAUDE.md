@@ -76,6 +76,15 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   page says so in the credits. Keep that line; don't invent metrics for it.
   Images are `get_screenshot` renders of UI frames (1x is the cap), flattened
   onto their panel colour as JPEG.
+- **Metrodata product film (Sept 24, 2026)** sits right under the 03 intro
+  (`.film`, `assets/film.mp4`, 39s, 1280x720, ~7MB, no grain — grain costs
+  bitrate and turns blocky). It follows Steven's reference video
+  ("reference video.mp4") shot for shot. Source lives outside the repo in
+  `~/Developer/Personal-Web-film/`: `film.html` is a `render(t)` stage captured
+  frame by frame by `rec.mjs` (headless Chrome) and encoded by `enc` (Swift
+  AVAssetWriter). People and rooms are Pexels stock photos; the site pages in
+  it are built for the film. It plays only while on screen and not under
+  reduced motion.
 - **Third case study (Sept 23, 2026): `fulltimeworks/agriaku/`**, from Figma
   "AgriAku" (`3965:12496`) and "AgriAku — Mobile 390". It is the one with a
   different structure, at Steven's request: **three projects behind three
