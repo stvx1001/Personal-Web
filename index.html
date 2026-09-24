@@ -1986,8 +1986,47 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     })();
   }
 
+  /* ---------- return to where the reader left ----------
+     Leaving the page saves the scroll position. Coming back from a case
+     study (its back arrow, or the browser's Back button) puts the reader
+     there again instead of at the top of the intro; a plain reload still
+     starts at the top. If the saved spot is inside the stepped intro, it
+     lands on the stage at or above it, so the intro state stays whole. */
+  var RETURN_KEY = 'home-return-y';
+  window.addEventListener('pagehide', function(){
+    try { sessionStorage.setItem(RETURN_KEY, String(Math.round(window.scrollY))); } catch (e) {}
+  });
+  function restoreReturn(){
+    var y = null;
+    try { y = sessionStorage.getItem(RETURN_KEY); sessionStorage.removeItem(RETURN_KEY); } catch (e) {}
+    if (y === null) return;
+    var nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+    var back = nav && nav.type === 'back_forward';
+    var fromCase = /\/fulltimeworks\//.test(document.referrer || '');
+    if (!(back || fromCase) || (nav && nav.type === 'reload')) return;
+    y = Math.max(0, Math.min(maxScroll(), +y || 0));
+    if (!noPin){
+      if (y > stages[LAST] + 2){ locked = false; stage = LAST; }
+      else {
+        stage = 0;
+        for (var i = LAST; i > 0; i--) if (y >= stages[i] - 2){ stage = i; break; }
+        y = stages[stage]; locked = true;
+      }
+    }
+    window.scrollTo(0, y);
+    // late layout (fonts) can shift the page a little; land it again once,
+    // unless the reader has already started scrolling
+    var moved = false;
+    ['wheel','touchstart','keydown'].forEach(function(t){ window.addEventListener(t, function(){ moved = true; }, { once: true, passive: true }); });
+    window.addEventListener('load', function(){
+      if (moved || Math.abs(window.scrollY - y) < 2) return;
+      window.scrollTo(0, y); glideSync();
+    }, { once: true });
+  }
+
   /* ---------- wire up ---------- */
   if (noPin){
+    restoreReturn();
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     if (reduce) document.querySelectorAll('.w').forEach(function(w){ w.style.animation = 'none'; });
@@ -1996,6 +2035,8 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
     // every reload starts at the top of the intro, regardless of where the
     // reader was before refreshing — scrollRestoration is turned off above
     // for exactly this reason, so window.scrollY is already 0 here.
+    // Coming BACK from a case study is the exception: see restoreReturn().
+    restoreReturn();
     glideSync();
     updateScrollFX(true);
     requestAnimationFrame(fxLoop);

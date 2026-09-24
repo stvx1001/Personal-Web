@@ -188,6 +188,12 @@ two separate gestures. Reversed on the way back up.
   Written inline rather than pulling in Lenis so the file works with no network.
   Pointer-fine only — touch devices have native inertia and hijacking it there
   makes things worse. Reference Steven liked: fudali.studio (a Framer site).
+- **Coming back from a case study restores the scroll position** (Sept 24,
+  2026, Steven's call). `pagehide` saves `scrollY` in sessionStorage;
+  `restoreReturn()` puts it back when the load is a Back/Forward or the
+  referrer is a `/fulltimeworks/` page (the back arrow is a plain link, not
+  history). A reload still starts at the top. A spot inside the stepped intro
+  lands on the stage at or above it, with `stage`/`locked` set to match.
 - **`prefers-reduced-motion`** adds `body.no-pin`, which drops the whole thing
   back to plain static scrolling. Preserve this.
 
