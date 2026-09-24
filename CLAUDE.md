@@ -261,10 +261,23 @@ Metrodata page `--ink` is #000 and `--body` #485359. Colour *tokens documented
 inside a case study* (e.g. the Academy's own "Body #5C5C5C" swatch) are content
 — leave them. Its intro title is 24/32, matching Alomos.
 
-The home page's **marquee band is the one deliberate exception on Steven's own
+The home page's **marquee band is one deliberate exception on Steven's own
 pages**: black (#000) with Days One, his call on Sept 23, 2026 — keep it.
 
-The other exception, in both Figma and the HTML: **type specimens inside a case
+The other is the **home page's Pixel Spell panel (Sept 24, 2026, Steven's
+call)**: he wanted visitors to "feel the spell", so it wears the studio site's
+own skin, taken from `github.com/stvx1001/pixel-spell` (`app/globals.css`,
+`components/`): cream `#fbf8f2`, ink `#0d0e1a`, pink `#f2549e`, Shrikhand
+headline, Geist Mono eyebrow/body, a Caveat sticker, bobbing pastel pixels,
+white tilted work-card frames on the gallery tiles, and the fox from its cast
+(`--img-ps-fox`, `fox-casting.png` at 600px) standing in front of the tiles.
+The tokens are scoped to `.ps-panel` (`--ps-*`); nothing else on the page uses
+those fonts. The logo is the studio's current `logo.svg`. The old peach
+gradient, blobs and PIXEL watermark are gone. The copy column is
+`minmax(0,520px) auto` so it shrinks beside the fixed-width gallery, and the
+headline size follows that column (`(100vw - 952px - 4vw) / 8`, 802px ≤1300).
+
+One more exception, in both Figma and the HTML: **type specimens inside a case
 study keep the client's own typeface** — the ALOMOS ramp stays Poppins, and the
 **Metrodata Academy UI is Poppins too** (Steven's call, Sept 24, 2026: every
 text *inside* his rebuilt Academy UI is Poppins, while the case-study page
