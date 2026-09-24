@@ -100,6 +100,11 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   and `.nav` are `calc(100% - 48px)` with **no max-width cap** — the old
   `min(1400px, …)` / `min(1248px, …)` made the margin grow on screens wider
   than ~1450, which is what Steven was seeing.
+- **The case-study navbar is the home navbar's box** (Sept 24, 2026, Steven's
+  call): `width:min(1248px, 100% - 2*clamp(24px,6.6vw,96px))`, padding 8/16,
+  radius 16 → 32 when stuck — so on wide screens the nav sits in the home
+  page's 1248px column while the content below still runs 24px from the edge.
+  Phones (≤640px) keep the nav on the 24px content edge.
 - Each page is self-contained (its own `<style>`), matching the main page. A
   shared stylesheet belongs to the Next.js migration, not this prototype.
 - **Phone layout (Sept 22, 2026)** follows the Figma frames "Home — Mobile 390"

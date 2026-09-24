@@ -51,10 +51,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 
 /* ---- navbar: the series component ---- */
 .nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:60;
-  width:calc(100% - 48px);display:flex;align-items:center;justify-content:space-between;
-  padding:8px 10px;border-radius:24px;
-  transition:top .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
-.nav.is-stuck{top:16px;background:rgba(255,255,255,.92);
+  /* same box as the home navbar: 1248px max, centred, home gutters */
+  width:min(1248px,100% - 2*clamp(24px,6.6vw,96px));display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;border-radius:16px;
+  transition:top .5s var(--ease),padding .5s var(--ease),border-radius .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease),backdrop-filter .5s var(--ease);}
+.nav.is-stuck{top:16px;border-radius:32px;background:rgba(255,255,255,.92);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   box-shadow:0 12px 34px rgba(13,48,140,.12),0 2px 8px rgba(13,48,140,.06);}
 .nav-home{display:flex;align-items:center;gap:24px;}
