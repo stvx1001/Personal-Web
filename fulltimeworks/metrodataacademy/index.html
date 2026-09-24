@@ -108,11 +108,6 @@ a{color:inherit;text-decoration:none;}
 .show-b .ann{position:absolute;left:50%;top:64px;width:82.6%;transform:translateX(-50%);border-radius:14px;}
 .show-b .row{position:absolute;left:50%;top:202px;width:123.6%;max-width:none;transform:translateX(-50%);}
 
-/* ---- section header (serif heading | lead), as on the Alomos page ---- */
-.shead{display:flex;gap:80px;padding:0 72px 8px;}
-/* same as the Alomos page's h2.t-heading: 44/54 bold, -1px, #000 */
-.shead h2{flex:0 0 400px;font-weight:700;font-size:44px;line-height:54px;letter-spacing:-1px;color:var(--ink);}
-.shead p{flex:1;min-width:0;font-size:20px;line-height:32px;color:var(--body);}
 .block{display:flex;flex-direction:column;gap:20px;}
 
 /* ============================================================
@@ -125,24 +120,6 @@ a{color:inherit;text-decoration:none;}
 .aud h3{margin-top:auto;padding-top:24px;font-weight:600;font-size:22px;line-height:28px;}
 .aud p{margin-top:12px;font-size:16px;line-height:24px;color:#9A9AA0;}
 
-/* ============================================================
-   06 Process — six stage cards, the last one in brand blue
-   ============================================================ */
-.stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
-.st{display:flex;flex-direction:column;gap:12px;min-height:320px;padding:28px;border:1px solid var(--line);border-radius:16px;}
-.st-top{display:flex;align-items:center;justify-content:space-between;}
-/* same process-card scale as the Alomos page */
-.st-num{font-weight:700;font-size:44px;line-height:52px;letter-spacing:-.01em;color:var(--ink);}
-.hat{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--soft);padding:5px 10px;border-radius:99px;}
-.st h3{font-weight:600;font-size:18px;line-height:26px;}
-.st p{font-size:14px;line-height:22px;color:var(--body);}
-.st .grow{flex:1;}
-.tags{display:flex;gap:6px;flex-wrap:wrap;}
-.tags span{font-weight:500;font-size:13px;color:var(--body);background:#F4F4F6;padding:5px 10px;border-radius:99px;}
-.st--hot{background:var(--blue);border-color:var(--blue);color:#fff;}
-.st--hot .st-num{color:#fff;}
-.st--hot p{color:#fff;opacity:.88;}
-.st--hot .hat,.st--hot .tags span{background:rgba(255,255,255,.2);color:#fff;}
 
 /* ============================================================
    07 Design in detail — annotated screens (Alomos pattern)
@@ -252,8 +229,6 @@ a{color:inherit;text-decoration:none;}
    Responsive
    ============================================================ */
 @media (max-width:1180px){
-  .shead{padding:0 0 8px;gap:40px;}
-  .shead h2{flex-basis:320px;}
   .screen{gap:40px;padding:40px;}
   .shot{flex-basis:46%;}
 }
@@ -263,9 +238,6 @@ a{color:inherit;text-decoration:none;}
   .show{grid-template-columns:1fr;height:auto;}
   .show > div{height:520px;}
   .board{grid-template-columns:1fr;gap:36px;}
-  .stages{grid-template-columns:1fr 1fr;}
-  .shead{flex-direction:column;gap:16px;}
-  .shead h2{flex:none;}
   .screen{flex-direction:column;align-items:stretch;}
   .screen--rev{flex-direction:column-reverse;}
   .shot{flex:none;width:100%;max-width:560px;align-self:center;}
@@ -295,15 +267,9 @@ a{color:inherit;text-decoration:none;}
   .show-a img{left:24px;top:32px;width:430px;}
   .show-b .ann{left:20px;top:24px;width:calc(100% - 40px);transform:none;border-radius:10px;}
   .show-b .row{left:-120px;top:106px;width:560px;transform:none;}
-  .shead{padding:16px 4px 4px;gap:12px;}
-  .shead h2{font-size:32px;line-height:40px;}   /* = Alomos .t-heading on phones */
-  .shead p{font-size:17px;line-height:28px;}
   .block{gap:16px;}
   .board{padding:28px 24px;gap:28px;min-height:0;}
   .aud h3{padding-top:8px;}
-  .stages{grid-template-columns:1fr;gap:12px;}
-  .st{min-height:0;padding:22px;}
-  .st .grow{display:none;}
   .screen{padding:24px 20px;gap:24px;}
   .screen--rev{flex-direction:column;}
   .notes{gap:20px;}
@@ -400,10 +366,6 @@ a{color:inherit;text-decoration:none;}
 
   <!-- ===================== 05 AUDIENCES ===================== -->
   <section class="block">
-    <div class="shead">
-      <h2>Three audiences, one front door.</h2>
-      <p>Students want a way into IT careers, professionals want certified training that fits around work, and institutions want a partner they can trust. The site had to serve all three without making anyone dig.</p>
-    </div>
     <div class="board">
       <div class="aud"><b>01</b><h3>Students &amp; fresh graduates</h3><p>Internships and IT Camp come with a clear next step — apply, get selected, get placed — so a first career move feels within reach.</p></div>
       <div class="aud"><b>02</b><h3>Working professionals</h3><p>A training calendar right under the hero, with certified instructors and online or in-person classes to fit a busy week.</p></div>
@@ -411,28 +373,8 @@ a{color:inherit;text-decoration:none;}
     </div>
   </section>
 
-  <!-- ===================== 06 PROCESS ===================== -->
-  <section class="block">
-    <div class="shead">
-      <h2>How the work got done.</h2>
-      <p>Research first, then the harder part — getting a room full of stakeholders to agree — and a system that would outlast my time on the project.</p>
-    </div>
-    <div class="stages">
-      <article class="st"><div class="st-top"><span class="st-num">01</span><span class="hat">Research</span></div><h3>Know the learner</h3><p>Mapped who the Academy serves and what each group needs to see before they sign up.</p><span class="grow"></span><div class="tags"><span>Audience mapping</span><span>User needs</span></div></article>
-      <article class="st"><div class="st-top"><span class="st-num">02</span><span class="hat">Benchmark</span></div><h3>Learn from the best</h3><p>Studied how established certification brands and learning platforms present programs, schedules and credentials — and where they lose people.</p><span class="grow"></span><div class="tags"><span>Competitor review</span><span>Patterns</span></div></article>
-      <article class="st"><div class="st-top"><span class="st-num">03</span><span class="hat">Stakeholders</span></div><h3>Agree on what matters</h3><p>Worked through priorities with business owners and trainers. When wishes collided, I negotiated the scope around what learners need first.</p><span class="grow"></span><div class="tags"><span>Workshops</span><span>Negotiation</span></div></article>
-      <article class="st"><div class="st-top"><span class="st-num">04</span><span class="hat">Solution</span></div><h3>Present it the right way</h3><p>Turned options into walkthroughs and clickable prototypes, so each decision was made on evidence rather than taste.</p><span class="grow"></span><div class="tags"><span>Prototype</span><span>Presentation</span></div></article>
-      <article class="st"><div class="st-top"><span class="st-num">05</span><span class="hat">System</span></div><h3>Build the design system</h3><p>Colour, type, components and page patterns in Figma, so every page speaks the same language.</p><span class="grow"></span><div class="tags"><span>Tokens</span><span>Components</span></div></article>
-      <article class="st st--hot"><div class="st-top"><span class="st-num">06</span><span class="hat">Handover</span></div><h3>Document it for the next designer</h3><p>Wrote the usage rules, do’s and don’ts and specs, so whoever came next could continue the work without me.</p><span class="grow"></span><div class="tags"><span>Guidelines</span><span>Handover</span></div></article>
-    </div>
-  </section>
-
   <!-- ===================== 07 DESIGN IN DETAIL ===================== -->
   <section class="block">
-    <div class="shead">
-      <h2>The screens, and why they work.</h2>
-      <p>Two parts of the homepage carry most of the decision: the program grid, where people pick a path, and the training calendar, where professionals pick a date.</p>
-    </div>
     <div class="screen">
       <div class="shot">
         <img src="assets/programs.jpg" alt="The program section: Metrodata Training, IT Camp, Internship and Mengajar cards with an impact card" loading="lazy">
@@ -465,10 +407,6 @@ a{color:inherit;text-decoration:none;}
 
   <!-- ===================== 08 DESIGN SYSTEM ===================== -->
   <section class="block">
-    <div class="shead">
-      <h2>One system, from first page to handover.</h2>
-      <p>I built the Academy’s design system alongside the pages — colour, type and components — and documented every piece, so the site stayed consistent after I moved on.</p>
-    </div>
     <div class="ds">
       <div>
         <h4>Colour</h4>
@@ -526,10 +464,6 @@ a{color:inherit;text-decoration:none;}
 
   <!-- ===================== 09 OUTCOME ===================== -->
   <section class="block">
-    <div class="shead">
-      <h2>What I bring from it.</h2>
-      <p>The website was the deliverable. The way of working behind it is what I bring to the next team — research, clear conversations with stakeholders, and systems other designers can build on.</p>
-    </div>
     <div class="shipped">
       <div class="shipped-shot"><img src="assets/cta.jpg" alt="The homepage’s closing call to action: “Temukan jalur belajar yang tepat untuk Anda”" loading="lazy"></div>
       <div class="skills">
