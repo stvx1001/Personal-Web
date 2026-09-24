@@ -217,9 +217,14 @@ following click, so dragging never opens a case study. **Do not call
 `setPointerCapture` or `preventDefault()` on that pointerdown** — either one
 retargets the click to the rail and the card never opens (that bug shipped once;
 the move/up listeners live on `window` instead). With JS off, the CSS
-marquee still runs. Phones are untouched: below 760px the rail is a native
-scroll-snap row and the engine bails out, because dragging a native scroller
-fights the browser's own gesture.
+marquee still runs. Below 760px that engine bails out (dragging a native
+scroller fights the browser's own gesture) and a separate phone engine (5c)
+takes over (Sept 24, 2026, Steven's call — he wanted it moving on phones
+too): the rail is a native horizontal scroller with **no scroll-snap**, the
+script drifts `scrollLeft` at the same one-set-per-46s speed and wraps it by
+one card set inside [period/2, 1.5×period) so a swipe works both ways. Touch
+pauses it; it resumes 1.5s after the swipe and its momentum settle, and the
+wrap waits too, because setting `scrollLeft` mid-fling kills iOS momentum.
 
 ## Typography — one family, site-wide
 

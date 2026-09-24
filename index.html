@@ -927,16 +927,15 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   .works-head h2{font-size:30px;}
   .works-head p{padding-top:0;}
   .rail{margin-top:8px;}
-  /* On a phone the cards are a swipeable row instead of a self-running
-     marquee: native horizontal scroll that snaps card by card, first card
-     lined up with the 20px gutter. The second copy of the cards only exists
-     to make the desktop loop seamless, so it is hidden here. */
-  .rail--left{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
-    scroll-padding-inline:20px;overscroll-behavior-x:contain;scrollbar-width:none;}
+  /* On a phone the cards are a native horizontal scroller (so a swipe
+     feels like the phone's own), and a small script (5c) drifts it slowly
+     like the desktop marquee and loops it through the doubled card set.
+     No scroll-snap: snapping would fight the drift. First card lines up
+     with the 20px gutter. */
+  .rail--left{overflow-x:auto;overflow-y:hidden;
+    overscroll-behavior-x:contain;scrollbar-width:none;}
   .rail--left::-webkit-scrollbar{display:none;}
   .rail--left .rail-run{animation:none;gap:16px;padding-inline:20px;}
-  .rail--left .work{scroll-snap-align:start;}
-  .rail--left .work:nth-child(n+6){display:none;}
   .work{width:320px;height:432px;}
   .work:hover{transform:none;box-shadow:none;}
   /* no hover on a phone, so the name and arrow are simply always shown */
@@ -1435,6 +1434,49 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
       if (moved > 6){ e.preventDefault(); e.stopPropagation(); }
     }, true);
     rail.addEventListener('dragstart', function(e){ e.preventDefault(); });
+  })();
+
+  /* ---------- 5c. Works rail on phones: drifts, and swipes both ways ----------
+     Below 760px the rail is a native scroller. This moves its scrollLeft
+     slowly (one card set per 46s, like the desktop marquee) and wraps it by
+     one card set inside [period/2, 1.5*period), so there is always room to
+     swipe either way. Any touch
+     pauses the drift; it picks up again 1.5s after the swipe (and its
+     native momentum) has settled. The wrap also waits for that, because
+     setting scrollLeft mid-fling would cut the phone's momentum short. */
+  (function(){
+    var rail = document.querySelector('.rail--left');
+    var track = document.getElementById('workRun');
+    if (!rail || !track || !window.matchMedia('(max-width: 760px)').matches) return;
+    var items = track.children, n = items.length / 2;
+    var period = 0, pos = 0, touching = false, userUntil = 0, set = -1;
+    function measure(){ period = items[n].offsetLeft - items[0].offsetLeft; }
+    measure();
+    // start on the second copy of the first card: looks identical to the
+    // first, but leaves room to swipe back
+    pos = period; rail.scrollLeft = pos; set = rail.scrollLeft;
+    window.addEventListener('resize', measure);
+    rail.addEventListener('touchstart', function(){ touching = true; }, { passive: true });
+    function release(){ touching = false; userUntil = performance.now() + 1500; }
+    rail.addEventListener('touchend', release, { passive: true });
+    rail.addEventListener('touchcancel', release, { passive: true });
+    // a scroll we did not cause (swipe, fling) pushes the resume time out
+    rail.addEventListener('scroll', function(){
+      if (Math.abs(rail.scrollLeft - set) > 1.5) userUntil = performance.now() + 1500;
+    }, { passive: true });
+    var last = performance.now();
+    function frame(now){
+      var dt = Math.min(64, now - last); last = now;
+      if (!touching && now > userUntil && period){
+        if (Math.abs(rail.scrollLeft - pos) > 1.5) pos = rail.scrollLeft;  // adopt the swipe
+        if (!reduce) pos += (period / 46000) * dt;
+        if (pos >= period * 1.5) pos -= period;
+        else if (pos < period / 2) pos += period;
+        rail.scrollLeft = pos; set = rail.scrollLeft;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
   })();
 
   // Figma keeps four client marks; Tada and the Sinarmas wordmark are gone.
