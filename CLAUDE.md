@@ -77,14 +77,24 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   Images are `get_screenshot` renders of UI frames (1x is the cap), flattened
   onto their panel colour as JPEG.
 - **Metrodata product film (Sept 24, 2026)** sits right under the 03 intro
-  (`.film`, `assets/film.mp4`, 39s, 1280x720, ~7MB, no grain — grain costs
-  bitrate and turns blocky). It follows Steven's reference video
-  ("reference video.mp4") shot for shot. Source lives outside the repo in
-  `~/Developer/Personal-Web-film/`: `film.html` is a `render(t)` stage captured
-  frame by frame by `rec.mjs` (headless Chrome) and encoded by `enc` (Swift
-  AVAssetWriter). People and rooms are Pexels stock photos; the site pages in
-  it are built for the film. It plays only while on screen and not under
-  reduced motion.
+  (`.film`, `assets/film.mp4`, 1280x720, no grain — grain costs bitrate and
+  turns blocky). It follows Steven's reference video ("reference video.mp4",
+  a 39s TAHL template film in `~/Downloads/MA/`) beat for beat. It plays only
+  while on screen and not under reduced motion.
+  **Current cut: 23s, ~6MB** (Sept 24, 2026). The live-action is two Gemini/Veo
+  clips Steven generated (profile woman, sofa + laptop, students walking,
+  woman at a train window, train view); they keep Gemini's ✦ watermark. What
+  he rejected, and why the cut looks the way it does: an edit that laid text
+  over the raw footage — "far different with my reference". The reference's
+  grammar is that almost every shot is *the website* (Figma editor, image
+  picker, font swap, breakpoints, Publish, then the live site with nav pill and
+  thumbnail strip, page cards, floating screens); footage lives *inside* the UI
+  as the hero image. He then asked for a slower pace: the 16s version was
+  "too fast", so the same choreography is time-stretched ~1.4x to 23s with
+  frame blending on the slowed footage. Source (`film.html` `render(t)` stage +
+  `rec.mjs` Playwright capture + `sofa.py` laptop-screen tracking) was built in
+  a cloud session and handed to Steven as a zip; the older 39s version's source
+  is `~/Developer/Personal-Web-film/`.
 - **Metrodata screen wall (Sept 24, 2026)**, `.wall` under the film, from
   Figma "03c Screens" (`4090:1611`): ten screens in three offset columns on
   #161618, running off every edge. Each `<img>` sits at its Figma x/y/w/h as
@@ -257,10 +267,23 @@ Metrodata page `--ink` is #000 and `--body` #485359. Colour *tokens documented
 inside a case study* (e.g. the Academy's own "Body #5C5C5C" swatch) are content
 — leave them. Its intro title is 24/32, matching Alomos.
 
-The home page's **marquee band is the one deliberate exception on Steven's own
+The home page's **marquee band is one deliberate exception on Steven's own
 pages**: black (#000) with Days One, his call on Sept 23, 2026 — keep it.
 
-The other exception, in both Figma and the HTML: **type specimens inside a case
+The other is the **home page's Pixel Spell panel (Sept 24, 2026, Steven's
+call)**: he wanted visitors to "feel the spell", so it wears the studio site's
+own skin, taken from `github.com/stvx1001/pixel-spell` (`app/globals.css`,
+`components/`): cream `#fbf8f2`, ink `#0d0e1a`, pink `#f2549e`, Shrikhand
+headline, Geist Mono eyebrow/body, a Caveat sticker, bobbing pastel pixels,
+white tilted work-card frames on the gallery tiles, and the fox from its cast
+(`--img-ps-fox`, `fox-casting.png` at 600px) standing in front of the tiles.
+The tokens are scoped to `.ps-panel` (`--ps-*`); nothing else on the page uses
+those fonts. The logo is the studio's current `logo.svg`. The old peach
+gradient, blobs and PIXEL watermark are gone. The copy column is
+`minmax(0,520px) auto` so it shrinks beside the fixed-width gallery, and the
+headline size follows that column (`(100vw - 952px - 4vw) / 8`, 802px ≤1300).
+
+One more exception, in both Figma and the HTML: **type specimens inside a case
 study keep the client's own typeface** — the ALOMOS ramp stays Poppins, and the
 **Metrodata Academy UI is Poppins too** (Steven's call, Sept 24, 2026: every
 text *inside* his rebuilt Academy UI is Poppins, while the case-study page
