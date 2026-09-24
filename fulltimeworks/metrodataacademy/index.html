@@ -109,6 +109,20 @@ a{color:inherit;text-decoration:none;}
 .show-b .ann{position:absolute;left:50%;top:64px;width:82.6%;transform:translateX(-50%);border-radius:14px;}
 .show-b .row{position:absolute;left:50%;top:202px;width:123.6%;max-width:none;transform:translateX(-50%);}
 
+/* ============================================================
+   03c Screens — a dark collage of the Academy's screens right under
+   the film (Steven, Sept 24 2026, after a Framer-portfolio reference):
+   three columns of big rounded screens that run off every edge, drifting
+   at different speeds as the page scrolls. Positions are the Figma
+   frame's (1400x900, "03c Screens") as percentages, so the whole
+   collage scales as one piece; phones use the 350x500 mobile frame
+   (--m*) and drop the three right-column extras.
+   ============================================================ */
+.screens{position:relative;aspect-ratio:1400/900;border-radius:16px;overflow:hidden;background:#161618;}
+.sc{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);max-width:none;
+  object-fit:cover;border-radius:14px;
+  transform:translate3d(0,var(--shift,0px),0);will-change:transform;}
+
 .block{display:flex;flex-direction:column;gap:20px;}
 
 /* ============================================================
@@ -252,6 +266,9 @@ a{color:inherit;text-decoration:none;}
 /* Phone — Figma "Metrodata Academy page — Mobile 390": 16px gutters,
    16px between blocks, everything in one column. */
 @media (max-width:640px){
+  .screens{aspect-ratio:350/500;border-radius:12px;}
+  .sc{left:var(--mx);top:var(--my);width:var(--mw);height:var(--mh);border-radius:10px;}
+  .sc--wide{display:none;}
   .nav{top:12px;width:calc(100% - 48px);padding:6px 6px 6px 8px;}
   .nav.is-stuck{top:8px;}
   .nav-home{gap:12px;}
@@ -354,6 +371,20 @@ a{color:inherit;text-decoration:none;}
   <section class="film" aria-label="Metrodata Academy product film">
     <video src="assets/film.mp4" poster="assets/film-poster.jpg" autoplay muted loop playsinline preload="metadata"
       aria-label="A 23-second film: a learner browses the Academy site on a laptop, the page is redesigned in Figma — new hero image, type switched to Poppins, desktop, tablet and phone — then published: the live site, its pages and screens."></video>
+  </section>
+
+  <!-- ===================== 03c SCREENS ===================== -->
+  <section class="screens" aria-label="Metrodata Academy screens">
+    <img class="sc" data-col="L" style="--x:-11.429%;--y:-33.333%;--w:37.143%;--h:64.222%;--mx:-14.286%;--my:-16%;--mw:57.143%;--mh:44.4%" src="assets/homepage-top.jpg" alt="The Academy homepage" loading="lazy">
+    <img class="sc" data-col="L" style="--x:-11.429%;--y:35.333%;--w:37.143%;--h:54%;--mx:-14.286%;--my:31.6%;--mw:57.143%;--mh:37.4%" src="assets/programs.jpg" alt="The programs section" loading="lazy">
+    <img class="sc" data-col="L" style="--x:-11.429%;--y:93.778%;--w:37.143%;--h:32%;--mx:-14.286%;--my:72.2%;--mw:57.143%;--mh:22.2%" src="assets/calendar.jpg" alt="The training calendar" loading="lazy">
+    <img class="sc" data-col="C" style="--x:28.571%;--y:-18.889%;--w:42.857%;--h:37.556%;--mx:47.429%;--my:-8%;--mw:65.714%;--mh:25.8%" src="assets/screen-sofa.jpg" alt="A learner browsing the Academy site on a laptop" loading="lazy">
+    <img class="sc" data-col="C" style="--x:28.571%;--y:23.111%;--w:42.857%;--h:59.556%;--mx:47.429%;--my:21%;--mw:65.714%;--mh:41%" src="assets/screen-hero-dark.jpg" alt="The homepage hero: “Kembangkan potensi IT dan digital Anda.”" loading="lazy">
+    <img class="sc" data-col="C" style="--x:28.571%;--y:87.111%;--w:42.857%;--h:31.111%;--mx:47.429%;--my:94.2%;--mw:65.714%;--mh:21.4%" src="assets/screen-news.jpg" alt="The news page: “Kabar, cerita, dan pembaruan dari kelas-kelas kami.”" loading="lazy">
+    <img class="sc" data-col="R" style="--x:74.286%;--y:-12.222%;--w:37.143%;--h:32.556%;--mx:47.429%;--my:65.2%;--mw:65.714%;--mh:25.8%" src="assets/screen-train.jpg" alt="A hero with a thumbnail strip: “Belajar dari instruktur bersertifikat.”" loading="lazy">
+    <img class="sc sc--wide" data-col="R" style="--x:74.286%;--y:24.778%;--w:37.143%;--h:23.778%" src="assets/cta.jpg" alt="The closing call to action" loading="lazy">
+    <img class="sc sc--wide" data-col="R" style="--x:74.286%;--y:53%;--w:37.143%;--h:32.556%" src="assets/screen-rice.jpg" alt="A hero over a train window: “Kelas yang ikut ke mana pun Anda pergi.”" loading="lazy">
+    <img class="sc sc--wide" data-col="R" style="--x:74.286%;--y:90%;--w:37.143%;--h:32.556%" src="assets/screen-walk.jpg" alt="The homepage hero with students walking, set in Poppins" loading="lazy">
   </section>
 
   <!-- ===================== 04 SHOWCASE ===================== -->
@@ -515,6 +546,22 @@ a{color:inherit;text-decoration:none;}
     else if ('IntersectionObserver' in window) {
       new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? film.play().catch(function(){}) : film.pause(); }); }, { threshold: 0.25 }).observe(film);
     }
+  }
+  // 03c screens: the three columns drift at different speeds while the
+  // collage crosses the screen. A rAF loop measuring the section itself
+  // (not a scroll listener), running only while it is in view.
+  var screens = document.querySelector('.screens');
+  if (screens && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var cols = { L: 70, C: -50, R: 90 }, cards = screens.querySelectorAll('.sc'), live = false;
+    function drift(){
+      if (!live) return;
+      var r = screens.getBoundingClientRect(), vh = window.innerHeight;
+      var p = Math.max(-1, Math.min(1, ((r.top + r.height / 2) - vh / 2) / ((vh + r.height) / 2)));
+      var k = r.width < 640 ? 0.4 : r.width / 1400;
+      for (var i = 0; i < cards.length; i++) cards[i].style.setProperty('--shift', (p * cols[cards[i].dataset.col] * k).toFixed(1) + 'px');
+      requestAnimationFrame(drift);
+    }
+    new IntersectionObserver(function(es){ var was = live; live = es[0].isIntersecting; if (live && !was) requestAnimationFrame(drift); }).observe(screens);
   }
 })();
 </script>

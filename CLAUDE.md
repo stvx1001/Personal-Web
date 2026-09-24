@@ -95,6 +95,16 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   `rec.mjs` Playwright capture + `sofa.py` laptop-screen tracking) was built in
   a cloud session and handed to Steven as a zip; the older 39s version's source
   is `~/Developer/Personal-Web-film/`.
+- **Metrodata screens collage (Sept 24, 2026)** sits right under the film
+  (`.screens`, Figma "03c Screens" in both the desktop and Mobile 390 frames),
+  after a Framer-portfolio reference Steven sent: a dark `#161618` panel with
+  three columns of big rounded screens running off every edge, each column
+  drifting at its own speed while the panel is on screen (rAF, measured off the
+  section, off under reduced motion). Card positions are the Figma frame's
+  (1400x900 / 350x500) as percentages in inline `--x/--y/--w/--h` (`--m*` on
+  phones, where the three right-column extras are hidden). Six images are
+  stills pulled from `film.mp4` (`screen-*.jpg`; the dark hero is cropped to
+  leave out the Figma panel in that frame), the rest are existing assets.
 - **Third case study (Sept 23, 2026): `fulltimeworks/agriaku/`**, from Figma
   "AgriAku" (`3965:12496`) and "AgriAku — Mobile 390". It is the one with a
   different structure, at Steven's request: **three projects behind three
