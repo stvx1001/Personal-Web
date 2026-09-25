@@ -95,7 +95,15 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   thumbnail strip, page cards, floating screens); footage lives *inside* the UI
   as the hero image. He then asked for a slower pace: the 16s version was
   "too fast", so the same choreography is time-stretched ~1.4x to 23s with
-  frame blending on the slowed footage. Source (`film.html` `render(t)` stage +
+  frame blending on the slowed footage.
+  **Sept 25, 2026: 60fps, no ✦.** Steven found it choppy and wanted the
+  Gemini watermark gone. The ✦ was tracked per frame (edge-template match
+  plus hand keyframes on the zooms; it rides the footage, so it moves and
+  scales) and painted out with OpenCV Navier–Stokes inpainting, poster
+  too. 24 → 60fps is a hybrid: ffmpeg `minterpolate` mci where the move is
+  slow, plain frame blending where a source step is big (mean luma diff
+  > 6) — mci breaks into blocks on the UI zooms. Scripts were scratch
+  (not in the repo); redo from the source film if it changes. Source (`film.html` `render(t)` stage +
   `rec.mjs` Playwright capture + `sofa.py` laptop-screen tracking) was built in
   a cloud session and handed to Steven as a zip; the older 39s version's source
   is `~/Developer/Personal-Web-film/`.
