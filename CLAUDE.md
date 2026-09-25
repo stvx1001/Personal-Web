@@ -125,6 +125,12 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   filling. The "Added to cart" check was stuck at the top of its circle
   because `.t-cart span` also hit the badge `<span>` — caption rules are now
   scoped to `.t-cart div span`.
+- **Alomos no longer has Design system or Outcome sections** (Sept 25, 2026,
+  Steven deleted 08 and 09 in Figma, desktop and mobile); the page ends
+  Design in detail → mockup → scroll video → footer. The scroll video is now
+  60fps: the 15fps source was motion-interpolated with ffmpeg `minterpolate`
+  (mci/aobmc/bidir), x264 crf 16, BT.709, faststart — `imageio-ffmpeg` via
+  pip provides an ffmpeg in the cloud container.
 - **Case-study margins are a flat 24px at every width** (Sept 23, 2026): `.page`
   and `.nav` are `calc(100% - 48px)` with **no max-width cap** — the old
   `min(1400px, …)` / `min(1248px, …)` made the margin grow on screens wider
