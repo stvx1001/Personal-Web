@@ -15,7 +15,7 @@ Deliberate for a prototype. **Not** the production architecture — the plan is
 Next.js 15 + `motion` + Lenis + Tailwind v4 + MDX on Vercel. Treat this file as
 the reference for how the page looks and behaves, not as the target structure.
 
-Sections in order: navbar · banner/hero · Pixel Spell · MINIMAL · marquee ·
+Sections in order: navbar · banner/hero · Pixel Spell · marquee ·
 works rail + client logos · Hire Me · A Little About Me (stat cards) · footer.
 
 ## Case-study pages
@@ -158,7 +158,6 @@ Stages:
 |---|---|---|
 | 0 | Banner as a rounded card, headline + 3 float cards visible | initial |
 | 1 | Pixel Spell filling the viewport | **one gesture**, chained (see below) |
-| 2 | MINIMAL filling the viewport | one gesture |
 | — | released to native scroll + inertial glide | one more gesture |
 
 **Stage 0 → 1 is one gesture but two beats:** the banner grows to full screen
@@ -217,9 +216,13 @@ two separate gestures. Reversed on the way back up.
 - **`prefers-reduced-motion`** adds `body.no-pin`, which drops the whole thing
   back to plain static scrolling. Preserve this.
 
+**MINIMAL was removed (Sept 25, 2026, Steven's call)** — section, images,
+tab/dots/autoplay/cursor scripts, its Figma frames — so Pixel Spell is now the
+last stage (`LAST = 1`) and the next gesture releases the page.
+
 Stage offsets come from tall wrappers: hero pin 340vh (140vh of banner
 expansion + 100vh held full-bleed while Pixel Spell covers it), Pixel Spell
-230vh (130vh held + 100vh while MINIMAL covers it), MINIMAL 130vh. A gesture
+130vh (the last stage holds; nothing covers it). A gesture
 tweens the scroll position to the next offset (easeInOutCubic) and the rAF
 engine turns that movement into the animation. The JS reads the offsets from
 the elements, so heights are safe to retune — with one exception: the banner's
