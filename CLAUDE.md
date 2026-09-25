@@ -29,7 +29,7 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
 ```
 
 - **Every path is relative** — no leading slash, anywhere. The site is served
-  from `/Personal-Web/` on GitHub Pages today and from `/` on the custom domain
+  from `/personal-web/` on GitHub Pages today and from `/` on the custom domain
   later; relative paths work in both with no edits. The case study links home
   with `../../`; the Works card links in with `fulltimeworks/alomos/`.
 - **Works cards link via a 4th field** in the `projects` array in `index.html`
@@ -415,21 +415,14 @@ of states, not the literal seconds.
 
 ## GitHub and hosting
 
-Repo: `github.com/stvx1001/Personal-Web` — **private**, and empty as of this
-handoff. This folder's first commit is ready to push:
+Repo: `github.com/stvx1001/personal-web` — **public**. It was renamed from
+`Personal-Web` on Sept 25, 2026; GitHub redirects the old URL, but use the new
+lowercase name everywhere. Claude cloud sessions work on `claude/*` branches
+and push there; `main` is the published branch.
 
-```bash
-git remote add origin https://github.com/stvx1001/Personal-Web.git
-git push -u origin main
-```
-
-Don't create files through GitHub's web UI before that first push — it makes the
-histories diverge and the push gets rejected.
-
-Hosting: GitHub Pages does **not** serve private repos on a free account
-(needs Pro/Team/Enterprise). So either make the repo public, or use Vercel,
-which deploys private repos on its free tier and is where the Next.js plan is
-headed anyway.
+Hosting: the repo being public means GitHub Pages can serve it on a free
+account, at `/personal-web/` (the repo name, lowercase since the rename).
+Vercel is where the Next.js plan is headed.
 
 ## Open items
 
