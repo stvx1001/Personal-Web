@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Metrodata Academy — Steven Charlino</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <meta name="description" content="Case study: website, design system and documentation for Metrodata Academy, the IT training and certification arm of Metrodata Electronics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,112 +115,54 @@ a{color:inherit;text-decoration:none;}
 .wall-stage img{position:absolute;display:block;max-width:none;object-fit:cover;border-radius:14px;border-radius:1cqw;}
 
 /* ============================================================
-   04 Showcase — calendar on soft blue | announcement + programs on ink
+   04 Showcase — Figma "04 Showcase" (3953:1937): three editor screens
+   on black — page cards, the font swap, breakpoints — the middle one
+   centred, the other two running off the edges. Positions are the
+   Figma x/y/w/h as a percentage of the 1400x560 frame.
    ============================================================ */
-.show{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:560px;}
-.show > div{position:relative;border-radius:16px;overflow:hidden;}
-.show-a{background:var(--soft);}
-.show-a img{position:absolute;left:9.3%;top:72px;width:124%;max-width:none;}
-.show-b{background:var(--dark);}
-.show-b .ann{position:absolute;left:50%;top:64px;width:82.6%;transform:translateX(-50%);border-radius:14px;}
-.show-b .row{position:absolute;left:50%;top:202px;width:123.6%;max-width:none;transform:translateX(-50%);}
-
-.block{display:flex;flex-direction:column;gap:20px;}
+.show{position:relative;aspect-ratio:1400/560;border-radius:16px;overflow:hidden;background:#000;}
+.show img{position:absolute;top:13.93%;width:51.43%;height:72.32%;max-width:none;object-fit:cover;border-radius:4px;}
+.show .s1{left:-29.14%;}
+.show .s2{left:24.29%;}
+.show .s3{left:77.71%;}
 
 /* ============================================================
-   05 Audiences — the homepage's own "benefits board" pattern
+   05 Audiences — Figma "05 Audiences" (3954:1582): the Academy site
+   in its dark skin, cut off by the bottom edge of the panel. Drawn in
+   Figma pixels: --u is one pixel of the 1400px frame (358px on
+   phones), so the whole mock scales with the page. Everything inside
+   is the Academy's own UI, so it is set in its Poppins.
    ============================================================ */
-.board{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;min-height:380px;padding:48px;border-radius:16px;color:#fff;
-  background:radial-gradient(120% 110% at 10% 110%,rgba(46,86,128,.55) 0%,rgba(21,21,21,0) 60%),#141416;}
-.aud{display:flex;flex-direction:column;}
-.aud b{font-weight:500;font-size:44px;line-height:48px;color:var(--blue);}
-.aud h3{margin-top:auto;padding-top:24px;font-weight:600;font-size:22px;line-height:28px;}
-.aud p{margin-top:12px;font-size:16px;line-height:24px;color:#9A9AA0;}
-
+.aud{position:relative;aspect-ratio:1400/800;border-radius:16px;overflow:hidden;background:#000;
+  container-type:inline-size;--u:calc(100cqw / 1400);}
+.aud-site{position:absolute;left:calc(160*var(--u));top:calc(64*var(--u));width:calc(1080*var(--u));height:calc(800*var(--u));
+  border-radius:calc(20*var(--u));overflow:hidden;background:#1b1b1d;font-family:"Poppins",var(--sans);color:#fff;}
+.aud-site > *{position:absolute;margin:0;}
+.aud-logo{left:calc(32*var(--u));top:calc(30*var(--u));width:calc(120*var(--u));height:auto;}
+.aud-daftar{left:calc(968*var(--u));top:calc(28.5*var(--u));padding:calc(10*var(--u)) calc(18*var(--u));border-radius:calc(8*var(--u));
+  background:#2a2a2d;font-weight:600;font-size:calc(13*var(--u));line-height:calc(20*var(--u));letter-spacing:.02em;}
+.aud-links{left:calc(391*var(--u));top:calc(38.5*var(--u));display:flex;gap:calc(22*var(--u));font-size:calc(13*var(--u));line-height:calc(20*var(--u));color:#a0a0a3;}
+.aud-links span:first-child{color:#fff;}
+.aud-h{left:0;right:0;top:calc(170*var(--u));text-align:center;font-weight:500;font-size:calc(52*var(--u));line-height:1.15;letter-spacing:-.02em;}
+.aud-p{left:calc(330*var(--u));width:calc(420*var(--u));top:calc(248*var(--u));text-align:center;font-size:calc(16*var(--u));line-height:1.5;color:#a0a0a3;}
+.aud-search{left:calc(455*var(--u));top:calc(326*var(--u));width:calc(170*var(--u));height:calc(30*var(--u));border-radius:calc(6*var(--u));
+  background:#2a2a2d;padding:calc(8*var(--u)) calc(14*var(--u));font-weight:500;font-size:calc(10*var(--u));line-height:calc(14*var(--u));letter-spacing:.08em;color:#8a8a8e;}
+.aud-t{left:calc(32*var(--u));top:calc(442*var(--u));font-weight:600;font-size:calc(24*var(--u));line-height:calc(36*var(--u));letter-spacing:-.01em;}
+.aud-all{left:calc(968*var(--u));top:calc(459*var(--u));font-weight:600;font-size:calc(11*var(--u));line-height:calc(16*var(--u));letter-spacing:.08em;color:#d0d0d3;}
+.aud-card{top:calc(502*var(--u));width:calc(320*var(--u));height:calc(250*var(--u));border-radius:calc(4*var(--u));overflow:hidden;}
+.aud-card > img{width:100%;height:100%;object-fit:cover;}
+.aud-card:nth-of-type(1){left:calc(32*var(--u));}
+.aud-card:nth-of-type(2){left:calc(376*var(--u));}
+.aud-card:nth-of-type(3){left:calc(720*var(--u));}
+.aud-card .aud-inset{position:absolute;left:calc(35*var(--u));top:calc(118*var(--u));width:calc(250*var(--u));height:calc(150*var(--u));
+  object-fit:cover;border:calc(6*var(--u)) solid #fff;border-radius:calc(3*var(--u));box-shadow:0 calc(10*var(--u)) calc(30*var(--u)) rgba(0,0,0,.35);}
 
 /* ============================================================
-   07 Design in detail — annotated screens (Alomos pattern)
+   05b Vision — Figma "05b Vision" (4110:1611): one photo, the Academy
+   site on a tablet at a sunlit desk
    ============================================================ */
-.screen{display:flex;align-items:center;gap:64px;padding:48px 64px;border-radius:16px;background:var(--soft);}
-.shot{position:relative;flex:0 0 560px;}
-.shot > img{width:100%;border-radius:10px;box-shadow:0 20px 40px rgba(18,31,89,.12);}
-.shot--cal > img{width:106.4%;max-width:none;margin:-2% 0 0 -3.2%;box-shadow:none;}
-.pin{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
-  background:var(--blue);color:#fff;font-weight:600;font-size:14px;}
-.shot .pin{position:absolute;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);}
-.notes{flex:1;min-width:0;display:flex;flex-direction:column;gap:28px;}
-.notes .eyebrow{font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);}
-.notes h3{margin-top:10px;font-weight:600;font-size:24px;line-height:32px;color:var(--ink);}
-.note{display:flex;gap:16px;align-items:flex-start;}
-.note b{display:block;font-weight:600;font-size:18px;line-height:26px;}
-.note p{margin-top:4px;font-size:15px;line-height:24px;color:var(--body);}
-
-/* ============================================================
-   08 Design system — three columns, then the documentation page
-   ============================================================ */
-.ds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding:48px 52px 52px;border-radius:16px;background:var(--soft);align-items:start;}
-.ds h4{font-weight:600;font-size:15px;margin-bottom:14px;}
-.ds-card{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:16px;}
-.tok{display:flex;align-items:center;gap:12px;}
-.tok i{flex:none;width:28px;height:28px;border-radius:7px;}
-.tok b{flex:1;font-weight:500;font-size:14px;}
-.tok span{font-size:13px;color:var(--muted);}
-/* The specimens document the Academy's own system, which is set in Poppins,
-   even though the rest of this site is Radio Canada Big. */
-.ty b{font-family:"Poppins",var(--sans);}
-.ty span{display:block;margin-top:2px;font-size:12px;color:var(--muted);}
-.spec small{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);}
-.spec div{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
-/* the Academy's own components, rebuilt in CSS */
-.b-primary{display:inline-flex;align-items:center;padding:14px 28px;border-radius:99px;background:linear-gradient(180deg,#2B2B2E,#111);color:#fff;font-family:var(--inter);font-weight:600;font-size:17px;}
-.b-signal{display:inline-flex;align-items:center;padding:11px 20px;border-radius:99px;background:linear-gradient(90deg,#F06BA8,#B478F0);color:#fff;font-family:var(--inter);font-weight:600;font-size:15px;}
-.b-link{font-family:var(--inter);font-weight:600;font-size:15px;color:var(--blue);}
-.chip{font-family:var(--inter);font-weight:600;font-size:11px;letter-spacing:.08em;padding:6px 9px;border-radius:99px;}
-.chip--solid{background:var(--blue);color:#fff;}
-.chip--soft{background:var(--soft);color:var(--blue);}
-.chip--event{background:var(--blue);color:#fff;border-radius:8px;width:140px;}
-.cat{display:block;width:192px;padding:9px 12px;border-radius:8px;background:var(--blue);color:#fff;font-family:var(--inter);font-weight:500;font-size:15px;}
-
-.docs{position:relative;border-radius:16px;background:var(--dark);padding:40px 80px 0;overflow:hidden;}
-.docs > small{display:block;margin-bottom:22px;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8C8C93;}
-.doc{display:flex;height:620px;border-radius:14px 14px 0 0;overflow:hidden;background:#fff;}
-.doc-side{flex:0 0 240px;background:#F7F8FB;padding:28px 20px 28px 24px;display:flex;flex-direction:column;gap:6px;}
-.doc-side strong{font-weight:600;font-size:15px;margin-bottom:14px;}
-.doc-side em{font-style:normal;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
-.doc-side span{font-weight:500;font-size:14px;color:var(--body);padding:7px 10px;border-radius:8px;}
-.doc-side span.on{background:var(--blue);color:#fff;}
-.doc-main{flex:1;min-width:0;padding:36px 48px;display:flex;flex-direction:column;gap:22px;}
-.crumb{font-size:13px;color:var(--muted);}
-.doc-main h3{font-weight:700;font-size:40px;line-height:46px;}
-.doc-main .lede{margin-top:8px;font-size:15px;line-height:24px;color:var(--body);max-width:640px;}
-.doc-two{display:flex;gap:20px;}
-.box{background:#F4F4F6;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;}
-.box h5,.dd h5{font-weight:600;font-size:13px;}
-.variants{flex:1;min-width:0;}
-.variants div{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.specs{flex:0 0 330px;gap:10px;}
-.specs p{display:flex;justify-content:space-between;font-size:13px;color:var(--body);}
-.specs p b{font-weight:500;color:var(--ink);}
-.dd-row{display:flex;gap:20px;}
-.dd{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:12px;border:1px solid;border-top-width:4px;}
-.dd p{font-size:14px;line-height:22px;color:var(--body);}
-.dd div{display:flex;gap:10px;flex-wrap:wrap;}
-.dd--do{border-color:#29B36A;}
-.dd--do h5{color:#1F8F53;}
-.dd--dont{border-color:#E5484D;}
-.dd--dont h5{color:#C7353A;}
-
-/* ============================================================
-   09 Outcome — the CTA screen | four things he brings
-   ============================================================ */
-.shipped{display:flex;gap:20px;height:460px;}
-.shipped-shot{flex:1;min-width:0;border-radius:10px;background:var(--soft);display:grid;place-items:center;padding:0 35px;}
-.shipped-shot img{width:100%;border-radius:16px;}
-.skills{flex:1;min-width:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;}
-.skill{background:var(--soft);border-radius:10px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px;}
-.done{width:30px;height:30px;border-radius:50%;background:var(--blue);display:grid;place-items:center;}
-.skill b{display:block;font-weight:600;font-size:18px;line-height:26px;margin-bottom:6px;}
-.skill p{font-size:14px;line-height:22px;color:var(--body);}
+.vision{aspect-ratio:1400/788;border-radius:16px;overflow:hidden;background:#e6e5da;}
+.vision img{width:100%;height:100%;object-fit:cover;}
 
 /* ============================================================
    10 Footer — same component as the Alomos page; next project: AgriAku
@@ -242,24 +187,9 @@ a{color:inherit;text-decoration:none;}
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width:1180px){
-  .screen{gap:40px;padding:40px;}
-  .shot{flex-basis:46%;}
-}
 @media (max-width:1024px){
   .page{padding-top:120px;}
   .intro{grid-template-columns:1fr;gap:32px;}
-  .show{grid-template-columns:1fr;height:auto;}
-  .show > div{height:520px;}
-  .board{grid-template-columns:1fr;gap:36px;}
-  .screen{flex-direction:column;align-items:stretch;}
-  .screen--rev{flex-direction:column-reverse;}
-  .shot{flex:none;width:100%;max-width:560px;align-self:center;}
-  .ds{grid-template-columns:1fr 1fr;}
-  .docs{padding:32px 32px 0;}
-  .doc-side{display:none;}
-  .shipped{flex-direction:column;height:auto;}
-  .shipped-shot{padding:40px 24px;}
   .cs-foot{grid-template-columns:1fr;}
 }
 /* Phone — Figma "Metrodata Academy page — Mobile 390": 16px gutters,
@@ -269,33 +199,40 @@ a{color:inherit;text-decoration:none;}
   .nav.is-stuck{top:8px;}
   .nav-home{gap:12px;}
   .page{width:calc(100% - 48px);padding:84px 0 16px;gap:16px;}
-  .hero{aspect-ratio:358/300;gap:16px;}
+  /* Figma mobile "02 Hero" (358x420): logo 240px wide, the line right
+     under it, both centred — the desktop group at phone size */
+  .hero{aspect-ratio:358/420;gap:15px;padding-top:0;}
+  .hero-logo{width:67.04%;}
+  .hero-line{font-size:13px;line-height:20px;}
   .intro{display:flex;flex-direction:column-reverse;gap:20px;padding:16px 4px;}
   .credits{max-width:none;}
   .wall{aspect-ratio:1/1.18;}
   .wall-stage{width:184%;left:-42%;}
   .wall-stage img{border-radius:10px;}
-  .show{gap:16px;}
-  .show > div{height:300px;}
-  .show-a img{left:24px;top:32px;width:430px;}
-  .show-b .ann{left:20px;top:24px;width:calc(100% - 40px);transform:none;border-radius:10px;}
-  .show-b .row{left:-120px;top:106px;width:560px;transform:none;}
-  .block{gap:16px;}
-  .board{padding:28px 24px;gap:28px;min-height:0;}
-  .aud h3{padding-top:8px;}
-  .screen{padding:24px 20px;gap:24px;}
-  .screen--rev{flex-direction:column;}
-  .notes{gap:20px;}
-  .ds{grid-template-columns:1fr;gap:24px;padding:24px 16px;}
-  .docs{height:380px;padding:22px 0 0 20px;}
-  .docs > small{font-size:10px;margin-bottom:14px;padding-right:20px;}
-  /* the desktop page at half size, running off the right edge — as in Figma */
-  .doc{width:1240px;height:620px;transform:scale(.5);transform-origin:0 0;}
-  .doc-side{display:flex;}
-  .shipped{gap:12px;}
-  .shipped-shot{height:240px;padding:0 20px;}
-  .skills{grid-template-columns:1fr;grid-template-rows:none;gap:12px;}
-  .skill{gap:20px;}
+  /* Figma mobile "04 Showcase" (358x240): the same three screens, zoomed
+     so the middle one fills the width */
+  .show{aspect-ratio:358/240;}
+  .show img{top:17.08%;width:78.21%;height:65.83%;border-radius:3px;}
+  .show .s1{left:-70.67%;}
+  .show .s2{left:10.89%;}
+  .show .s3{left:92.46%;}
+  /* Figma mobile "05 Audiences" (358x540): the site's phone layout —
+     no nav links, cards in a row running off the right edge */
+  .aud{aspect-ratio:358/540;--u:calc(100cqw / 358);}
+  .aud-site{left:calc(12*var(--u));top:calc(24*var(--u));width:calc(334*var(--u));height:calc(540*var(--u));border-radius:calc(14*var(--u));}
+  .aud-logo{left:calc(18*var(--u));top:calc(18*var(--u));width:calc(84*var(--u));}
+  .aud-daftar{left:calc(252*var(--u));top:calc(14*var(--u));padding:calc(8*var(--u)) calc(12*var(--u));font-size:calc(12*var(--u));line-height:calc(18*var(--u));}
+  .aud-links{display:none;}
+  .aud-h{left:calc(18*var(--u));right:auto;width:calc(298*var(--u));top:calc(92*var(--u));font-size:calc(28*var(--u));line-height:calc(32*var(--u));}
+  .aud-p{left:calc(23*var(--u));width:calc(288*var(--u));top:calc(168*var(--u));font-size:calc(13*var(--u));line-height:calc(20*var(--u));}
+  .aud-search{left:calc(92*var(--u));top:calc(248*var(--u));width:calc(150*var(--u));height:calc(28*var(--u));padding:calc(7*var(--u)) calc(14*var(--u));font-size:calc(9*var(--u));}
+  .aud-t{left:calc(18*var(--u));top:calc(316*var(--u));font-size:calc(17*var(--u));line-height:calc(26*var(--u));}
+  .aud-all{left:calc(243*var(--u));top:calc(325*var(--u));font-size:calc(10*var(--u));line-height:calc(15*var(--u));}
+  .aud-card{top:calc(356*var(--u));width:calc(262*var(--u));height:calc(200*var(--u));}
+  .aud-card:nth-of-type(1){left:calc(18*var(--u));}
+  .aud-card:nth-of-type(2){left:calc(292*var(--u));}
+  .aud-card:nth-of-type(3){left:calc(566*var(--u));}
+  .aud-card .aud-inset{left:calc(29*var(--u));top:calc(94*var(--u));width:calc(204*var(--u));height:calc(120*var(--u));border-width:calc(5*var(--u));}
   .cs-foot{padding:16px;gap:16px;}
   .cf-card{padding:26px 24px;}
   .cf-hire{height:370px;}
@@ -384,123 +321,32 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- ===================== 04 SHOWCASE ===================== -->
-  <section class="show" aria-label="Metrodata Academy interface">
-    <div class="show-a"><img src="assets/calendar.jpg" alt="The training calendar: categories on the left, a month of dated certification classes on the right" loading="lazy"></div>
-    <div class="show-b">
-      <img class="ann" src="assets/announce.jpg" alt="An event announcement card with a Daftar (register) button" loading="lazy">
-      <img class="row" src="assets/programs-row.jpg" alt="Program cards for Internship and Mengajar beside the impact numbers" loading="lazy">
-    </div>
+  <section class="show" aria-label="Redesigning the Academy site in the editor">
+    <img class="s1" src="assets/show-pagecards.jpg" alt="Picking the hero image from a row of page cards" loading="lazy">
+    <img class="s2" src="assets/show-fontswap.jpg" alt="The homepage hero in the editor, with the font picker open" loading="lazy">
+    <img class="s3" src="assets/show-breakpoints.jpg" alt="The desktop breakpoint of the homepage in the editor" loading="lazy">
   </section>
 
   <!-- ===================== 05 AUDIENCES ===================== -->
-  <section class="block">
-    <div class="board">
-      <div class="aud"><b>01</b><h3>Students &amp; fresh graduates</h3><p>Internships and IT Camp come with a clear next step — apply, get selected, get placed — so a first career move feels within reach.</p></div>
-      <div class="aud"><b>02</b><h3>Working professionals</h3><p>A training calendar right under the hero, with certified instructors and online or in-person classes to fit a busy week.</p></div>
-      <div class="aud"><b>03</b><h3>Institutions &amp; HR teams</h3><p>University partners, training numbers and certification brands up front, so a company or campus can trust the Academy with its people.</p></div>
+  <section class="aud" aria-label="The Academy site in its dark skin: programs for students, professionals and institutions">
+    <div class="aud-site">
+      <img class="aud-logo" src="assets/logo-white.png" alt="Metrodata Academy">
+      <span class="aud-links" aria-hidden="true"><span>Program</span><span>Kalender</span><span>Sertifikasi</span><span>Tentang</span></span>
+      <span class="aud-daftar" aria-hidden="true">Daftar</span>
+      <p class="aud-h">Belajar sesuai jalur Anda.</p>
+      <p class="aud-p">Bootcamp, pelatihan bersertifikat, dan program karier — untuk mahasiswa, profesional, dan institusi.</p>
+      <span class="aud-search" aria-hidden="true">CARI PROGRAM</span>
+      <p class="aud-t">Program unggulan</p>
+      <span class="aud-all" aria-hidden="true">LIHAT SEMUA</span>
+      <div class="aud-card"><img src="assets/wall-hero-walk.jpg" alt="Program card for students and fresh graduates" loading="lazy"></div>
+      <div class="aud-card"><img src="assets/wall-sofa.jpg" alt="Program card for working professionals" loading="lazy"></div>
+      <div class="aud-card"><img src="assets/wall-rice-field.jpg" alt="Program card for institutions and HR teams" loading="lazy"><img class="aud-inset" src="assets/wall-programs.jpg" alt="" loading="lazy"></div>
     </div>
   </section>
 
-  <!-- ===================== 07 DESIGN IN DETAIL ===================== -->
-  <section class="block">
-    <div class="screen">
-      <div class="shot">
-        <img src="assets/programs.jpg" alt="The program section: Metrodata Training, IT Camp, Internship and Mengajar cards with an impact card" loading="lazy">
-        <span class="pin" style="left:.7%;top:21.8%">1</span>
-        <span class="pin" style="left:64.3%;top:56.6%">2</span>
-        <span class="pin" style="left:.4%;top:56.6%">3</span>
-      </div>
-      <div class="notes">
-        <div><p class="eyebrow">Homepage · Programs</p><h3>Four programs, one clear choice.</h3></div>
-        <div class="note"><span class="pin">1</span><div><b>The flagship leads</b><p>Certified training — the Academy’s main line — takes the widest card, so it is the first thing a professional sees.</p></div></div>
-        <div class="note"><span class="pin">2</span><div><b>Proof beside the offer</b><p>The impact card sits inside the grid, so the numbers are read in the same glance as the programs.</p></div></div>
-        <div class="note"><span class="pin">3</span><div><b>One card per path</b><p>IT Camp, Internship and Mengajar each say who they are for in one line, with a single Detail link.</p></div></div>
-      </div>
-    </div>
-    <div class="screen screen--rev">
-      <div class="notes">
-        <div><p class="eyebrow">Homepage · Training calendar</p><h3>Plan training around work.</h3></div>
-        <div class="note"><span class="pin">1</span><div><b>Dates before the sales pitch</b><p>Professionals book around their jobs, so the calendar sits right under the hero instead of at the end of the page.</p></div></div>
-        <div class="note"><span class="pin">2</span><div><b>Filter by field</b><p>Categories follow how people search — Cybersecurity, Cloud, Data &amp; AI, Microsoft — not how the catalogue is organised internally.</p></div></div>
-        <div class="note"><span class="pin">3</span><div><b>Every date is a door</b><p>Each program chip opens its detail and registration, so a date is always one click from signing up.</p></div></div>
-      </div>
-      <div class="shot shot--cal">
-        <img src="assets/calendar.jpg" alt="The training calendar" loading="lazy">
-        <span class="pin" style="left:38.2%;top:-3.3%">1</span>
-        <span class="pin" style="left:-2.1%;top:13.3%">2</span>
-        <span class="pin" style="left:36.8%;top:35.3%">3</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 08 DESIGN SYSTEM ===================== -->
-  <section class="block">
-    <div class="ds">
-      <div>
-        <h4>Colour</h4>
-        <div class="ds-card">
-          <div class="tok"><i style="background:#3056D3"></i><b>Primary blue</b><span>#3056D3</span></div>
-          <div class="tok"><i style="background:#212123"></i><b>Ink</b><span>#212123</span></div>
-          <div class="tok"><i style="background:#5C5C5C"></i><b>Body</b><span>#5C5C5C</span></div>
-          <div class="tok"><i style="background:#A0A0A3"></i><b>Muted</b><span>#A0A0A3</span></div>
-          <div class="tok"><i style="background:#F1F5FD;box-shadow:inset 0 0 0 1px #D6DEEE"></i><b>Soft blue</b><span>#F1F5FD</span></div>
-          <div class="tok"><i style="background:linear-gradient(90deg,#F06BA8,#9A6CF0)"></i><b>Signal gradient</b><span>Daftar</span></div>
-        </div>
-      </div>
-      <div>
-        <h4>Typography</h4>
-        <div class="ds-card">
-          <div class="ty"><b style="font-family:'Poppins',var(--sans);font-weight:600;font-size:36px;line-height:42px">Display</b><span>Poppins SemiBold · 64 / 72</span></div>
-          <div class="ty"><b style="font-weight:600;font-size:22px">Heading</b><span>Poppins SemiBold · 22 – 44</span></div>
-          <div class="ty"><b style="font-weight:400;font-size:16px">Body text</b><span>Poppins · 16 / 26</span></div>
-          <div class="ty"><b style="font-family:'Poppins',var(--sans);font-weight:500;font-size:13px;letter-spacing:.04em">LABEL</b><span>Poppins Medium · 11 – 15</span></div>
-        </div>
-      </div>
-      <div>
-        <h4>Components</h4>
-        <div class="ds-card">
-          <div class="spec"><small>Buttons</small><div><span class="b-primary">Lihat Program</span><span class="b-signal">Daftar</span><span class="b-link">Detail →</span></div></div>
-          <div class="spec"><small>Chips</small><div><span class="chip chip--solid">NEWS</span><span class="chip chip--soft">METRODATA TRAINING</span><span class="chip chip--event">COMPTIA AI</span></div></div>
-          <div class="spec"><small>Category</small><div><span class="cat">Cybersecurity</span></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="docs">
-      <small>Documentation — written for the designer after me</small>
-      <div class="doc" aria-label="A page from the design system documentation: Button">
-        <div class="doc-side" aria-hidden="true">
-          <strong>MDA Design System</strong>
-          <em>Foundations</em><span>Colour</span><span>Typography</span><span>Spacing &amp; grid</span>
-          <em>Components</em><span class="on">Button</span><span>Chip</span><span>Card</span><span>Calendar</span><span>Navigation</span>
-          <em>Patterns</em><span>Program card</span><span>Announcement</span>
-        </div>
-        <div class="doc-main">
-          <p class="crumb">Components / Button</p>
-          <div><h3>Button</h3><p class="lede">Buttons start an action. Each section gets one primary button for the thing we most want the visitor to do; everything else is secondary or a text link.</p></div>
-          <div class="doc-two">
-            <div class="box variants"><h5>Variants</h5><div><span class="b-primary">Lihat Program</span><span class="b-signal">Daftar</span><span class="b-link">Detail →</span></div></div>
-            <div class="box specs"><h5>Specs</h5><p>Height <b>48 px</b></p><p>Padding <b>14 × 28 px</b></p><p>Radius <b>Full pill</b></p><p>Label <b>Poppins SemiBold 17</b></p></div>
-          </div>
-          <div class="dd-row">
-            <div class="dd dd--do"><h5>Do</h5><div><span class="b-primary">Lihat Program</span></div><p>One primary button per section — it is the action we want.</p></div>
-            <div class="dd dd--dont"><h5>Don’t</h5><div><span class="b-primary">Lihat Program</span><span class="b-primary">Lihat Program</span></div><p>Two primary buttons side by side — the visitor has to guess.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 09 OUTCOME ===================== -->
-  <section class="block">
-    <div class="shipped">
-      <div class="shipped-shot"><img src="assets/cta.jpg" alt="The homepage’s closing call to action: “Temukan jalur belajar yang tepat untuk Anda”" loading="lazy"></div>
-      <div class="skills">
-        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Negotiation</b><p>Kept business goals and learner needs in the same conversation, and found a scope everyone could sign off.</p></div></div>
-        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Presenting solutions</b><p>Showed decisions as prototypes and stories, not opinions — so approvals came on evidence.</p></div></div>
-        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Systems thinking</b><p>A design system with documentation, so other designers could continue the work.</p></div></div>
-        <div class="skill"><span class="done"><svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M1 5l4 4 8-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Research-led design</b><p>Audience research and benchmarks behind every section of the homepage.</p></div></div>
-      </div>
-    </div>
+  <!-- ===================== 05b VISION ===================== -->
+  <section class="vision">
+    <img src="assets/vision-tablet.jpg" alt="The Academy homepage on a tablet at a sunlit desk" loading="lazy">
   </section>
 
   <!-- ===================== 10 FOOTER ===================== -->

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alomos — Steven Charlino</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <meta name="description" content="Case study: brand, design system, website and code for Alomos, a Singapore-based electronics e-commerce newcomer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -479,6 +482,9 @@ a{color:inherit;text-decoration:none;}
   .cf-band{top:128px;height:170px;}
   .media{aspect-ratio:358/300;}
   .media--brand{aspect-ratio:358/220;}
+  /* the laptop mockup and the scroll film keep the desktop 1400:840 frame,
+     as Figma mobile does (358x215) */
+  .media--wide{aspect-ratio:1400/840;}
   .media--brand > video{width:148%;}
   .intro{padding:24px 4px;gap:14px;display:flex;flex-direction:column-reverse;}
   .intro-credits .gap{height:14px;}
@@ -495,14 +501,26 @@ a{color:inherit;text-decoration:none;}
      side by side, timeline, then suggestions */
   .bento > .bcol:nth-child(2){order:0;}
   .btop > .bcol{flex-direction:row;gap:12px;}
-  .btop > .bcol .tile{flex:1;height:200px;padding:16px 10px;}
+  .btop > .bcol .tile{flex:1;height:192px;padding:16px 10px;}
   .btop > .bcol .badge,.btop > .bcol .ring{width:88px;height:88px;}
   .btop > .bcol .badge img{width:40px;height:40px;}
   .btop > .bcol .lock{width:88px;height:88px;}
   .btop > .bcol .lock-icon{width:40px;height:40px;}
-  .t-eta{height:460px;}
-  .t-eta .glass{top:70px;}
-  .t-timeline{padding:28px 24px;}
+  /* tile sizes from Figma mobile "04b Result bento" (3929:1599) */
+  .t-paid,.t-pay{height:380px;}
+  .t-paid h3{font-size:28px;line-height:33px;}
+  .t-pay h3{font-size:22px;line-height:27px;}
+  .t-eta{height:386px;}
+  /* the desktop 300x320 glass at 0.742, as drawn in Figma (223x238) */
+  .t-eta .glass{top:74px;transform:translateX(-50%) scale(.742);transform-origin:50% 0;}
+  .t-timeline{padding:28px 24px;gap:20px;}
+  .tl-copy h3{font-size:22px;line-height:27px;}
+  .tl-copy p{font-size:16px;line-height:21px;}
+  .tl-stages{width:100%;}
+  .t-suggest{height:455px;}
+  .sg-head{top:53px;font-size:22px;line-height:27px;}
+  .sg-sub{top:132px;}
+  .t-new{height:415px;}
   .stage span{white-space:normal;}
   .flow-m .node{position:static;}
   .flow-m .link{width:1.5px;height:22px;background:#9EA8B8;}
@@ -855,10 +873,10 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- ===================== 07b MOCKUPS ===================== -->
-  <div class="media"><img src="assets/mockup-desktop.jpg" alt="Alomos homepage on a laptop, in use" loading="lazy"></div>
+  <div class="media media--wide"><img src="assets/mockup-desktop.jpg" alt="Alomos homepage on a laptop, in use" loading="lazy"></div>
   <!-- Website scroll — Steven's web-scroll.gif as MP4 (14MB -> 3.4MB).
        The motion blur on the text is in the source recording, not added. -->
-  <div class="media">
+  <div class="media media--wide">
     <video poster="assets/website-scroll.jpg" autoplay muted loop playsinline preload="none" aria-label="Scrolling through the Alomos website">
       <source src="assets/website-scroll.mp4" type="video/mp4">
     </video>
