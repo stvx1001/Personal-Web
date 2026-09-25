@@ -117,6 +117,14 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   and holds two dashed "Add export" slots waiting for Steven's DS exports.
   Screens are `get_screenshot` renders of his own older AgriAku frames
   (`3965:14155`, `3965:12595`, `3965:12517`), flattened to JPEG.
+- **Alomos tweaks (Sept 25, 2026, Steven's calls):** the bento is 48px padding
+  with 32px gaps on desktop (16/16 on phones); "Secure payment" has a white
+  lock inside its ring (`assets/icon-lock.svg`); the persona carousel holds
+  1.8s (was 3.8s); each Design-in-detail panel wraps screen + notes in one
+  centred `.screen-wrap`, 40px apart, notes hugging at 460px instead of
+  filling. The "Added to cart" check was stuck at the top of its circle
+  because `.t-cart span` also hit the badge `<span>` — caption rules are now
+  scoped to `.t-cart div span`.
 - **Case-study margins are a flat 24px at every width** (Sept 23, 2026): `.page`
   and `.nav` are `calc(100% - 48px)` with **no max-width cap** — the old
   `min(1400px, …)` / `min(1248px, …)` made the margin grow on screens wider

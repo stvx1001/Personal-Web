@@ -131,10 +131,10 @@ a{color:inherit;text-decoration:none;}
    Columns are proportional (310 : 450+20+210 : 330) so the whole thing
    scales as one piece between desktop widths; heights stay as drawn.
    ============================================================ */
-.bento{background:var(--bg-soft);border-radius:36px;padding:20px;
-  display:grid;grid-template-columns:310fr 680fr 330fr;gap:20px;}
-.bcol{display:flex;flex-direction:column;gap:20px;min-width:0;}
-.btop{display:grid;grid-template-columns:450fr 210fr;gap:20px;}
+.bento{background:var(--bg-soft);border-radius:36px;padding:48px;
+  display:grid;grid-template-columns:310fr 680fr 330fr;gap:32px;}
+.bcol{display:flex;flex-direction:column;gap:32px;min-width:0;}
+.btop{display:grid;grid-template-columns:450fr 210fr;gap:32px;}
 .tile{position:relative;border-radius:var(--r-bento);overflow:hidden;min-width:0;}
 .glass{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);}
@@ -186,9 +186,15 @@ a{color:inherit;text-decoration:none;}
   box-shadow:0 12px 24px rgba(102,13,38,.25);}
 .badge img{width:54px;height:54px;}
 .ring{width:118px;height:118px;}
+/* the lock sits inside the ring, so "secure" reads at a glance */
+.lock{position:relative;width:118px;height:118px;flex:none;display:grid;place-items:center;}
+.lock .ring{position:absolute;inset:0;}
+.lock .lock-icon{width:54px;height:54px;}
 .t-cart b,.t-secure b{display:block;font-weight:600;font-size:15px;}
-.t-cart span{display:block;font-size:13px;opacity:.8;}
-.t-secure span{display:block;font-size:13px;opacity:.85;}
+/* scoped to the caption: the badge is a <span> too, and a bare `.t-cart span`
+   turned it into a block (check stuck at the top) at 80% opacity */
+.t-cart div span{display:block;font-size:13px;opacity:.8;}
+.t-secure div span{display:block;font-size:13px;opacity:.85;}
 
 .t-timeline{height:340px;background:#fff;display:flex;align-items:center;gap:28px;padding:36px 32px 36px 48px;}
 .tl-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px;}
@@ -388,13 +394,16 @@ a{color:inherit;text-decoration:none;}
 .shead .t-lead{flex:1;min-width:0;}
 .block{display:flex;flex-direction:column;gap:20px;}
 
-.screen{display:flex;align-items:center;gap:64px;padding:48px 64px;border-radius:var(--r-panel);background:var(--bg-soft);}
+.screen{display:flex;justify-content:center;padding:48px 64px;border-radius:var(--r-panel);background:var(--bg-soft);}
+/* screen + notes are one group, 40px apart and centred in the panel;
+   the notes hug their text instead of filling the leftover width */
+.screen-wrap{display:flex;align-items:center;justify-content:center;gap:40px;min-width:0;}
 .screen-img{position:relative;flex:0 0 560px;border-radius:10px;filter:drop-shadow(0 20px 20px rgba(31,33,38,.1));}
 .screen-img > img{width:100%;border-radius:10px;}
 .pin{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
   background:var(--primary);color:#fff;font-weight:700;font-size:14px;line-height:20px;}
 .screen-img .pin{position:absolute;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);}
-.notes{flex:1;min-width:0;display:flex;flex-direction:column;gap:28px;}
+.notes{flex:0 1 460px;min-width:0;display:flex;flex-direction:column;gap:28px;}
 .notes-head{display:flex;flex-direction:column;gap:10px;}
 .notes-head .t-eyebrow{color:var(--primary);}
 .notes-head .t-title{color:var(--text);max-width:460px;}
@@ -434,7 +443,8 @@ a{color:inherit;text-decoration:none;}
 @media (max-width:1180px){
   .shead{padding:0 0 20px;gap:40px;}
   .shead .t-heading{flex-basis:320px;}
-  .screen{gap:40px;padding:40px;}
+  .screen{padding:40px;}
+  .screen-wrap{width:100%;}
   .screen-img{flex-basis:46%;}
   .ds{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
@@ -451,8 +461,9 @@ a{color:inherit;text-decoration:none;}
   .cs-foot{grid-template-columns:1fr;}
   .shead{flex-direction:column;gap:16px;}
   .shead .t-heading{flex:none;}
-  .screen{flex-direction:column;align-items:stretch;}
-  .screen--product{flex-direction:column-reverse;}
+  .screen-wrap{flex-direction:column;align-items:stretch;}
+  .notes{flex:none;}
+  .screen--product .screen-wrap{flex-direction:column-reverse;}
   .screen-img{flex:none;width:100%;max-width:560px;align-self:center;}
   .shipped{flex-direction:column;height:auto;}
   .shipped > img{height:auto;aspect-ratio:3/2;}
@@ -463,7 +474,9 @@ a{color:inherit;text-decoration:none;}
   .nav{width:calc(100% - 48px);}
   .t-heading{font-size:32px;line-height:40px;}
   .t-lead{font-size:17px;line-height:28px;}
-  .bento{grid-template-columns:1fr;padding:12px;border-radius:24px;}
+  /* 48/32 is the desktop spacing; on a phone it would eat a third of the width */
+  .bento{grid-template-columns:1fr;padding:16px;gap:16px;border-radius:24px;}
+  .bento .bcol,.btop{gap:16px;}
   .btop{grid-template-columns:1fr;}
   .ds{grid-template-columns:1fr;padding:28px 20px;}
   .dcard{min-height:200px;gap:20px;padding:20px;}
@@ -661,7 +674,7 @@ a{color:inherit;text-decoration:none;}
             <div><b>Added to cart</b><span>View your cart</span></div>
           </div>
           <div class="tile t-secure">
-            <img class="ring" src="assets/ring.svg" alt="">
+            <span class="lock"><img class="ring" src="assets/ring.svg" alt=""><img class="lock-icon" src="assets/icon-lock.svg" alt=""></span>
             <div><b>Secure payment</b><span>encrypted checkout</span></div>
           </div>
         </div>
@@ -838,32 +851,36 @@ a{color:inherit;text-decoration:none;}
   <section class="block">
 
     <div class="screen">
-      <div class="screen-img">
-        <img src="assets/screen-homepage.jpg" alt="Alomos homepage">
-        <span class="pin" style="left:3.39%;top:6.88%">1</span>
-        <span class="pin" style="left:3.04%;top:30.66%">2</span>
-        <span class="pin" style="left:2.5%;top:55.19%">3</span>
-      </div>
-      <div class="notes">
-        <div class="notes-head"><span class="t-eyebrow">Homepage</span><h3 class="t-title">Decide to stay, within one scroll.</h3></div>
-        <div class="note"><span class="pin">1</span><div><p class="t-sub">Product-led campaign banner</p><p class="t-small">One product, one price, one action — a confident first impression instead of a wall of offers.</p></div></div>
-        <div class="note"><span class="pin">2</span><div><p class="t-sub">Filters right under the hero</p><p class="t-small">Price, Rating, Color, Categories and Offer are one tap away — no digging through menus.</p></div></div>
-        <div class="note"><span class="pin">3</span><div><p class="t-sub">Cards that close the decision</p><p class="t-small">Every card shows rating, price and Add to Cart, so the whole choice happens at a glance.</p></div></div>
+      <div class="screen-wrap">
+        <div class="screen-img">
+          <img src="assets/screen-homepage.jpg" alt="Alomos homepage">
+          <span class="pin" style="left:3.39%;top:6.88%">1</span>
+          <span class="pin" style="left:3.04%;top:30.66%">2</span>
+          <span class="pin" style="left:2.5%;top:55.19%">3</span>
+        </div>
+        <div class="notes">
+          <div class="notes-head"><span class="t-eyebrow">Homepage</span><h3 class="t-title">Decide to stay, within one scroll.</h3></div>
+          <div class="note"><span class="pin">1</span><div><p class="t-sub">Product-led campaign banner</p><p class="t-small">One product, one price, one action — a confident first impression instead of a wall of offers.</p></div></div>
+          <div class="note"><span class="pin">2</span><div><p class="t-sub">Filters right under the hero</p><p class="t-small">Price, Rating, Color, Categories and Offer are one tap away — no digging through menus.</p></div></div>
+          <div class="note"><span class="pin">3</span><div><p class="t-sub">Cards that close the decision</p><p class="t-small">Every card shows rating, price and Add to Cart, so the whole choice happens at a glance.</p></div></div>
+        </div>
       </div>
     </div>
 
     <div class="screen screen--product">
-      <div class="notes">
-        <div class="notes-head"><span class="t-eyebrow">Product page</span><h3 class="t-title">Decide to pay, without a doubt left.</h3></div>
-        <div class="note"><span class="pin">1</span><div><p class="t-sub">The product, then its variants</p><p class="t-small">A large product shot with colour variants as thumbnails — people see exactly what will arrive.</p></div></div>
-        <div class="note"><span class="pin">2</span><div><p class="t-sub">Price, rating and a monthly option</p><p class="t-small">Full price, an instalment option and the review count sit together, right under the name.</p></div></div>
-        <div class="note"><span class="pin">3</span><div><p class="t-sub">Delivery and returns beside the buttons</p><p class="t-small">Free delivery and 30-day returns are answered next to Add to Cart and Buy Now — at the moment of doubt.</p></div></div>
-      </div>
-      <div class="screen-img">
-        <img src="assets/screen-product.jpg" alt="Alomos product page for Airpods Max">
-        <span class="pin" style="left:4.11%;top:7.3%">1</span>
-        <span class="pin" style="left:50.54%;top:16.3%">2</span>
-        <span class="pin" style="left:50.54%;top:41.6%">3</span>
+      <div class="screen-wrap">
+        <div class="notes">
+          <div class="notes-head"><span class="t-eyebrow">Product page</span><h3 class="t-title">Decide to pay, without a doubt left.</h3></div>
+          <div class="note"><span class="pin">1</span><div><p class="t-sub">The product, then its variants</p><p class="t-small">A large product shot with colour variants as thumbnails — people see exactly what will arrive.</p></div></div>
+          <div class="note"><span class="pin">2</span><div><p class="t-sub">Price, rating and a monthly option</p><p class="t-small">Full price, an instalment option and the review count sit together, right under the name.</p></div></div>
+          <div class="note"><span class="pin">3</span><div><p class="t-sub">Delivery and returns beside the buttons</p><p class="t-small">Free delivery and 30-day returns are answered next to Add to Cart and Buy Now — at the moment of doubt.</p></div></div>
+        </div>
+        <div class="screen-img">
+          <img src="assets/screen-product.jpg" alt="Alomos product page for Airpods Max">
+          <span class="pin" style="left:4.11%;top:7.3%">1</span>
+          <span class="pin" style="left:50.54%;top:16.3%">2</span>
+          <span class="pin" style="left:50.54%;top:41.6%">3</span>
+        </div>
       </div>
     </div>
   </section>
@@ -981,7 +998,7 @@ a{color:inherit;text-decoration:none;}
   var N = faces.length, active = 0, busy = false, timer = null;
   var SLOTS = ['slot-c', 'slot-r', 'slot-l'];
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var HOLD = 3800;
+  var HOLD = 1800;
 
   function setSlot(el, cls){
     el.classList.remove('slot-c','slot-r','slot-l','slot-offl','slot-offr');
