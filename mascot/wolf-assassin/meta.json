@@ -1,0 +1,121 @@
+{
+ "Turnaround-Front": {
+  "x": 306,
+  "y": 139,
+  "w": 655,
+  "h": 1067,
+  "parts": 1
+ },
+ "Turnaround-Three-Quarter": {
+  "x": 1311,
+  "y": 138,
+  "w": 694,
+  "h": 1077,
+  "parts": 1
+ },
+ "Turnaround-Side": {
+  "x": 2371,
+  "y": 135,
+  "w": 1295,
+  "h": 1075,
+  "parts": 1
+ },
+ "Turnaround-Back": {
+  "x": 4081,
+  "y": 139,
+  "w": 658,
+  "h": 1066,
+  "parts": 1
+ },
+ "Pose-Crouch": {
+  "x": 285,
+  "y": 1287,
+  "w": 781,
+  "h": 876,
+  "parts": 1
+ },
+ "Pose-Dash": {
+  "x": 1406,
+  "y": 1288,
+  "w": 1295,
+  "h": 780,
+  "parts": 1
+ },
+ "Pose-Guard": {
+  "x": 2891,
+  "y": 1283,
+  "w": 750,
+  "h": 884,
+  "parts": 1
+ },
+ "Pose-Sneak": {
+  "x": 4010,
+  "y": 1287,
+  "w": 757,
+  "h": 885,
+  "parts": 1
+ },
+ "Expression-Calm": {
+  "x": 338,
+  "y": 2216,
+  "w": 457,
+  "h": 581,
+  "parts": 1
+ },
+ "Expression-Fierce": {
+  "x": 1310,
+  "y": 2216,
+  "w": 456,
+  "h": 580,
+  "parts": 1
+ },
+ "Expression-Smirk": {
+  "x": 2261,
+  "y": 2210,
+  "w": 520,
+  "h": 564,
+  "parts": 1
+ },
+ "Expression-Surprised": {
+  "x": 3273,
+  "y": 2216,
+  "w": 456,
+  "h": 580,
+  "parts": 1
+ },
+ "Expression-Hooded": {
+  "x": 4201,
+  "y": 2238,
+  "w": 524,
+  "h": 544,
+  "parts": 2
+ },
+ "Prop-Daggers": {
+  "x": 282,
+  "y": 2839,
+  "w": 672,
+  "h": 444,
+  "parts": 2
+ },
+ "Prop-Scarf": {
+  "x": 1175,
+  "y": 2842,
+  "w": 729,
+  "h": 445,
+  "parts": 1
+ },
+ "Prop-Hand": {
+  "x": 2142,
+  "y": 2842,
+  "w": 520,
+  "h": 439,
+  "parts": 1
+ },
+ "Prop-Tail": {
+  "x": 2900,
+  "y": 2857,
+  "w": 689,
+  "h": 399,
+  "parts": 1
+ }
+}

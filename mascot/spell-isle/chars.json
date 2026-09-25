@@ -1,0 +1,4 @@
+[{"dir":"bird","pose":"Pose=Jump Shot","size":200,"anchor":"bird"},
+ {"dir":"fox-src","pose":"Pose=Casting","size":240,"anchor":"fox"},
+ {"dir":"cat","pose":"Pose=Front","size":240,"anchor":"cat"},
+ {"dir":"wolf","pose":"Pose=Sneak","size":220,"anchor":"wolf"}]

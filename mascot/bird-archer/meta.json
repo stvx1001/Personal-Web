@@ -1,0 +1,121 @@
+{
+ "Turnaround-Front": {
+  "x": 342,
+  "y": 146,
+  "w": 760,
+  "h": 1081,
+  "parts": 2
+ },
+ "Turnaround-Three-Quarter": {
+  "x": 1596,
+  "y": 149,
+  "w": 782,
+  "h": 1079,
+  "parts": 1
+ },
+ "Turnaround-Side": {
+  "x": 2732,
+  "y": 147,
+  "w": 643,
+  "h": 1057,
+  "parts": 1
+ },
+ "Turnaround-Back": {
+  "x": 3891,
+  "y": 150,
+  "w": 758,
+  "h": 1059,
+  "parts": 1
+ },
+ "Pose-Idle": {
+  "x": 475,
+  "y": 1312,
+  "w": 653,
+  "h": 1021,
+  "parts": 2
+ },
+ "Pose-Aiming": {
+  "x": 1396,
+  "y": 1332,
+  "w": 1084,
+  "h": 1005,
+  "parts": 1
+ },
+ "Pose-Jump-Shot": {
+  "x": 2677,
+  "y": 1319,
+  "w": 909,
+  "h": 934,
+  "parts": 1
+ },
+ "Pose-Reloading": {
+  "x": 3940,
+  "y": 1321,
+  "w": 687,
+  "h": 1009,
+  "parts": 1
+ },
+ "Expression-Cheerful": {
+  "x": 329,
+  "y": 2536,
+  "w": 381,
+  "h": 570,
+  "parts": 1
+ },
+ "Expression-Focused": {
+  "x": 810,
+  "y": 2527,
+  "w": 388,
+  "h": 578,
+  "parts": 1
+ },
+ "Expression-Surprised": {
+  "x": 1284,
+  "y": 2579,
+  "w": 364,
+  "h": 518,
+  "parts": 1
+ },
+ "Expression-Proud": {
+  "x": 1737,
+  "y": 2572,
+  "w": 370,
+  "h": 523,
+  "parts": 1
+ },
+ "Expression-Nervous": {
+  "x": 2155,
+  "y": 2710,
+  "w": 357,
+  "h": 368,
+  "parts": 1
+ },
+ "Prop-Bow": {
+  "x": 2653,
+  "y": 2633,
+  "w": 212,
+  "h": 502,
+  "parts": 2
+ },
+ "Prop-Quiver": {
+  "x": 2930,
+  "y": 2635,
+  "w": 282,
+  "h": 500,
+  "parts": 1
+ },
+ "Prop-Cloak": {
+  "x": 3257,
+  "y": 2634,
+  "w": 377,
+  "h": 501,
+  "parts": 1
+ },
+ "Prop-Feet": {
+  "x": 3669,
+  "y": 2634,
+  "w": 476,
+  "h": 463,
+  "parts": 1
+ }
+}

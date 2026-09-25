@@ -1,0 +1,4 @@
+{"Turnaround-Front":[65,30,250,310],"Turnaround-Three-Quarter":[320,30,510,310],"Turnaround-Side":[585,30,925,310],"Turnaround-Back":[1012,30,1200,310],
+"Pose-Crouch":[60,315,280,550],"Pose-Dash":[345,315,685,550],"Pose-Guard":[715,315,920,550],"Pose-Sneak":[1015,315,1200,550],
+"Expression-Calm":[75,550,205,705],"Expression-Fierce":[315,550,445,705],"Expression-Smirk":[555,550,705,705],"Expression-Surprised":[810,550,930,705],"Expression-Hooded":[1040,550,1185,705],
+"Prop-Daggers":[60,705,250,825],"Prop-Scarf":[285,705,485,830],"Prop-Hand":[525,705,675,830],"Prop-Tail":[715,705,905,820]}
