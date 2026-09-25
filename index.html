@@ -1409,7 +1409,7 @@ body.no-pin .ps-panel,body.no-pin .min-panel{position:relative!important;}
   ];
   // A 4th field makes the card a link to that project's case study. The
   // path is relative (no leading slash) so it resolves both on GitHub Pages
-  // under /Personal-Web/ and at the root of the future custom domain.
+  // under /personal-web/ and at the root of the future custom domain.
   var cards = projects.map(function(p){
     var tag = p[3] ? 'a' : 'article';
     var href = p[3] ? ' href="' + p[3] + '" aria-label="' + p[0] + ' case study"' : '';
