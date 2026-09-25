@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Poppins:wght@400;500;600&display=swap">
-<link rel="preload" as="image" href="assets/homepage-top.jpg">
+<link rel="preload" as="image" href="assets/hero-library.jpg">
 <style>
 /* ============================================================
    Metrodata Academy case study — built from Figma node 3950:12132
@@ -69,16 +69,18 @@ a{color:inherit;text-decoration:none;}
 .btn-hire:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.24);}
 
 /* ============================================================
-   02 Hero — the homepage in a browser window, on its own lavender wash
+   02 Hero — Figma "02 Hero" (3953:1590): a library photo under a dark
+   wash, the white Academy logo and one line, centred
    ============================================================ */
-.hero{position:relative;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;
-  background:linear-gradient(160deg,#F4EEF6 0%,#E9E3FB 48%,#DDE4FB 100%);}
-.browser{position:absolute;left:8.571%;right:8.571%;top:72px;bottom:-80px;border-radius:16px;overflow:hidden;
-  background:#fff;box-shadow:0 30px 70px rgba(18,31,89,.18);}
-.bar{height:36px;background:#F4F5F8;display:flex;align-items:center;gap:6px;padding:0 16px;position:relative;}
-.bar i{width:10px;height:10px;border-radius:50%;}
-.bar span{position:absolute;left:0;right:0;text-align:center;font-weight:500;font-size:12px;color:#8A8A90;}
-.browser img{width:100%;}
+.hero{position:relative;aspect-ratio:1400/840;border-radius:16px;overflow:hidden;background:#151515;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding-top:8px;text-align:center;}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.34) 45%,rgba(0,0,0,.66) 100%);}
+.hero-logo,.hero-line{position:relative;z-index:1;}
+.hero-logo{width:32.86%;min-width:190px;height:auto;}
+/* the line is the Academy's own voice, so it is set in its Poppins */
+.hero-line{font-family:"Poppins",sans-serif;font-weight:500;font-size:clamp(14px,1.43vw,20px);line-height:1.4;color:#fff;opacity:.86;}
 
 /* ============================================================
    03 Intro — credits column, then title + story (Alomos grid)
@@ -267,11 +269,7 @@ a{color:inherit;text-decoration:none;}
   .nav.is-stuck{top:8px;}
   .nav-home{gap:12px;}
   .page{width:calc(100% - 48px);padding:84px 0 16px;gap:16px;}
-  .hero{aspect-ratio:358/300;}
-  .browser{left:20px;right:20px;top:28px;bottom:-60px;border-radius:12px;}
-  .bar{height:26px;padding:0 10px;gap:4px;}
-  .bar i{width:7px;height:7px;}
-  .bar span{font-size:9px;}
+  .hero{aspect-ratio:358/300;gap:16px;}
   .intro{display:flex;flex-direction:column-reverse;gap:20px;padding:16px 4px;}
   .credits{max-width:none;}
   .wall{aspect-ratio:1/1.18;}
@@ -337,10 +335,9 @@ a{color:inherit;text-decoration:none;}
 
   <!-- ===================== 02 HERO ===================== -->
   <div class="hero">
-    <div class="browser">
-      <div class="bar" aria-hidden="true"><i style="background:#FF6259"></i><i style="background:#FFBF2F"></i><i style="background:#29CE42"></i><span>metrodataacademy.id</span></div>
-      <img src="assets/homepage-top.jpg" alt="The Metrodata Academy homepage: the headline “Kembangkan potensi IT dan digital Anda”, an event announcement and the training calendar">
-    </div>
+    <img class="hero-photo" src="assets/hero-library.jpg" alt="">
+    <img class="hero-logo" src="assets/logo-white.png" alt="Metrodata Academy">
+    <p class="hero-line">Digital learning provider — Indonesia</p>
   </div>
 
   <!-- ===================== 03 INTRO ===================== -->

@@ -95,6 +95,11 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   `rec.mjs` Playwright capture + `sofa.py` laptop-screen tracking) was built in
   a cloud session and handed to Steven as a zip; the older 39s version's source
   is `~/Developer/Personal-Web-film/`.
+- **Metrodata hero (Sept 25, 2026)** follows Figma "02 Hero" (`3953:1590`):
+  a library photo (`assets/hero-library.jpg`, 2000px, the source max) under a
+  black 62% → 34% → 66% wash, the white Academy logo (`logo-white.png`,
+  32.86% wide = 460/1400) and "Digital learning provider — Indonesia" in
+  Poppins Medium 20/28 at 86%. It replaced the homepage-in-a-browser hero.
 - **Metrodata screen wall (Sept 24, 2026)**, `.wall` under the film, from
   Figma "03c Screens" (`4090:1611`): ten screens in three offset columns on
   #161618, running off every edge. Each `<img>` sits at its Figma x/y/w/h as
