@@ -528,14 +528,12 @@ body.no-pin .ps-panel{position:relative!important;}
 .rail--left:hover .rail-run{animation-play-state:paused;}
 .work:hover{transform:translateY(-12px);box-shadow:0 12px 28px rgba(0,0,0,.20);}
 
-/* Scrim. In Figma only AgriAku carries a permanent 32% black wash; the
-   other four have none at rest. But the hover label is white, so every
-   card needs something behind it to stay legible — the scrim fades in
-   with the label and AgriAku simply starts where it already was. */
+/* Scrim. No card carries a wash at rest (Figma 3877:2288 dropped the
+   permanent 32% one AgriAku used to have — it read too dark, Sept 25
+   2026). The hover label is white, so the scrim fades in with it. */
 .work-scrim{position:absolute;inset:0;background:rgba(0,0,0,.32);opacity:0;
   transition:opacity .4s var(--ease);pointer-events:none;}
 .work:hover .work-scrim{opacity:1;}
-.w-agriaku .work-scrim{opacity:1;}
 
 /* Badge + label are opacity:0 in the base frame and opaque in all five
    hover frames — that IS the interaction, not a styling accident. */
@@ -875,8 +873,11 @@ body.no-pin .ps-panel{position:relative!important;}
   .rail--left .rail-run{animation:none;gap:16px;padding-inline:20px;}
   .work{width:320px;height:432px;}
   .work:hover{transform:none;box-shadow:none;}
-  /* no hover on a phone, so the name and arrow are simply always shown */
+  /* no hover on a phone, so the name and arrow are simply always shown;
+     the scrim is only a fade behind the label, so the photos keep their
+     Figma brightness instead of sitting under a flat 32% wash */
   .work-scrim,.work-badge,.work-meta{opacity:1;}
+  .work-scrim{background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.5) 100%);}
   .clients{margin-top:48px;}
   /* Figma's phone frame shows the four marks still, in two rows */
   .rail--right{-webkit-mask-image:none;mask-image:none;margin-top:40px;max-width:300px;}
