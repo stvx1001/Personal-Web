@@ -15,8 +15,12 @@ Deliberate for a prototype. **Not** the production architecture — the plan is
 Next.js 15 + `motion` + Lenis + Tailwind v4 + MDX on Vercel. Treat this file as
 the reference for how the page looks and behaves, not as the target structure.
 
-Sections in order: navbar · banner/hero · Pixel Spell · MINIMAL · marquee ·
-works rail + client logos · Hire Me · A Little About Me (stat cards) · footer.
+Sections in order: navbar · banner/hero · Pixel Spell · marquee · works rail +
+client logos · A Little About Me (stat cards) · footer. **MINIMAL and the black
+Hire Me band were removed on Sept 25, 2026** (Steven's call, to match Figma
+Home `3877:2165`, which has neither); the footer still lists "MINIMAL UI kit".
+Every page has a favicon: `favicon.svg` (the split ✕ mark in teal on a white
+rounded tile, Steven's icon) plus `favicon-32.png` / `apple-touch-icon.png`.
 
 ## Case-study pages
 
@@ -105,7 +109,18 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   #161618, running off every edge. Each `<img>` sits at its Figma x/y/w/h as
   a percentage of the 1400x900 stage, so it scales with the page; on phones
   the stage is 184% wide and centred on the middle column. Images are the
-  raw Figma fills (`assets/wall-*.jpg`, ~2x, q82), not screenshots.
+  raw Figma fills (`assets/wall-*.jpg`, ~2x, q82), not screenshots. The
+  mobile Figma frame `4090:1622` was rebuilt on Sept 25 as that same centred
+  crop (it used to be a different 2-column arrangement).
+- **Metrodata, Sept 25, 2026 — the page now ends** film → wall → **04
+  Showcase** (`3953:1937`: three editor screens on black, `assets/show-*.jpg`)
+  → **05 Audiences** (`3954:1582`: the Academy site in a dark skin, built in
+  HTML/CSS in Figma pixels via `--u` = one Figma px, Poppins inside; its cards
+  reuse the wall images) → **05b Vision** (`4110:1611`: one photo, the site on
+  a tablet, `assets/vision-tablet.jpg`) → footer. Steven deleted Design in
+  detail, Design system/documentation and Outcome in Figma, so they are gone
+  from the page too. The phone hero follows Figma mobile: 358:420, logo 67%
+  wide, the line right under it in Poppins 13/20.
 - **Third case study (Sept 23, 2026): `fulltimeworks/agriaku/`**, from Figma
   "AgriAku" (`3965:12496`) and "AgriAku — Mobile 390". It is the one with a
   different structure, at Steven's request: **three projects behind three
@@ -118,7 +133,11 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   Screens are `get_screenshot` renders of his own older AgriAku frames
   (`3965:14155`, `3965:12595`, `3965:12517`), flattened to JPEG.
 - **Alomos tweaks (Sept 25, 2026, Steven's calls):** the bento is 48px padding
-  with 32px gaps on desktop (16/16 on phones); "Secure payment" has a white
+  with 32px gaps on desktop (16/16 on phones — Figma mobile `3929:1600` was
+  set to 16/16 to match on Sept 25, and the phone tiles follow its sizes:
+  380/380, ETA 386 with the glass at 0.742x, cart/secure 192, suggestions
+  455, new arrival 415); the laptop mockup and scroll film keep 1400:840 on
+  phones (`.media--wide`); "Secure payment" has a white
   lock inside its ring (`assets/icon-lock.svg`); the persona carousel holds
   1.8s (was 3.8s); each Design-in-detail panel wraps screen + notes in one
   centred `.screen-wrap`, 40px apart, notes hugging at 460px instead of
@@ -173,8 +192,10 @@ Stages:
 |---|---|---|
 | 0 | Banner as a rounded card, headline + 3 float cards visible | initial |
 | 1 | Pixel Spell filling the viewport | **one gesture**, chained (see below) |
-| 2 | MINIMAL filling the viewport | one gesture |
 | — | released to native scroll + inertial glide | one more gesture |
+
+(Until Sept 25, 2026 there was a stage 2, MINIMAL; it was removed with the
+section, so `LAST = 1`.)
 
 **Stage 0 → 1 is one gesture but two beats:** the banner grows to full screen
 (720ms), holds 260ms so the full-bleed state actually reads, then carries itself
@@ -210,7 +231,7 @@ two separate gestures. Reversed on the way back up.
 - **The dot grid stays visible** on the full-bleed banner. Don't fade it out.
 - **The navbar pill turns on at `p > 0.32`**, i.e. when the growing banner
   reaches up behind it — not at a fixed scroll offset.
-- **Every handoff — banner → Pixel Spell → MINIMAL — is one pure-CSS sticky
+- **The handoff banner → Pixel Spell is a pure-CSS sticky
   stack.** Each panel is `position:sticky; top:0` inside its own tall wrapper,
   and each wrapper carries `margin-top:-100vh`, which slides it up over the
   last screen of the previous section's sticky range. So the section you are
@@ -234,7 +255,7 @@ two separate gestures. Reversed on the way back up.
 
 Stage offsets come from tall wrappers: hero pin 340vh (140vh of banner
 expansion + 100vh held full-bleed while Pixel Spell covers it), Pixel Spell
-230vh (130vh held + 100vh while MINIMAL covers it), MINIMAL 130vh. A gesture
+130vh (it is the last stage, so it holds 30vh and then scrolls away). A gesture
 tweens the scroll position to the next offset (easeInOutCubic) and the rAF
 engine turns that movement into the animation. The JS reads the offsets from
 the elements, so heights are safe to retune — with one exception: the banner's
@@ -288,6 +309,8 @@ inside a case study* (e.g. the Academy's own "Body #5C5C5C" swatch) are content
 
 The home page's **marquee band is one deliberate exception on Steven's own
 pages**: black (#000) with Days One, his call on Sept 23, 2026 — keep it.
+Since Sept 25, 2026 it follows Figma `3877:2359`: 80px tall (56px on phones),
+white type, and the separator is Figma's split ✕ (four rounded bars, 40x30).
 
 The other is the **home page's Pixel Spell panel (Sept 24, 2026, Steven's
 call)**: he wanted visitors to "feel the spell", so it wears the studio site's
@@ -307,8 +330,9 @@ study keep the client's own typeface** — the ALOMOS ramp stays Poppins, and th
 **Metrodata Academy UI is Poppins too** (Steven's call, Sept 24, 2026: every
 text *inside* his rebuilt Academy UI is Poppins, while the case-study page
 around it stays Radio Canada Big). The Figma frame `4004:5828` was converted,
-and the six exported UI images in `metrodataacademy/assets/` were re-rendered
-from it — re-export them if that frame changes again. The embedded product UI (screenshots and the
+and the exported UI images in `metrodataacademy/assets/` were re-rendered
+from it (the calendar/announce/programs/cta ones were deleted on Sept 25 with
+the sections that used them). The embedded product UI (screenshots and the
 Figma clones of the Metrodata homepage) is left alone for the same reason.
 
 ## Assets
@@ -396,9 +420,10 @@ images** — it produced slices from the wrong offsets.
 ### The SkorKu file
 
 `YUZMDH5kqna1441GZLvRPm` ("01. SkorKu Website 3.0"), page `3448:38297` ("Sum").
-Despite the name it holds the **personal site** mockup too: frame `3854:1595`
-("Home") is the full page, with children Navbar / Banner / Featured / Marquee /
-Works / Hireme / Currently / Footer. **`Home` has `layoutMode: "NONE"`** — the
+Despite the name it holds the **personal site** mockup too: frame `3877:2165`
+("Home", with "Home — Mobile 390" `3926:1582` beside it) is the full page, with
+children Navbar / Banner / Featured / Marquee / Works / Currently / Footer
+(the older `3854:1595` also had a Hireme frame). **`Home` has `layoutMode: "NONE"`** — the
 sections are absolutely positioned, so if you change one section's height you
 must move every sibling below it and resize `Home`, or it silently overlaps.
 That bit the Currently rebuild (76px into the Footer) and was fixed by hand.
