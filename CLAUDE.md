@@ -140,6 +140,13 @@ fulltimeworks/alomos/assets/      → its images (real files, not base64)
   and holds two dashed "Add export" slots waiting for Steven's DS exports.
   Screens are `get_screenshot` renders of his own older AgriAku frames
   (`3965:14155`, `3965:12595`, `3965:12517`), flattened to JPEG.
+  **Sept 26, 2026: two projects, not three.** Steven removed Search bar
+  improvement in Figma (desktop; mobile, switchers and copy followed), so the
+  page has only `#bundling` and `#tempo`, two cards per row, and the copy
+  says "two". The Bundling and Tempo cards now show his own two-phone mockups
+  (`card-bundling.jpg`, `card-tempo-phones.jpg`) full-bleed (`.card-vis--photo`,
+  object-fit cover), in Figma as image fills on `4191:330` / `3975:1638`
+  (desktop) and `3982:1629` / `3982:1639` (mobile).
 - **Alomos tweaks (Sept 25, 2026, Steven's calls):** the bento is 48px padding
   with 32px gaps on desktop (16/16 on phones — Figma mobile `3929:1600` was
   set to 16/16 to match on Sept 25, and the phone tiles follow its sizes:
